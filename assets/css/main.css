@@ -98,6 +98,38 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
 .shots__dot{width:7px;height:7px;padding:0;border:0;border-radius:50%;cursor:pointer;
   background:var(--global-text-color-light);opacity:.4}
 .shots__dot[aria-current="true"]{opacity:1;background:var(--global-base-color)}
+
+/* ---- home page -----------------------------------------------------------
+   The front page has to read like a billboard before it reads like a bio: a
+   lead line, a strip of scannable claims, then the prose. */
+/* The name is already in the masthead and the sidebar, so the lead carries
+   the top of the page rather than the h1 repeating it a third time. */
+.lead{font-size:1.42em;line-height:1.38;margin:.15em 0 1.5em;max-width:26em;
+  font-weight:400;letter-spacing:-.005em}
+@media (max-width:37.5em){.lead{font-size:1.22em;max-width:none}}
+
+.proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 30px;
+  margin:0 0 1.8em;padding:0;list-style:none}
+.proof li{padding:.55em 0 .6em .9em;border-left:2px solid var(--global-base-color)}
+.proof b{display:block;font-weight:600;font-size:.95em;line-height:1.4}
+.proof span{display:block;margin-top:.1em;font-size:.78em;line-height:1.4;
+  color:var(--global-text-color-light)}
+@media (max-width:37.5em){.proof{grid-template-columns:minmax(0,1fr);gap:0}}
+
+/* What is actually live right now, as opposed to the full catalogue. */
+.now{margin:.2em 0 1.4em;padding:0;list-style:none}
+.now li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 18px;
+  align-items:baseline;padding:.62em 0;border-top:1px solid var(--global-border-color)}
+.now li:last-child{border-bottom:1px solid var(--global-border-color)}
+.now b{font-weight:600;font-size:.95em}
+.now span{grid-column:1;font-size:.78em;line-height:1.45;color:var(--global-text-color-light)}
+.now em{grid-row:1;grid-column:2;font-style:normal;font-size:.7em;letter-spacing:.05em;
+  text-transform:uppercase;white-space:nowrap;color:var(--global-text-color-light)}
+@media (max-width:30em){
+  .now li{grid-template-columns:minmax(0,1fr)}
+  .now em{grid-row:auto;grid-column:1;margin-top:.2em}
+}
+
 .shots__count{font-size:.72em;color:var(--global-text-color-light);
   font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion:reduce){.shots__track{scroll-behavior:auto}}
