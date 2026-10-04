@@ -194,5 +194,16 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
 @media (max-width:62em){.track{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:34em){.track{grid-template-columns:minmax(0,1fr);gap:20px}}
 
-/* Closing prose, held to a readable measure. */
-.say{max-width:36em;margin:0 0 1.1em;font-size:.97rem;line-height:1.65}
+/* About: a reel of screenshots on the left, the bio on the right. The reel is
+   deliberately mixed rather than grouped by project — Selected work above
+   already does project-by-project. */
+.reel{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);
+  gap:30px 44px;align-items:start;margin:0 0 1em}
+.reel .shots{max-width:none;margin:0}
+.reel .shots__slide figcaption{min-height:3.2em}
+@media (max-width:54em){.reel{grid-template-columns:minmax(0,1fr);gap:26px}
+  .reel .shots__slide figcaption{min-height:0}}
+
+.bio p{margin:0 0 .95em;font-size:.95rem;line-height:1.68}
+.bio p:last-child{margin-bottom:0}
+.bio p:first-child{font-size:1.06rem;line-height:1.55}
