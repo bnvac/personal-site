@@ -123,7 +123,7 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
 @media (min-width:57.8125em){#main.page--home{max-width:1120px}}
 
 /* Hero */
-.hero{padding:.4em 0 1.9em;margin-bottom:2.5em;
+.hero{padding:.4em 0 1.9em;margin-bottom:3.2em;
   border-bottom:1px solid var(--global-border-color)}
 .hero__name{margin:0;font-size:clamp(2.6rem,7vw,4.6rem);line-height:1.02;
   font-weight:700;letter-spacing:-.035em}
@@ -150,10 +150,14 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
 .work li{margin:0}
 .work__shot{display:block;margin:0 0 .85em;border-radius:6px;overflow:hidden;
   line-height:0;background:#fff;border:1px solid var(--global-border-color)}
-.work__shot img{width:100%;height:auto;display:block;
-  transition:transform .35s cubic-bezier(.2,.7,.3,1)}
-.work li:hover .work__shot{border-color:var(--global-dark-border-color)}
-.work li:hover .work__shot img{transform:scale(1.025)}
+.work__shot img{width:100%;height:auto;display:block}
+.work li{transition:transform .22s cubic-bezier(.2,.7,.3,1)}
+.work li:hover,.work li:focus-within{transform:scale(1.035);position:relative;z-index:2}
+.work li:hover .work__shot,.work li:focus-within .work__shot{
+  border-color:var(--global-dark-border-color);
+  box-shadow:0 10px 26px -12px rgba(0,0,0,.35)}
+html[data-theme="dark"] .work li:hover .work__shot{box-shadow:0 10px 30px -12px rgba(0,0,0,.9)}
+.work__shot{cursor:zoom-in}
 .work h3{margin:0;font-size:1.06rem;font-weight:700;letter-spacing:-.01em}
 .work h3 a{text-decoration:none}
 .work h3 a:hover{text-decoration:underline}
@@ -163,8 +167,8 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
 .work__tags span+span::before{content:"\00b7";margin:0 .45em}
 @media (max-width:40em){.work{grid-template-columns:minmax(0,1fr);gap:26px}}
 @media (prefers-reduced-motion:reduce){
-  .work__shot img{transition:none}
-  .work li:hover .work__shot img{transform:none}
+  .work li{transition:none}
+  .work li:hover,.work li:focus-within{transform:none}
 }
 
 /* What is live right now. */
@@ -240,7 +244,8 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
 }
 @media (max-width:40em){.band .work{grid-template-columns:minmax(0,1fr)}}
 
-.reel--solo{display:block;max-width:620px}
+/* Two classes, so this does not depend on sitting after .reel in the file. */
+.reel.reel--solo{display:block;max-width:620px;margin:0 0 3.2em}
 .reel--solo .shots{max-width:none}
 
 /* About: a reel of screenshots on the left, the bio on the right. The reel is
@@ -256,3 +261,22 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
 .bio p{margin:0 0 .95em;font-size:.95rem;line-height:1.68}
 .bio p:last-child{margin-bottom:0}
 .bio p:first-child{font-size:1.06rem;line-height:1.55}
+
+/* Lightbox: clicking a project screenshot shows it whole. Built by lightbox.js,
+   so with JavaScript off the link just opens the image. */
+.lb{position:fixed;inset:0;z-index:999;display:flex;align-items:center;
+  justify-content:center;padding:28px;background:rgba(10,10,10,.92);
+  opacity:0;transition:opacity .18s}
+.lb.is-open{opacity:1}
+.lb__fig{margin:0;max-width:min(1400px,100%);max-height:100%;
+  display:flex;flex-direction:column;gap:.7em}
+.lb__fig img{display:block;max-width:100%;max-height:calc(100vh - 118px);
+  width:auto;height:auto;margin:0 auto;border-radius:4px;background:#fff}
+.lb__cap{flex:none;text-align:center;font-size:.82rem;line-height:1.5;color:#cfcfcf}
+.lb__cap b{color:#fff;font-weight:700}
+.lb__close{position:absolute;top:14px;right:16px;width:38px;height:38px;padding:0;
+  border:1px solid rgba(255,255,255,.3);border-radius:50%;background:transparent;
+  color:#fff;font-size:17px;line-height:1;cursor:pointer}
+.lb__close:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+body.lb-open{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.lb{transition:none}}
