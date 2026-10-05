@@ -183,16 +183,32 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
   .now em{grid-row:auto;grid-column:1;margin-top:.25em}
 }
 
-/* Track record: the claim leads, the attribution follows quietly. */
-.track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 30px;
+/* Links, each a card with its handle rather than a bare word. */
+.links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;
   margin:0 0 3.2em;padding:0;list-style:none}
-.track li{margin:0}
-.track b{display:block;font-size:1.02rem;font-weight:700;line-height:1.35;
-  letter-spacing:-.01em}
-.track span{display:block;margin-top:.3em;font-size:.8rem;line-height:1.5;
+.links a{display:block;padding:.9em 1em;border-radius:6px;text-decoration:none;
+  border:1px solid var(--global-border-color);transition:border-color .15s}
+.links a:hover{border-color:var(--global-base-color)}
+.links i{display:block;margin-bottom:.5em;font-size:1.05rem;color:var(--global-base-color)}
+.links b{display:block;font-size:.92rem;font-weight:700}
+.links span{display:block;margin-top:.1em;font-size:.76rem;
+  color:var(--global-text-color-light);overflow-wrap:anywhere}
+@media (max-width:60em){.links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:26em){.links{grid-template-columns:minmax(0,1fr)}}
+
+/* The closing block: where the rest of the record lives. */
+.record{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;
+  margin:0 0 1em;padding:0;list-style:none}
+.record a{display:block;height:100%;padding:1em 1.1em;border-radius:6px;
+  text-decoration:none;border:1px solid var(--global-border-color);
+  transition:border-color .15s}
+.record a:hover{border-color:var(--global-base-color)}
+.record b{display:block;font-size:.95rem;font-weight:700}
+.record b::after{content:"\2009\2192";color:var(--global-base-color)}
+.record span{display:block;margin-top:.3em;font-size:.8rem;line-height:1.5;
   color:var(--global-text-color-light)}
-@media (max-width:62em){.track{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:34em){.track{grid-template-columns:minmax(0,1fr);gap:20px}}
+@media (max-width:62em){.record{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:34em){.record{grid-template-columns:minmax(0,1fr)}}
 
 /* About: a reel of screenshots on the left, the bio on the right. The reel is
    deliberately mixed rather than grouped by project — Selected work above
