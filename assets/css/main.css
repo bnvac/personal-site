@@ -210,6 +210,39 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
 @media (max-width:62em){.record{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:34em){.record{grid-template-columns:minmax(0,1fr)}}
 
+/* The top band: the project grid beside a paragraph. Which side each takes is
+   a modifier, so both arrangements come from the same markup. */
+.band{display:grid;gap:34px 44px;align-items:start;margin:0 0 3.2em}
+.band__work{min-width:0}
+.band__say{min-width:0}
+.band__say p{margin:0 0 .9em;font-size:.95rem;line-height:1.66}
+.band__say p:first-child{font-size:1.08rem;line-height:1.55}
+.band__say p:last-child{margin-bottom:0}
+.band .work{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 22px;margin:0}
+.band .work h3{font-size:.98rem}
+.band .work p{font-size:.82rem}
+.band .work__tags{font-size:.66rem}
+
+@media (min-width:62em){
+  /* A: the work leads, the paragraph sits beside it. */
+  .band--work-left{grid-template-columns:minmax(0,1.62fr) minmax(0,1fr)}
+  .band--work-left .band__work{order:1}
+  .band--work-left .band__say{order:2}
+  /* B: the paragraph leads and the work sits to its right. */
+  .band--work-right{grid-template-columns:minmax(0,1fr) minmax(0,1.62fr)}
+  .band--work-right .band__say{order:1}
+  .band--work-right .band__work{order:2}
+}
+@media (max-width:62em){
+  .band{grid-template-columns:minmax(0,1fr)}
+  .band__say{order:2}
+  .band__work{order:1}
+}
+@media (max-width:40em){.band .work{grid-template-columns:minmax(0,1fr)}}
+
+.reel--solo{display:block;max-width:620px}
+.reel--solo .shots{max-width:none}
+
 /* About: a reel of screenshots on the left, the bio on the right. The reel is
    deliberately mixed rather than grouped by project — Selected work above
    already does project-by-project. */
