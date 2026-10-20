@@ -117,10 +117,23 @@ html[data-theme="dark"] ::-moz-selection{background:#f2f2f2;color:#000}
    width, and the work shown rather than listed. Same type and palette as
    everywhere else — what changes is scale and structure.
    -------------------------------------------------------------------------- */
-.page--home .sidebar{display:none}
-.page--home .page{width:100%;float:none;padding-left:0;padding-right:0}
+/* One layout for every page: no sidebar, one full-width column at 1120px.
+   The template floats .page and .archive beside a 15% sidebar, which left the
+   inner pages reading in about 610px while the home page ran full width. */
+.sidebar{display:none}
+.page,.archive{width:100%;float:none;padding-left:0;padding-right:0}
+@media (min-width:57.8125em){
+  .page,.archive{width:100%;float:none;padding-left:0;padding-right:0}
+  #main{max-width:1120px}
+}
+@media (min-width:80em){#main{max-width:1120px}}
+/* Only the home page hides its heading; it has the hero instead. */
 .page--home .page__title,.page--home .page__meta{display:none}
-@media (min-width:57.8125em){#main.page--home{max-width:1120px}}
+
+/* Inner-page headings on the same scale as the home page. */
+.page__title{font-size:2.1rem;font-weight:700;letter-spacing:-.02em;
+  margin:0 0 1.1em;padding-bottom:.45em;
+  border-bottom:1px solid var(--global-border-color)}
 
 /* Hero */
 .hero{padding:.4em 0 1.9em;margin-bottom:3.2em;
@@ -280,3 +293,48 @@ html[data-theme="dark"] .work li:hover .work__shot{box-shadow:0 10px 30px -12px 
 .lb__close:hover{border-color:#fff;background:rgba(255,255,255,.1)}
 body.lb-open{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.lb{transition:none}}
+
+/* ---- colour ---------------------------------------------------------------
+   Links read as text — white on the dark theme, near-black on the light one —
+   and carry an underline for the affordance instead of a colour. The accent is
+   kept for the small handful of marks that are not words.
+   -------------------------------------------------------------------------- */
+:root{
+  --global-link-color:#2f3337;
+  --global-link-color-hover:#000;
+  --global-link-color-visited:#2f3337;
+  --global-masthead-link-color:#2f3337;
+  --global-masthead-link-color-hover:#000;
+}
+html[data-theme="dark"]{
+  --global-link-color:#f2f2f2;
+  --global-link-color-hover:#fff;
+  --global-link-color-visited:#f2f2f2;
+  --global-masthead-link-color:#f2f2f2;
+  --global-masthead-link-color-hover:#fff;
+}
+a{text-decoration-thickness:1px;text-underline-offset:.18em}
+.page__content a,.archive a,.band__say a,.bio a{
+  color:var(--global-link-color);text-decoration:underline;
+  text-decoration-color:var(--global-text-color-light)}
+.page__content a:hover,.archive a:hover,.band__say a:hover,.bio a:hover{
+  color:var(--global-link-color-hover);
+  text-decoration-color:currentColor}
+
+/* Structural links are not body text and keep their own treatment. */
+.masthead a,.sec a,.work h3 a,.work__shot,.links a,.record a,
+.page__footer a,.author__urls a{text-decoration:none}
+.sec a:hover,.page__footer a:hover{text-decoration:underline}
+
+/* Marks that were blue and are now quiet. */
+.links i{color:var(--global-text-color-light)}
+.links a:hover{border-color:var(--global-dark-border-color)}
+.links a:hover i{color:var(--global-text-color)}
+.record a:hover{border-color:var(--global-dark-border-color)}
+.record b::after{color:var(--global-text-color-light)}
+.record a:hover b::after{color:var(--global-text-color)}
+.now em{color:var(--global-text-color-light)}
+.shots__dot[aria-current="true"]{background:var(--global-text-color)}
+.proof li{border-left-color:var(--global-border-color)}
+.work h3 a{color:var(--global-text-color)}
+.work h3 a:hover{text-decoration:underline}
