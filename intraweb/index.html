@@ -113,6 +113,18 @@ legend{color:#0046d5;padding:0 4px}
 .steps li{margin-bottom:5px}
 .wiz code{font-family:var(--mono);font-size:12px;background:#eef1f7;padding:0 3px}
 @media (max-width:560px){.wiz{grid-template-columns:1fr}.wiz-side{display:none}.wiz-main{padding:14px}}
+/* picture viewer */
+.viewer{grid-column:1/-1}
+.viewer .body{background:#fff;padding:12px}
+.stage{margin:0;background:#1b1b1f;border:1px solid var(--face-lo);display:grid;place-items:center;padding:12px;min-height:200px}
+.stage img{display:block;max-width:100%;max-height:560px;width:auto;height:auto;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+.stage figcaption{color:#e6e6e6;font-size:12.5px;margin-top:10px;text-align:center}
+.strip{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px}
+.strip button{flex:none;width:110px;height:72px;padding:3px;border:2px solid transparent;background:#eef1f7;cursor:pointer;display:grid;place-items:center}
+.strip button img{max-width:100%;max-height:100%;display:block}
+.strip button[aria-pressed="true"]{border-color:#316ac5;background:#c1d2ee}
+fieldset b{color:#0b2c7a}
+fieldset small{color:var(--ink-soft)}
 /* notepad */
 .np .body{background:#fff;font-family:var(--mono);font-size:12.5px;line-height:1.6;border:1px solid var(--face-lo);margin:6px;padding:12px 14px;max-height:none}
 .np ol{margin:0;padding-left:22px}
@@ -200,7 +212,12 @@ legend{color:#0046d5;padding:0 4px}
               <li>Plug it into any USB battery. Up to 10 laptops and Pis join it.</li>
               <li>Everyone runs <code>intraweb up</code>. Phones that join get a page explaining what to do.</li>
             </ol>
-            <p class="note">The board is only a radio: it hands out addresses and forwards traffic. It stores nothing and relays no one's content. Isolation and radio sleep are off so both discovery paths work. A laptop hotspot, a phone hotspot or an old router with nothing in the WAN port work too.</p>
+            <p class="note">The board is only a radio: it hands out addresses and forwards traffic. It stores nothing and relays no one's content.</p>
+            <fieldset><legend>Only laptops? That works too</legend>
+              <b>One Linux laptop</b> becomes the network: <code>nmcli device wifi hotspot ssid intraweb password neighborhood</code>. Everyone else joins it, and that laptop runs <code>intraweb up</code> like the rest.<br>
+              <b>Two laptops</b> need only an Ethernet cable between them. Both give themselves link-local addresses and find each other.<br>
+              <small>Windows and macOS hotspots usually want an internet connection to share, so for an offline room use a Linux laptop, a Pi or the ESP32.</small>
+            </fieldset>
             <div class="btns" style="justify-content:flex-end"><a class="xpbtn" href="https://github.com/bnvac/intraweb/tree/main/hardware/esp32-ap" target="_blank" rel="noopener">Firmware…</a><a class="xpbtn def" href="#roster">Next &gt;</a></div>
           </div>
         </div>
@@ -280,6 +297,21 @@ legend{color:#0046d5;padding:0 4px}
         </div>
       </section>
     </div>
+
+    <section class="win viewer" id="shots" aria-labelledby="h-shots">
+      <div class="bar"><span class="t"><svg><use href="#globe"/></svg><span id="h-shots">Screenshots — Windows Picture Viewer</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
+      <div class="body">
+        <figure class="stage"><img id="shot" src="img/iw-dashboard.jpg" alt="The intraweb dashboard in dark mode: alice hosting the neighborhood, bob and carol in range, activity and network check." width="1400" height="860"><figcaption id="shotcap">The real dashboard, dark mode: alice is hosting, bob and carol are in range.</figcaption></figure>
+        <div class="strip" role="group" aria-label="Choose a screenshot">
+          <button type="button" aria-pressed="true" data-src="img/iw-dashboard.jpg" data-cap="The real dashboard, dark mode: alice is hosting, bob and carol are in range."><img src="img/iw-dashboard.jpg" alt="Dashboard"></button>
+          <button type="button" aria-pressed="false" data-src="img/iw-neighbors.jpg" data-cap="Each neighbor with the picture drawn from their key, their fingerprint, and a button to mark them checked in person."><img src="img/iw-neighbors.jpg" alt="Neighbors"></button>
+          <button type="button" aria-pressed="false" data-src="img/iw-channels.jpg" data-cap="The neighborhood channel. Each post goes straight to each neighbor; no server keeps the history."><img src="img/iw-channels.jpg" alt="Channel"></button>
+          <button type="button" aria-pressed="false" data-src="img/iw-mail.jpg" data-cap="Signed mail, delivered node to node. Nothing passes through the hub."><img src="img/iw-mail.jpg" alt="Mail"></button>
+          <button type="button" aria-pressed="false" data-src="img/iw-esp32-phone.jpg" data-cap="What a phone sees when it joins the ESP32 network: what this is, and what to run."><img src="img/iw-esp32-phone.jpg" alt="ESP32 captive page on a phone"></button>
+        </div>
+      </div>
+      <div class="status"><span>Captured from three real nodes on one machine</span><span>5 pictures</span></div>
+    </section>
   </main>
 </div>
 
@@ -291,7 +323,7 @@ legend{color:#0046d5;padding:0 4px}
     <a href="#main"><svg width="14" height="14"><use href="#globe"/></svg>intraweb</a>
     <a href="#roster"><svg width="14" height="14"><use href="#globe"/></svg>Neighborhood</a>
     <a href="#radio"><svg width="14" height="14"><use href="#chipi"/></svg>No router</a>
-    <a href="#rules"><svg width="14" height="14"><use href="#note"/></svg>bugs.txt</a>
+    <a href="#shots"><svg width="14" height="14"><use href="#globe"/></svg>Screenshots</a>
   </div>
   <div class="tray"><svg width="16" height="16" aria-hidden="true"><use href="#globe"/></svg><span id="clock">12:00 PM</span></div>
 </footer>
@@ -354,6 +386,8 @@ if(reduce){render(lines.length)}else{
   })();
 }
 
+/* picture viewer */
+document.querySelectorAll(".strip button").forEach(function(b){b.addEventListener("click",function(){var im=document.getElementById("shot");im.src=b.dataset.src;im.alt=b.querySelector("img").alt;im.removeAttribute("width");im.removeAttribute("height");document.getElementById("shotcap").textContent=b.dataset.cap;document.querySelectorAll(".strip button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))})})});
 /* minimize toggles */
 document.querySelectorAll("[data-min]").forEach(function(b){b.addEventListener("click",function(){var w=b.closest(".win");w.classList.toggle("min");b.setAttribute("aria-label",w.classList.contains("min")?"Restore":"Minimize")})});
 /* property-sheet tabs */
