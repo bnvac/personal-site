@@ -33,9 +33,9 @@ a{color:inherit}
 .nav .gh{color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:5px 12px}
 
 .hero{position:relative;text-align:center;padding-block:90px 60px;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));overflow:hidden}
-.bg{position:absolute;inset:-60px -40px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;transform:perspective(1400px) rotateX(18deg) rotateZ(-7deg) scale(1.15);opacity:.8;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 36% 42% at 50% 46%,#000 35%,transparent 100%);mask-image:radial-gradient(ellipse 36% 42% at 50% 46%,#000 35%,transparent 100%)}
-.bg img{width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
-.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 42%,rgba(12,13,16,.82) 0%,rgba(12,13,16,.55) 60%,rgba(12,13,16,.2) 100%),linear-gradient(transparent 75%,var(--bg));pointer-events:none}
+.bg{position:absolute;inset:-60px -40px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;transform:perspective(1400px) rotateX(18deg) rotateZ(-7deg) scale(1.15);opacity:1;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 50% 58% at 50% 46%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 50% 58% at 50% 46%,#000 60%,transparent 100%)}
+.bg img{width:100%;height:auto;border-radius:10px;border:1px solid #3a3f4a;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 42%,rgba(12,13,16,.8) 0%,rgba(12,13,16,.6) 38%,rgba(12,13,16,.12) 75%,rgba(12,13,16,0) 100%),linear-gradient(transparent 75%,var(--bg));pointer-events:none}
 .hero-in{position:relative;z-index:1;padding-inline:max(16px,env(safe-area-inset-left,0px));display:grid;justify-items:center;grid-template-columns:minmax(0,1fr)}
 .eyebrow{display:inline-flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:rgba(12,13,16,.7)}
 .eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
@@ -82,10 +82,13 @@ h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.8rem,3.6vw,2.6rem)
 .feat h3{font-family:var(--serif);font-weight:700;font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.15;margin:10px 0 10px;text-wrap:balance}
 .feat p{margin:0;color:var(--muted);font-size:16px;max-width:44ch}
 .feat img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);box-shadow:0 30px 70px -40px rgba(0,0,0,.8)}
-.apps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.app{background:var(--bg);padding:18px}
-.app b{display:block;margin-bottom:4px}
+.apps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.app{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;align-content:start}
+.app img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;filter:saturate(.9)}
+.app div{padding:14px 16px 16px}
+.app b{display:block;margin-bottom:4px;font-size:16px}
 .app p{margin:0;color:var(--muted);font-size:14.5px}
+.credit{margin:10px 0 0;font-size:12px;color:var(--muted)}
 .built{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:start}
 .built p{color:var(--muted);margin:0 0 12px}
 .built p b{color:var(--fg);font-weight:500}
@@ -130,14 +133,8 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-s
   <section class="sec" id="who">
     <h2>Built for anyone who shares a shelf</h2>
     <p class="sub">A group, a few machines, and nobody remembers which drawer the last one went in.</p>
-    <div class="apps">
-      <div class="app"><b>School makerspaces</b><p>Named logins with an activity log, so you know who took the last servo.</p></div>
-      <div class="app"><b>Robotics teams</b><p>Projects reserve their parts; BOMs import from KiCad and EasyEDA.</p></div>
-      <div class="app"><b>Community labs</b><p>One page that tells visitors what each printer can print.</p></div>
-      <div class="app"><b>Repair cafés</b><p>Firmware and flash commands kept with each board, so fixes repeat.</p></div>
-      <div class="app"><b>Hardware startups</b><p>Price history per shop and real delivery times for planning builds.</p></div>
-      <div class="app"><b>Home labs</b><p>Machines, images, checksums and the power bill, next to the parts.</p></div>
-    </div>
+    <div class="apps"><article class="app"><img src="img/who-makerspace.jpg" alt="" loading="lazy" width="900" height="560"><div><b>School makerspaces</b><p>Named logins with an activity log, so you know who took the last servo. QR labels on every bin.</p></div></article><article class="app"><img src="img/who-robotics.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Robotics teams</b><p>Projects reserve their parts, so the build team sees what's actually free. BOMs import from KiCad and EasyEDA.</p></div></article><article class="app"><img src="img/who-community.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Community labs</b><p>One page that tells visitors what each printer can print before they try.</p></div></article><article class="app"><img src="img/who-repair.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Repair cafés</b><p>Firmware images and flash commands kept with each board, so someone else can repeat a fix.</p></div></article><article class="app"><img src="img/who-startup.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Hardware startups</b><p>Price history per shop and real delivery times for planning a build. Backups are one file.</p></div></article><article class="app"><img src="img/who-homelab.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Home labs</b><p>Machines, install images, checksums and the power bill, next to the parts that built them.</p></div></article></div>
+    <p class="credit">Photos from Unsplash.</p>
   </section>
 
   <section class="sec built">
