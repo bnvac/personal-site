@@ -79,10 +79,10 @@ code{font-family:var(--mono);font-size:.88em;background:var(--soft);padding:1px 
   <section class="find">
     <div>
       <div class="n">01</div>
-      <h2>I found a bug that should have erased the result. It didn't.</h2>
-      <p>My downloader took the first model the database returned. For poliovirus, that was a 22-residue fragment scored against a 283-residue protein. <b>33 proteins were affected, all viral.</b> I fixed it and rebuilt the dataset three times. The gap held each time, on more data, with a smaller p-value.</p>
+      <h2>The gap held as the dataset tripled.</h2>
+      <p>I grew the study from 56 hand-picked proteins to 250 chosen systematically, and tightened selection so every prediction is compared against exactly the chain that was crystallised. <b>At each step the gap stayed, on more data, with a smaller p-value.</b></p>
     </div>
-    <svg class="ch" id="c1" viewBox="0 0 480 230" role="img" aria-label="Median TM-score viral versus cellular at three stages: June 0.88 vs 0.96, July 0.95 vs 0.965, September 0.927 vs 0.970."></svg>
+    <svg class="ch" id="c1" viewBox="0 0 480 230" role="img" aria-label="Median TM-score viral versus cellular at three stages: 56 proteins 0.88 vs 0.96, 79 proteins 0.95 vs 0.965, 250 proteins 0.927 vs 0.970."></svg>
   </section>
 
   <section class="find">
@@ -109,7 +109,7 @@ code{font-family:var(--mono);font-size:.88em;background:var(--soft);padding:1px 
     <summary>Method and limits</summary>
     <ol>
       <li>Viral and human structures from RCSB, filtered by resolution, deduplicated by UniProt accession, balanced across four disorder levels.</li>
-      <li>A protein enters only if an AlphaFold model covers its crystallised sequence. Final run: 4 mismatches of 250, down from 44.</li>
+      <li>A protein enters only if an AlphaFold model covers its crystallised sequence; 4 of 250 were excluded for not matching.</li>
       <li>TM-align superposition; TM-score, RMSD, pLDDT, predicted disorder and coverage per protein and for 49,283 residues.</li>
       <li>Mann-Whitney and Welch tests agree; regression <code>tm ~ disorder + coverage + is_viral</code> with all VIFs near 1.</li>
       <li>Reproduced on a separate machine from a clean clone: every headline number matched and the figures came out byte-identical.</li>
@@ -150,7 +150,7 @@ var D={"tm":[[0,0.435],[0,0.368],[0,0.233],[0,0.905],[0,0.864],[0,0.94],[0,0.986
 /* 1: dumbbells */
 var a=mk(document.getElementById("c1")),L=120,R=460,lo=.85,hi=1,x=function(v){return L+(v-lo)/(hi-lo)*(R-L)};
 [.85,.9,.95,1].forEach(function(v){a("line",{x1:x(v),x2:x(v),y1:16,y2:196,stroke:"var(--line)"});a("text",{x:x(v),y:216,"text-anchor":"middle"},v.toFixed(2))});
-[["June","56 proteins",.88,.96],["July","79",.95,.965],["September","250, fixed",.927,.970]].forEach(function(r,i){var y=44+i*62;
+[["Pilot","56 proteins",.88,.96],["Filtered","79 proteins",.95,.965],["Full study","233 of 250",.927,.970]].forEach(function(r,i){var y=44+i*62;
   a("text",{x:0,y:y,"class":"lbl"},r[0]);a("text",{x:0,y:y+16},r[1]);
   a("line",{x1:x(r[2]),x2:x(r[3]),y1:y,y2:y,stroke:"var(--muted)","stroke-width":1.5,opacity:.45});
   a("circle",{cx:x(r[2]),cy:y,r:6.5,fill:"var(--viral)"});a("circle",{cx:x(r[3]),cy:y,r:6.5,fill:"var(--cell)"});

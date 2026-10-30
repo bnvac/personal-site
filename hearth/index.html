@@ -30,7 +30,13 @@ canvas#scene{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixel
 .pbtn.hot{background:var(--fire);box-shadow:inset -3px -3px 0 #b8501a,inset 3px 3px 0 #ffc07a,0 0 0 3px var(--ink),0 6px 0 3px var(--ink);text-shadow:2px 2px 0 #7a2a0a}
 .pbtn.hot:hover{background:#ff9d48}
 .pbtn:focus-visible{outline:3px solid var(--fire2);outline-offset:5px}
-.tag{position:fixed;left:0;right:0;z-index:2;text-align:center;font-family:var(--pixel);font-size:clamp(9px,1.4vw,15px);color:var(--fire2);text-shadow:3px 3px 0 var(--ink);letter-spacing:.08em;pointer-events:none;padding:0 16px}
+.tag{position:fixed;left:0;right:0;z-index:2;text-align:center;font-family:var(--pixel);font-size:clamp(9px,1.4vw,15px);color:var(--fire2);text-shadow:3px 3px 0 var(--ink);letter-spacing:.08em;padding:0 16px;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:16px}
+.tag .cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.tag .term{display:flex;align-items:center;gap:0;width:min(620px,100%);background:rgba(5,8,28,.82);box-shadow:0 0 0 3px var(--ink),inset 0 0 0 2px #26337a}
+.tag .term code{font-family:var(--body);font-size:clamp(15px,1.6vw,20px);color:#e9ecff;padding:6px 12px;text-shadow:none;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1;text-align:left}
+.tag .term code::before{content:"$ ";color:var(--fire)}
+.tag .term button{font-family:var(--pixel);font-size:9px;border:0;background:var(--fire);color:var(--ink);padding:10px 10px;cursor:pointer;align-self:stretch}
+.tag .term button:focus-visible{outline:3px solid var(--fire2)}
 .hint{position:fixed;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:2;text-align:center;font-family:var(--pixel);font-size:10px;color:#fff;text-shadow:2px 2px 0 var(--ink);animation:blink 1.2s steps(1) infinite;pointer-events:none}
 @keyframes blink{50%{opacity:0}}
 
@@ -64,6 +70,11 @@ code,.cmd{font-family:var(--body);color:var(--fire2)}
 .meter{display:grid;grid-template-columns:120px 1fr;gap:6px 14px;align-items:center;margin:14px 0}
 .meter span{font-family:var(--pixel);font-size:9px;color:var(--ice)}
 .meter i{display:block;height:14px;background:repeating-linear-gradient(90deg,var(--c) 0 8px,transparent 8px 10px);box-shadow:0 0 0 2px var(--ink)}
+.keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 22px}
+.keys div{display:flex;align-items:center;gap:6px;padding:8px 0;border-bottom:2px dotted #26337a;flex-wrap:wrap}
+.keys kbd{font-family:var(--pixel);font-size:9px;color:#fff;background:#26337a;padding:6px 7px 5px;box-shadow:inset -2px -2px 0 #16205a,0 3px 0 var(--ink)}
+.keys span{margin-left:8px;color:#d9dcf2}
+@media (max-width:640px){.keys{grid-template-columns:1fr}}
 .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
 .links a{font-family:var(--pixel);font-size:10px;color:var(--fire2);text-decoration:none;padding:8px 10px;box-shadow:inset 0 0 0 3px #7a3a1a}
 .links a:hover{background:#2a1a2a}
@@ -80,10 +91,13 @@ code,.cmd{font-family:var(--body);color:var(--fire2)}
   <button class="pbtn" type="button" data-p="eng">ENGINEERS</button>
   <button class="pbtn" type="button" data-p="privacy">PRIVACY</button>
   <button class="pbtn" type="button" data-p="mods">MODULES</button>
+  <button class="pbtn" type="button" data-p="keys">KEYS</button>
   <button class="pbtn hot" type="button" data-p="get">GET IT</button>
 </nav>
-<div class="tag" id="tag">A PRIVATE LINUX FOR ENGINEERS</div>
-<div class="hint" id="hint">▲ PICK A BUTTON ▲</div>
+<div class="tag" id="tag"><div>A PRIVATE LINUX FOR ENGINEERS</div>
+  <div class="cta"><button class="pbtn hot" type="button" data-p="get">GET HEARTH</button><button class="pbtn" type="button" data-p="keys">KEYBINDS</button></div>
+  <div class="term"><code id="one">sudo git clone https://github.com/bnvac/nixosconfig /etc/nixos</code><button type="button" id="copy" aria-label="Copy install command">COPY</button></div></div>
+
 
 <div class="veil" id="veil" hidden>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="ph" tabindex="-1" id="panel">
@@ -96,7 +110,7 @@ code,.cmd{font-family:var(--body);color:var(--fire2)}
   <h2 id="ph">AI THAT STAYS HOME</h2>
   <p class="lede">Your assistant runs on your own graphics card, on open models you choose. Nothing you say leaves the machine, there's no subscription, and it works with the internet unplugged.</p>
   <div class="grid">
-    <div class="cell warm"><b>FIXED: AMD CARDS</b><p>ROCm doesn't support the RX 6750 XT, and Ollama silently fell back to the CPU: replies crawled. Hearth runs it on Vulkan through the stock Mesa driver instead, so mid-range AMD cards get real GPU speed.</p></div>
+    <div class="cell warm"><b>RUNS ON AMD CARDS</b><p>Models run on Vulkan through the stock Mesa driver, so mid-range AMD cards like the RX 6750 XT get full GPU speed with nothing extra to install.</p></div>
     <div class="cell"><b>OPEN MODELS, ONE MENU</b><p>Pick any model from <code>modtui</code> with a download bar; the list only offers ones that fit your card. Default is Qwen 3.5 9B with thinking off for quick replies.</p></div>
     <div class="cell"><b>A VOICE, LOCALLY</b><p>Neb listens with whisper.cpp and speaks with Piper, both on-device. Press Super+Alt+N and talk; he answers in a corner of the screen.</p></div>
     <div class="cell"><b>IT ASKS FIRST</b><p>Neb can act on the desktop, but typing, pressing keys and closing windows wait for a yes. Open-WebUI gives a full chat page on localhost.</p></div>
@@ -116,7 +130,7 @@ mod on assistant</div>
     <div class="cell"><b>CPU THAT KNOWS</b><p>Power-saving governor, "power" energy policy and the low-power platform profile on battery; performance on AC. Handled by TLP, with thermald keeping heat down.</p></div>
     <div class="cell"><b>IDLE USB SLEEPS</b><p>Unused USB devices autosuspend, except the keyboard and mouse receiver, so nothing lags when you reach for it.</p></div>
     <div class="cell"><b>LESS RUNNING</b><p>Background work is automatically deprioritised, no documentation is built, the journal is capped and old system generations are cleared after 14 days.</p></div>
-    <div class="cell warm"><b>HONEST BY DESIGN</b><p>Charge-limit thresholds depend on vendor support, so they aren't guessed at. <code>tlp-stat -b</code> says whether your laptop allows them, and <code>powertop</code> shows what's drawing power.</p></div>
+    <div class="cell warm"><b>SEE WHAT DRAWS POWER</b><p>Charge-limit thresholds depend on vendor support, so they aren't guessed at. <code>tlp-stat -b</code> says whether your laptop allows them, and <code>powertop</code> shows what's drawing power.</p></div>
   </div>
 </template>
 
@@ -137,10 +151,10 @@ mod on assistant</div>
   <h2 id="ph">YOUR MACHINE, YOUR BUSINESS</h2>
   <p class="lede">Private by default, without breaking the things you use every day.</p>
   <div class="grid">
-    <div class="cell warm"><b>TOR WITHOUT LEAKS</b><p><code>tormode on</code> sends everything through Tor and waits until it's connected. IPv6, QUIC, the LAN, Docker and VPNs can't go through Tor, so they're refused instantly instead of leaking or hanging.</p></div>
-    <div class="cell"><b>LOCKED BY DEFAULT</b><p>Firewall on, SSH off, sudo needs a password, kernel hardening light enough that Steam and VMs still work. Drives never mount by themselves.</p></div>
-    <div class="cell"><b>SECRETS IN GIT, SAFELY</b><p>Passwords and keys stay encrypted in the repo with sops-nix and unlock with a key that never leaves the machine.</p></div>
-    <div class="cell"><b>BACKUPS YOU OWN</b><p>Daily restic snapshots to your own drive. Browser passwords go into Bitwarden and the exported file is shredded.</p></div>
+    <div class="cell warm"><b>TOR MODE</b><p><code>tormode on</code> sends everything through Tor and waits until it's connected. IPv6, QUIC, the LAN, Docker and VPNs can't go through Tor, so they're refused instantly instead of leaking or hanging.</p></div>
+    <div class="cell"><b>THE LOCKED DOOR</b><p>Firewall on, SSH off, sudo needs a password, kernel hardening light enough that Steam and VMs still work. Drives never mount by themselves.</p></div>
+    <div class="cell"><b>SEALED SECRETS</b><p>Passwords and keys stay encrypted in the repo with sops-nix and unlock with a key that never leaves the machine.</p></div>
+    <div class="cell"><b>YOUR OWN VAULT</b><p>Daily restic snapshots to your own drive. Browser passwords go into Bitwarden and the exported file is shredded.</p></div>
   </div>
 </template>
 
@@ -149,6 +163,23 @@ mod on assistant</div>
   <p class="lede">Every feature is one module. Switch one on with a command; switch it off and it stays written, just unbuilt, ready to come back.</p>
   <div class="inv" id="inv"></div>
   <div class="desc" id="desc" aria-live="polite"></div>
+</template>
+
+<template id="t-keys">
+  <h2 id="ph">THE KEYBOARD</h2>
+  <p class="lede">The defaults stay where you expect. Everything Hearth adds lives under Super+Alt, and <code>mykeys</code> shows this list on screen.</p>
+  <div class="keys">
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>Space</kbd><span>Every action on the system</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>N</kbd><span>Talk to Neb</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>A</kbd><span>All apps by category</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>V</kbd><span>Audio device and volume</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>M</kbd><span>Mount and unlock drives</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>D</kbd><span>Your self-hosted apps</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>E</kbd><span>File manager</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>L</kbd><span>Lock the screen</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>F1</kbd><span>This cheat sheet</span></div>
+    <div><kbd>Super</kbd><kbd>Enter</kbd><span>Terminal</span></div>
+  </div>
 </template>
 
 <template id="t-get">
@@ -174,36 +205,36 @@ var cv=document.getElementById("scene"),ctx=cv.getContext("2d");
 var W=0,H=120,S=1,bg=null,t=0,FX=0,FY=0,GX=0,GY=0,logo=null;
 
 /* ---------- palette + sprites ---------- */
-var P={o:"#14081a",k:"#b02a2a",K:"#ff6a3a",s:"#e9a77e",S:"#ffc79a",e:"#14081a",h:"#26408a",H:"#e88a52",j:"#1a2c66",
+var P={c:"#b02a2a",C:"#ff5a3a",o:"#14081a",m:"#7d89a6",M:"#f0c89a",d:"#3e4766",v:"#0a0612",t:"#1e3a8a",T:"#d0703a",g:"#d8a020",k:"#b02a2a",K:"#ff6a3a",s:"#e9a77e",S:"#ffc79a",e:"#14081a",h:"#26408a",H:"#e88a52",j:"#1a2c66",
 p:"#3d3670",q:"#d0784a",b:"#2a1a14",B:"#6a3a22",l:"#7d86a0",L:"#3a4058",g:"#9fe8ff",G:"#4fb6e8",r:"#d8a020",w:"#5a3018",W:"#c0703a",d:"#2a160c"};
 // facing right, toward the fire; right-hand pixels are firelit (capital letters)
 var GUY=[
-"..........oooooo..........",
-".........okkkkKKo.........",
-"........okkkkkKKKo........",
-"........okkkkkkKKo........",
-".......oorrrrrrrrroo......",
-"........osssssSSSo........",
-"........ossssseSSo........",
-"........osssssSSSSo.......",
-".........osssSSSSo........",
-"........ohhjhhhHHo........",
-".......ohhhjhhhhHHo.......",
-"......ohhhhjhhhhhHHo......",
-"......ohhhhjhhhhhHHHo.....",
-"......ohhhhjhhhhsSoLLo....",
-"......ohhhhjhhhhhoLgGLo...",
-"......ohhhhjhhhhhoLggLo...",
-"......ohhhhjhhhhhoLgGLo...",
-"......ohhhhhhhhhhoLLLLo...",
-"......opppppppppppppppqo..",
-"......oppppppppppppppqqo..",
-"......ooooooooooooooopqo..",
-"...................opqo...",
-"...................opqo...",
-"...................opqo...",
-"..................obbBBo..",
-"..................obbbBBo."];
+".......cC.........",
+"......cCC.........",
+".....ccCC.........",
+"....occCCo........",
+"...odmmmmMo.......",
+"..odmmmmmMMo......",
+"..odmmmmmMMMo.....",
+"..odmmvvvvvvo.....",
+"..odmmmmmMMMo.....",
+"..odmmmmmMMo......",
+"...oggggggo.......",
+".oddmmmmmmMMo.....",
+"odmmtttttTMMMo....",
+"odmmtttttTTMMo....",
+"odmmttgttTTmMoLo..",
+"odmmtttttTkKMoLso.",
+"odmmtttttTTmMoLso.",
+".odmtttttTToooLLo.",
+".odmmmmmmmmmmmmMo.",
+".odmmmmmmmmmmmMMo.",
+".oooooooooooodmMo.",
+"............odmMo.",
+"............odmMo.",
+"............odmMo.",
+"...........obbbBBo",
+"...........obbbbBBo"];
 var FONT={H:["XX..XX","XX..XX","XX..XX","XXXXXX","XX..XX","XX..XX","XX..XX"],E:["XXXXXX","XX....","XX....","XXXXX.","XX....","XX....","XXXXXX"],
 A:[".XXXX.","XX..XX","XX..XX","XXXXXX","XX..XX","XX..XX","XX..XX"],R:["XXXXX.","XX..XX","XX..XX","XXXXX.","XX.XX.","XX..XX","XX..XX"],T:["XXXXXX","..XX..","..XX..","..XX..","..XX..","..XX..","..XX.."]};
 function blit(rows,x,y,flip){for(var r=0;r<rows.length;r++)for(var c=0;c<rows[r].length;c++){var ch=rows[r][c];if(ch!=="."&&P[ch]){ctx.fillStyle=P[ch];ctx.fillRect(x+c,y+r,1,1)}}}
@@ -276,7 +307,7 @@ function frame(){
   ctx.drawImage(bg,0,0);
   stars.forEach(function(s){ctx.fillStyle=Math.sin(t*.04+s[2]*30)>.55?"#ffffff":"#5a64a8";ctx.fillRect(s[0],s[1],1,1)});
   // firelight: stepped rings, flickering
-  var fl=.9+.1*Math.sin(t*.27)*Math.sin(t*.13),rad=Math.min(W,H)*.55*fl;
+  var rad=Math.min(W,H)*.55;
   var g=ctx.createRadialGradient(FX,FY-4,1,FX,FY-4,rad);
   [[0,"rgba(255,170,70,.55)"],[.18,"rgba(255,170,70,.55)"],[.18,"rgba(255,130,50,.32)"],[.38,"rgba(255,130,50,.32)"],[.38,"rgba(255,100,40,.16)"],[.62,"rgba(255,100,40,.16)"],[.62,"rgba(255,90,40,.06)"],[1,"rgba(255,90,40,0)"]].forEach(function(s){g.addColorStop(s[0],s[1])});
   ctx.globalCompositeOperation="lighter";ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation="source-over";
@@ -285,19 +316,22 @@ function frame(){
   ctx.fillStyle="#2a160c";ctx.fillRect(lx,ly+1,26,6);ctx.fillStyle="#5a3018";ctx.fillRect(lx,ly,26,5);ctx.fillStyle="#c0703a";ctx.fillRect(lx+1,ly,25,1);ctx.fillStyle="#e8a060";ctx.fillRect(lx+25,ly,1,5);
   ctx.fillStyle="#3a1e10";for(var i=2;i<24;i+=5)ctx.fillRect(lx+i,ly+2,2,1);
   // guy
-  blit(GUY,GX-2,GY-20);
+  // sword planted in the ground beside him, shield leaning on the log
+  var sx=GX-7;ctx.fillStyle="#c8d0e0";ctx.fillRect(sx,GY-20,2,22);ctx.fillStyle="#ffffff";ctx.fillRect(sx,GY-20,1,22);ctx.fillStyle="#d8a020";ctx.fillRect(sx-2,GY-16,6,1);ctx.fillStyle="#6a3a22";ctx.fillRect(sx,GY-21,2,4);ctx.fillStyle="#d8a020";ctx.fillRect(sx,GY-23,2,2);
+  ctx.fillStyle="#14081a";ctx.fillRect(GX-14,GY-6,9,11);ctx.fillStyle="#8e1f1f";ctx.fillRect(GX-13,GY-5,7,9);ctx.fillStyle="#d8a020";ctx.fillRect(GX-10,GY-5,1,9);ctx.fillRect(GX-13,GY-1,7,1);ctx.fillStyle="#14081a";ctx.fillRect(GX-12,GY+4,5,1);
+  blit(GUY,GX,GY-23);
   // laptop glow on his face
-  ctx.globalCompositeOperation="lighter";var lg=ctx.createRadialGradient(GX+18,GY-5,0,GX+18,GY-5,9);lg.addColorStop(0,"rgba(120,210,255,.35)");lg.addColorStop(1,"rgba(120,210,255,0)");ctx.fillStyle=lg;ctx.fillRect(GX+6,GY-16,24,20);ctx.globalCompositeOperation="source-over";
-  if(t%60<30){ctx.fillStyle="#ffffff";ctx.fillRect(GX+18,GY-6,1,1)}
+  ctx.globalCompositeOperation="lighter";var lg=ctx.createRadialGradient(GX+16,GY-7,0,GX+16,GY-7,8);lg.addColorStop(0,"rgba(120,210,255,.35)");lg.addColorStop(1,"rgba(120,210,255,0)");ctx.fillStyle=lg;ctx.fillRect(GX+6,GY-18,24,20);ctx.globalCompositeOperation="source-over";
+  
   // fire pit
   ["#5a5a7a","#3a3a5a","#6a6a8a","#3a3a5a","#5a5a7a","#3a3a5a","#6a6a8a"].forEach(function(c,i){ctx.fillStyle=c;ctx.fillRect(FX-10+i*3,FY+1,3,2)});
   ctx.fillStyle="#5a3018";ctx.fillRect(FX-8,FY-1,16,2);ctx.fillStyle="#c0703a";ctx.fillRect(FX-8,FY-1,16,1);
   ctx.fillStyle="#3a1e10";ctx.fillRect(FX-5,FY-3,4,2);ctx.fillRect(FX+2,FY-3,4,2);
-  for(var k=0;k<6;k++)flames.push({x:FX+R(-6,6),y:FY-2,vx:R(-.09,.09),vy:R(-.55,-.3),life:0,max:R(14,30),s:Math.random()<.4?2:1});
-  if(Math.random()<.2)embers.push({x:FX+R(-3,3),y:FY-10,vx:R(-.25,.25),vy:R(-.6,-.3),life:0,max:R(40,90)});
-  flames=flames.filter(function(f){f.life++;f.x+=f.vx+Math.sin((t+f.y)*.3)*.1;f.y+=f.vy;var p=f.life/f.max;
+  if(t%2===0)for(var k=0;k<4;k++)flames.push({x:FX+R(-5,5)*(.6+.4*Math.random()),y:FY-2,vx:R(-.03,.03),vy:R(-.26,-.16),life:0,max:R(22,40),s:Math.random()<.5?2:1});
+  if(Math.random()<.05)embers.push({x:FX+R(-3,3),y:FY-10,vx:R(-.1,.1),vy:R(-.3,-.15),life:0,max:R(60,120)});
+  flames=flames.filter(function(f){f.life++;f.x+=f.vx+(FX-f.x)*.012+Math.sin((t+f.y)*.08)*.03;f.y+=f.vy;var p=f.life/f.max;
     ctx.fillStyle=p<.18?"#fff6c8":p<.4?"#ffd25a":p<.65?"#ff9a2b":p<.88?"#e8461f":"#5a1f1a";ctx.fillRect(Math.round(f.x),Math.round(f.y),f.s,f.s);return f.life<f.max});
-  embers=embers.filter(function(s){s.life++;s.x+=s.vx+Math.sin(s.life*.1)*.1;s.y+=s.vy;if(s.life%8<5){ctx.fillStyle=s.life<40?"#ffd25a":"#ff7a2a";ctx.fillRect(Math.round(s.x),Math.round(s.y),1,1)}return s.life<s.max&&s.y>0});
+  embers=embers.filter(function(s){s.life++;s.x+=s.vx+Math.sin(s.life*.05)*.05;s.y+=s.vy;if(true){ctx.fillStyle=s.life<40?"#ffd25a":"#ff7a2a";ctx.fillRect(Math.round(s.x),Math.round(s.y),1,1)}return s.life<s.max&&s.y>0});
   drawLogo();
 }
 function loop(){frame();if(!reduce)requestAnimationFrame(loop)}
@@ -315,10 +349,11 @@ function open(id,btn){
       var n=document.createElement("b");n.textContent=m[0].toUpperCase();var s=document.createElement("span");s.textContent=m[1]?"■ ON":"□ OFF";b.appendChild(n);b.appendChild(s);
       b.addEventListener("click",function(){inv.querySelectorAll(".slot").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});desc.textContent="";var h=document.createElement("b");h.textContent=m[0].toUpperCase();desc.appendChild(h);desc.appendChild(document.createElement("br"));desc.appendChild(document.createTextNode(m[2]+"   › mod "+(m[1]?"off ":"on ")+m[0]))});
       inv.appendChild(b);if(i===2)b.click()})}
-  veil.hidden=false;document.getElementById("hint").hidden=true;panel.scrollTop=0;panel.focus();
+  veil.hidden=false;panel.scrollTop=0;panel.focus();
 }
 function close(){veil.hidden=true;if(opener)opener.focus()}
 document.querySelectorAll(".pbtn").forEach(function(b){b.addEventListener("click",function(){open(b.dataset.p,b)})});
+document.getElementById("copy").addEventListener("click",function(){var b=this,txt=document.getElementById("one").textContent;function done(m){b.textContent=m;setTimeout(function(){b.textContent="COPY"},1600)}try{navigator.clipboard.writeText(txt).then(function(){done("COPIED")},function(){done("SELECT")})}catch(e){done("SELECT")}});
 document.getElementById("close").addEventListener("click",close);
 veil.addEventListener("click",function(e){if(e.target===veil)close()});
 addEventListener("keydown",function(e){if(e.key==="Escape"&&!veil.hidden)close()});
