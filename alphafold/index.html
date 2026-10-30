@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AlphaFold Viral Study</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: one claim, one number pair, three short findings each with its own small chart. Viral/cellular colours match the study's figures. */
+:root{
+  --bg:#ffffff; --fg:#14181f; --muted:#646c7a; --line:#e6e8ec; --soft:#f5f6f8;
+  --viral:#c94f6d; --cell:#3d82d1;
+  --serif:"Spectral", Georgia, serif; --sans:"IBM Plex Sans", system-ui, sans-serif; --mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1217;--fg:#e8ebf0;--muted:#97a0ae;--line:#242a33;--soft:#161a21;--viral:#ec7d97;--cell:#77adf0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1217;--fg:#e8ebf0;--muted:#97a0ae;--line:#242a33;--soft:#161a21;--viral:#ec7d97;--cell:#77adf0;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:70px}
+a{color:inherit;text-underline-offset:3px;text-decoration-color:var(--muted)}
+:focus-visible{outline:2px solid var(--cell);outline-offset:2px}
+.w{max-width:860px;margin:0 auto}
+.label{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+header{padding-block:90px 50px}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.3rem,6vw,4.1rem);line-height:1.06;letter-spacing:-.015em;margin:18px 0 0;text-wrap:balance}
+h1 em{font-style:italic;color:var(--viral)}
+.pair{display:flex;gap:clamp(24px,7vw,80px);margin-top:54px;flex-wrap:wrap;align-items:flex-end}
+.pair div b{display:block;font-family:var(--serif);font-weight:300;font-size:clamp(3.4rem,10vw,6.2rem);line-height:.9;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.pair div span{font-size:14px;color:var(--muted)}
+.pair .v b{color:var(--viral)} .pair .c b{color:var(--cell)}
+.pair .p{padding-bottom:10px}
+.pair .p b{font-family:var(--mono);font-size:20px;font-weight:500;color:var(--fg);letter-spacing:0;line-height:1.3}
+.sub{font-size:15px;color:var(--muted);max-width:62ch;margin:30px 0 0}
+
+.find{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:44px;align-items:center;padding-block:52px;border-top:1px solid var(--line)}
+.find .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.find h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;margin:8px 0 12px;text-wrap:balance}
+.find p{margin:0;color:var(--muted);font-size:15.5px;max-width:46ch}
+.find p b{color:var(--fg);font-weight:500}
+svg.ch{width:100%;height:auto;display:block}
+svg.ch text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+svg.ch .lbl{font-family:var(--sans);font-size:12.5px;fill:var(--fg)}
+svg.ch .big{font-family:var(--serif);font-size:30px;fill:var(--fg)}
+
+details{border-top:1px solid var(--line);padding-block:22px}
+summary{cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);color:var(--muted)}
+details[open] summary::after{content:"–"}
+details ol,details ul{color:var(--muted);font-size:15px;padding-left:20px;margin:14px 0 0;max-width:68ch}
+details li{margin-bottom:6px}
+code{font-family:var(--mono);font-size:.88em;background:var(--soft);padding:1px 5px;border-radius:3px}
+.foot{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;border-top:1px solid var(--line);padding-top:22px;font-size:14px;color:var(--muted)}
+.foot b{color:var(--fg);font-weight:500}
+@media (max-width:760px){.find{grid-template-columns:1fr;gap:22px}header{padding-block:56px 36px}}
+</style>
+</head>
+<body>
+<main class="w">
+  <header>
+    <div class="label">Research · 2026 · mentored by Dr. Blair G. Paul, Marine Biological Laboratory</div>
+    <h1>AlphaFold2 is measurably worse at predicting <em>viral</em> proteins.</h1>
+    <div class="pair">
+      <div class="v"><b>0.927</b><span>viral, median TM-score</span></div>
+      <div class="c"><b>0.970</b><span>human cellular</span></div>
+      <div class="p"><b>p = 1.3 × 10⁻⁸</b><span>233 solved structures</span></div>
+    </div>
+    <p class="sub">I compared AlphaFold2's predictions against experimentally solved crystal structures for 114 viral and 119 human proteins. A TM-score of 1.0 is a perfect match.</p>
+  </header>
+
+  <section class="find">
+    <div>
+      <div class="n">01</div>
+      <h2>I found a bug that should have erased the result. It didn't.</h2>
+      <p>My downloader took the first model the database returned. For poliovirus, that was a 22-residue fragment scored against a 283-residue protein. <b>33 proteins were affected, all viral.</b> I fixed it and rebuilt the dataset three times. The gap held each time, on more data, with a smaller p-value.</p>
+    </div>
+    <svg class="ch" id="c1" viewBox="0 0 480 230" role="img" aria-label="Median TM-score viral versus cellular at three stages: June 0.88 vs 0.96, July 0.95 vs 0.965, September 0.927 vs 0.970."></svg>
+  </section>
+
+  <section class="find">
+    <div>
+      <div class="n">02</div>
+      <h2>It isn't missing alignments. Alignments are what partly rescue it.</h2>
+      <p>My mentor suggested ESMFold, which predicts with no alignment step at all. On the same proteins the viral gap <b>more than doubled</b>, and AlphaFold2's edge over it was five times larger on viral proteins (p = 0.0014).</p>
+    </div>
+    <svg class="ch" id="c2" viewBox="0 0 480 170" role="img" aria-label="Viral gap in median TM-score: 0.051 under AlphaFold2, 0.130 under ESMFold."></svg>
+  </section>
+
+  <section class="find">
+    <div>
+      <div class="n">03</div>
+      <h2>Viral origin and disorder are two separate blind spots.</h2>
+      <p>Floppy, disordered proteins are hard for every model, and the penalty was identical under both programs. Being viral is a different penalty, and it doubled without alignments. <b>Disorder is a property of the protein; viral origin is a gap in what the models learned from.</b></p>
+    </div>
+    <svg class="ch" id="c3" viewBox="0 0 480 170" role="img" aria-label="Regression coefficients: disorder about -0.23 under both programs; viral origin -0.098 under AlphaFold2 and -0.226 under ESMFold."></svg>
+  </section>
+
+  <details>
+    <summary>Method and limits</summary>
+    <ol>
+      <li>Viral and human structures from RCSB, filtered by resolution, deduplicated by UniProt accession, balanced across four disorder levels.</li>
+      <li>A protein enters only if an AlphaFold model covers its crystallised sequence. Final run: 4 mismatches of 250, down from 44.</li>
+      <li>TM-align superposition; TM-score, RMSD, pLDDT, predicted disorder and coverage per protein and for 49,283 residues.</li>
+      <li>Mann-Whitney and Welch tests agree; regression <code>tm ~ disorder + coverage + is_viral</code> with all VIFs near 1.</li>
+      <li>Reproduced on a separate machine from a clean clone: every headline number matched and the figures came out byte-identical.</li>
+    </ol>
+    <ul>
+      <li>Proteins are taken in database order: reproducible, not random.</li>
+      <li>ESMFold's language model was also trained on databases where viruses are rare, so this is evidence for the explanation, not proof.</li>
+    </ul>
+  </details>
+
+  <div class="foot"><span><b>Ben Vaccaro</b> · Millis High School STEAM senior project · paper in progress</span><a href="https://github.com/bnvac/alphafoldstudy" target="_blank" rel="noopener">Code, data and figures ↗</a></div>
+</main>
+<script>
+(function(){
+var NS="http://www.w3.org/2000/svg";
+function mk(svg){return function(t,o,txt){var e=document.createElementNS(NS,t);for(var k in o)e.setAttribute(k,o[k]);if(txt!=null)e.textContent=txt;svg.appendChild(e);return e}}
+/* 1: dumbbells */
+var a=mk(document.getElementById("c1")),L=120,R=460,lo=.85,hi=1,x=function(v){return L+(v-lo)/(hi-lo)*(R-L)};
+[.85,.9,.95,1].forEach(function(v){a("line",{x1:x(v),x2:x(v),y1:16,y2:196,stroke:"var(--line)"});a("text",{x:x(v),y:216,"text-anchor":"middle"},v.toFixed(2))});
+[["June","56 proteins",.88,.96],["July","79",.95,.965],["September","250, fixed",.927,.970]].forEach(function(r,i){var y=44+i*62;
+  a("text",{x:0,y:y,"class":"lbl"},r[0]);a("text",{x:0,y:y+16},r[1]);
+  a("line",{x1:x(r[2]),x2:x(r[3]),y1:y,y2:y,stroke:"var(--muted)","stroke-width":1.5,opacity:.45});
+  a("circle",{cx:x(r[2]),cy:y,r:6.5,fill:"var(--viral)"});a("circle",{cx:x(r[3]),cy:y,r:6.5,fill:"var(--cell)"});
+});
+a("text",{x:x(.88),y:30,"text-anchor":"middle",fill:"var(--viral)"},"viral");a("text",{x:x(.96),y:30,"text-anchor":"middle"},"cellular");
+/* 2: gap bars */
+var b=mk(document.getElementById("c2")),L2=110,R2=420,m=.14,x2=function(v){return L2+v/m*(R2-L2)};
+[["AlphaFold2","with alignments",.051],["ESMFold","no alignments",.130]].forEach(function(r,i){var y=24+i*62;
+  b("text",{x:0,y:y+14,"class":"lbl"},r[0]);b("text",{x:0,y:y+30},r[1]);
+  b("rect",{x:L2,y:y,width:x2(r[2])-L2,height:34,rx:3,fill:"var(--viral)",opacity:i?1:.5});
+  b("text",{x:x2(r[2])+8,y:y+25,"class":"big"},r[2].toFixed(3).slice(1));
+});
+b("text",{x:L2,y:162},"viral gap in median TM-score, same 211 proteins");
+/* 3: coefficients, paired */
+var c=mk(document.getElementById("c3")),L3=110,R3=400,x3=function(v){return L3+(-v)/.25*(R3-L3)};
+[["Disorder",.2315,.2378],["Viral origin",.0981,.2260]].forEach(function(r,i){var y=22+i*64;
+  c("text",{x:0,y:y+20,"class":"lbl"},r[0]);
+  c("rect",{x:L3,y:y,width:x3(-r[1])-L3,height:14,rx:2,fill:"var(--muted)",opacity:.55});
+  c("rect",{x:L3,y:y+18,width:x3(-r[2])-L3,height:14,rx:2,fill:i?"var(--viral)":"var(--muted)"});
+  c("text",{x:x3(-r[1])+6,y:y+11},"AF2 −"+r[1].toFixed(2).slice(1));c("text",{x:x3(-r[2])+6,y:y+29},"ESM −"+r[2].toFixed(2).slice(1));
+});
+c("text",{x:L3,y:162},"accuracy penalty (regression coefficient)");
+})();
+</script>
+</body>
+</html>

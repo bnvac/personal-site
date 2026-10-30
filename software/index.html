@@ -339,7 +339,7 @@
     <h2 id="backoffice"><a href="https://github.com/2008wbbv/backoffice">backoffice</a></h2>
     <p class="role-meta"><strong>Go</strong></p>
     <p>A self-hosted inventory for the parts in a lab drawer &mdash; boards, sensors, modules, passives &mdash; with photos, counts, locations, printable QR labels, and project bills of materials that tell you what you are missing. It ships as one static binary with templates and assets compiled in, one SQLite file and a folder of photos: no database server, no Node build, no config file, and it cross-compiles to a Raspberry Pi with no runtime dependencies at all. Upgrading is replacing the binary; the schema migrates itself on startup.</p>
-    <p class="proj-links"><a href="https://github.com/2008wbbv/backoffice">Repository</a></p>
+    <p class="proj-links"><a href="/backoffice/">Project page</a><a href="https://github.com/2008wbbv/backoffice">Repository</a></p>
     <div class="shots" aria-label="backoffice" role="group">
       <ul class="shots__track">
         <li class="shots__slide">
@@ -374,6 +374,39 @@
         </li>
       </ul>
     </div>
+  </div>
+</div>
+
+<div class="role">
+  <span class="role__logo role__logo--none" aria-hidden="true"><i class="fas fa-code"></i></span>
+  <div class="role__body">
+    <h2 id="intraweb"><a href="/intraweb/">intraweb</a></h2>
+    <p class="role-meta"><strong>Rust</strong></p>
+    <p>A local intranet that needs no internet, no servers and no setup. Run one binary on the same Wi-Fi and nodes find each other in about a second, over mDNS and a UDP broadcast beacon at once because so many networks quietly break one of them. You are an Ed25519 keypair and a folder; a hub hands out addresses and never stores or relays anyone&rsquo;s content. Pages, signed mail with attachments that stay with the sender until fetched, end-to-end encrypted private channels, guestbooks and self-governing groups all run peer to peer. With no router at all, a $5 ESP32 becomes the network.</p>
+    <p class="proj-links"><a href="/intraweb/">Project page</a><a href="https://github.com/bnvac/intraweb">Repository</a></p>
+    <p class="proj-shot"><a href="/images/software/intraweb.jpg"><img src="/images/home/intraweb.jpg" alt="intraweb" width="1000" height="625" loading="lazy"></a></p>
+  </div>
+</div>
+
+<div class="role">
+  <span class="role__logo role__logo--none" aria-hidden="true"><i class="fas fa-code"></i></span>
+  <div class="role__body">
+    <h2 id="hearth"><a href="/hearth/">Hearth</a></h2>
+    <p class="role-meta"><strong>Nix</strong></p>
+    <p>A private Linux distribution for engineers, built on NixOS. A voice assistant runs on the local GPU through Vulkan; Tor mode refuses anything that would leak instead of letting it through; KiCad, FreeCAD, a slicer with real printer profiles and networked Klipper printers come built in. Seventeen modules switch on and off with one command, and a desktop and a laptop share one configuration and stay in step.</p>
+    <p class="proj-links"><a href="/hearth/">Project page</a><a href="https://github.com/bnvac/nixosconfig">Repository</a></p>
+    <p class="proj-shot"><a href="/images/software/hearth.jpg"><img src="/images/home/hearth.jpg" alt="Hearth" width="1000" height="625" loading="lazy"></a></p>
+  </div>
+</div>
+
+<div class="role">
+  <span class="role__logo role__logo--none" aria-hidden="true"><i class="fas fa-code"></i></span>
+  <div class="role__body">
+    <h2 id="smart-shelf"><a href="/smart-shelf/">Smart Shelf</a></h2>
+    <p class="role-meta"><strong>Python &middot; Django</strong></p>
+    <p>Stock control for a food pantry. Volunteers fill in a shelf sheet or photograph a sorted pile and confirm the draft; every movement goes into an append-only ledger. A forecast built on weekly outflow, never on client records, works out what runs out and when, and publishes a &ldquo;what we need&rdquo; list to the pantry&rsquo;s website.</p>
+    <p class="proj-links"><a href="/smart-shelf/">Project page and live prototype</a><a href="https://github.com/bnvac/foodpantryapp">Repository</a></p>
+    <p class="proj-shot"><a href="/images/software/smart-shelf.jpg"><img src="/images/home/smart-shelf.jpg" alt="Smart Shelf" width="1000" height="625" loading="lazy"></a></p>
   </div>
 </div>
 

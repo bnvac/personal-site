@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Backoffice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: the app's own dark bench UI. Hero wires one app to every corner of the shop; wire colours follow bench convention. */
+:root{
+  --bg:#111317; --panel:#1a1d23; --panel2:#20242b; --fg:#e8eaed; --muted:#9097a3; --line:#2a2e36;
+  --vcc:#e0473c; --sda:#e5b52a; --scl:#3b86e0; --gnd:#6b717c; --clk:#9aa2ae; --ok:#4f9a6a;
+  --serif:"Source Serif 4", Georgia, serif; --sans:"IBM Plex Sans", system-ui, sans-serif; --mono:"IBM Plex Mono", ui-monospace, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:60px}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sda);outline-offset:2px}
+.in{max-width:1100px;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{font-family:var(--serif);font-weight:700;font-size:20px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pills a{font-size:14px;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:5px 12px}
+.pills a:hover{border-color:var(--muted)}
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:44px;padding-block:60px 44px;align-items:center}
+.kick{font-family:var(--mono);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.2rem,4.8vw,3.3rem);line-height:1.06;margin:10px 0 16px;text-wrap:balance}
+.lede{color:var(--muted);font-size:17.5px;margin:0 0 20px;max-width:46ch}
+.lede b{color:var(--fg);font-weight:500}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.facts span{font-family:var(--mono);font-size:12.5px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.map{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}
+.map svg{width:100%;height:auto;display:block}
+.map text{font-family:var(--mono);font-size:11.5px;fill:var(--muted)}
+.map .h{font-family:var(--sans);font-weight:600;font-size:13px;fill:var(--fg)}
+.map .wire{fill:none;stroke-width:2.5;stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.3s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.6rem,3vw,2.1rem);margin:0 0 8px;line-height:1.15}
+.sec{padding-block:48px;border-top:1px solid var(--line)}
+.sec>p.sub{color:var(--muted);margin:0 0 26px;max-width:62ch}
+.feats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.feat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:4px;align-content:start}
+.feat h3{font-size:15px;margin:0;display:flex;align-items:center;gap:8px}
+.feat h3 i{width:12px;height:3px;border-radius:2px;flex:none}
+.feat p{font-size:13.5px;margin:0;color:var(--muted)}
+
+.stories{display:grid;gap:18px}
+.story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:28px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.story:nth-child(even){grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+.story:nth-child(even) .txt{order:2}
+.q{font-family:var(--serif);font-size:22px;font-weight:600;margin:0 0 8px;line-height:1.25}
+.story p{margin:0 0 10px;color:var(--muted);font-size:15px}
+.story p b{color:var(--fg);font-weight:500}
+.used{font-family:var(--mono);font-size:12px;color:var(--sda)}
+.shot{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line)}
+.term{font-family:var(--mono);font-size:13px;line-height:1.65;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;white-space:pre;color:var(--fg)}
+.term .d{color:var(--muted)} .term .ok{color:#7fd19a} .term .no{color:var(--vcc)} .term .y{color:var(--sda)}
+
+.apps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.app{border:1px solid var(--line);border-radius:10px;padding:16px}
+.app b{display:block;font-size:15.5px;margin-bottom:4px}
+.app p{margin:0;color:var(--muted);font-size:14px}
+.built{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:start}
+.built p{color:var(--muted);margin:0 0 12px}
+.built p b{color:var(--fg);font-weight:500}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-family:var(--mono);font-size:13.5px;line-height:1.6;overflow-x:auto;margin:0}
+code{font-family:var(--mono);font-size:.9em}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;margin-top:10px}
+@media (max-width:980px){.feats{grid-template-columns:repeat(2,minmax(0,1fr))}.apps{grid-template-columns:1fr 1fr}}
+@media (max-width:860px){.hero,.built,.story,.story:nth-child(even){grid-template-columns:1fr}.story:nth-child(even) .txt{order:0}}
+@media (max-width:520px){.feats,.apps{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.map .wire{animation:none;stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<div class="in">
+  <div class="top"><span class="brand">Backoffice</span><div class="pills"><a href="#features">Features</a><a href="#use">In use</a><a href="#who">Who it's for</a><a href="https://github.com/bnvac/backoffice" target="_blank" rel="noopener">Source ↗</a></div></div>
+
+  <section class="hero">
+    <div>
+      <div class="kick">SELF-HOSTED · ONE GO BINARY · ONE SQLITE FILE</div>
+      <h1>The software for your whole workshop.</h1>
+      <p class="lede">Parts, tools, projects, 3D printers, firmware and the machines on your shelf, in <b>one app that knows how they connect</b>. It tells you what you can build tonight, what you're missing, whether your printer can handle it, and which board is running what.</p>
+      <div class="facts"><span>runs on a Raspberry Pi</span><span>no cloud account</span><span>works offline</span><span>19k lines of Go</span></div>
+    </div>
+    <div class="map">
+      <svg viewBox="0 0 520 340" role="img" aria-label="One app wired to seven parts of a workshop: parts, tools, projects, printers, firmware, machines and orders.">
+        <text class="h" x="16" y="22">Backoffice</text>
+        <rect x="16" y="34" width="140" height="290" rx="8" fill="none" stroke="var(--line)"/>
+        <g id="wires"></g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="sec" id="features">
+    <h2>Everything on the bench, in one place</h2>
+    <p class="sub">Each part of the app reads from the others. A project knows your parts, the idea board knows your tools, the printer page knows its own limits, and the shopping list knows which shop really delivers fastest.</p>
+    <div class="feats" id="feats"></div>
+  </section>
+
+  <section class="sec" id="use">
+    <h2>How I actually use it</h2>
+    <p class="sub">Real questions from my own bench, and where the answer comes from.</p>
+    <div class="stories">
+      <article class="story"><div class="txt"><p class="q">"What can I build tonight?"</p><p>The idea board sorts my parts into roles (controller, sensor, display, actuator) and only suggests builds it can name <b>every part</b> for. Then it says how to box it, based on my tools: print it, buy a project box, or find a case made for the board.</p><p>Pair a Pi with an analog sensor and it adds an ADC to the list, ticked if I own an MCP3008. An ESP32 doesn't get that line.</p><div class="used">ideas · parts · workshop</div></div><img class="shot" src="/images/software/backoffice-4.jpg" alt="The idea board proposing builds from parts on the shelf." loading="lazy" width="1400" height="1030"></article>
+      <article class="story"><div class="txt"><p class="q">"Will Nylon CF print on my Ender 3?"</p><p>Each printer is recorded properly: bed, nozzle and its material, hotend and bed limits, enclosure, direct or bowden, filament drying. The answer comes back <b>"not as it stands"</b> with the five reasons and what each one costs to fix.</p><p>An unrecorded figure counts as unknown, not zero, so a half-filled form doesn't produce a printer that can't heat.</p><div class="used">printers · materials</div></div>
+<div class="term" aria-label="Example output"><span class="d">Nylon CF  →  Ender 3 (stock)</span>
+<span class="no">not as it stands</span>
+  <span class="y">✗</span> hotend max 240°C, needs 260°C      <span class="d">all-metal hotend</span>
+  <span class="y">✗</span> brass nozzle, CF is abrasive       <span class="d">hardened steel nozzle</span>
+  <span class="y">✗</span> open frame, warps                 <span class="d">enclosure</span>
+  <span class="y">✗</span> no filament drying recorded       <span class="d">dryer box</span>
+  <span class="y">✗</span> bowden, soft at high temps         <span class="d">direct drive</span>
+<span class="ok">PLA, PETG, TPU (slow)  →  ready</span></div></article>
+      <article class="story"><div class="txt"><p class="q">"Reprint that bracket."</p><p>Sliced G-code is kept against the part it was for. Next month's reprint is one button, sent straight to the printer over Klipper or OctoPrint. The dashboard shows what every printer is doing without waiting on one that's switched off.</p><p>For new parts, the case finder searches Printables for enclosures made for that board and <b>measures the STL</b> so I know it fits before a six-hour print.</p><div class="used">printers · cases · parts</div></div><img class="shot" src="/images/software/backoffice-5.jpg" alt="Case finder ranking printable enclosures for a board." loading="lazy" width="1400" height="1030"></article>
+      <article class="story"><div class="txt"><p class="q">"Which ESP32 is in the greenhouse?"</p><p>The shelf counts six ESP32s. The firmware page records which one is in the greenhouse running what, keeps the image with its SHA-256, and gives the exact command to put it back: <code>esptool</code> with the right chip, <code>avrdude</code> for an Uno, or BOOTSEL-and-copy for a Pico.</p><div class="used">firmware · parts</div></div>
+<div class="term" aria-label="Example output"><span class="d">Greenhouse logger · ESP32-S3 · in service</span>
+image   logger-v1.4.bin  <span class="d">sha256 9f2c…a71e</span>
+<span class="ok">esptool.py --chip esp32s3 write_flash 0x0 logger-v1.4.bin</span></div></article>
+      <article class="story"><div class="txt"><p class="q">"Is the homelab up, and what's it drawing?"</p><p>The homelab is a shelf that's switched on. Each machine gets its address, OS, the install image and its published checksum, and its power draw. The page checks each one over TCP (no root needed) and adds up the watts, leaving out machines with no figure instead of counting them as zero.</p><div class="used">machines</div></div>
+<div class="term" aria-label="Example output"><span class="d">machine        address        port   status   draw</span>
+nas            10.0.0.12      445    <span class="ok">up</span>       38 W
+pi-klipper     10.0.0.31      7125   <span class="ok">up</span>        6 W
+mini-pc        10.0.0.40      22     <span class="no">down</span>     —
+<span class="d">total (2 of 3 with a figure)            44 W</span></div></article>
+      <article class="story"><div class="txt"><p class="q">"Stop buying the same BME280 three times."</p><p>Every drawer gets a QR label. Scan it with a phone and the part's page opens with the count buttons under your thumb. Paste a product link from Adafruit, Pimoroni or The Pi Hut and it fills in name, photo, price and part number. Prices are tracked per shop, and orders learn each shop's real delivery time.</p><div class="used">parts · labels · prices · orders</div></div><img class="shot" src="/images/software/backoffice-2.jpg" alt="One part: stock, location, prices across shops and the pinout." loading="lazy" width="1400" height="1030"></article>
+    </div>
+  </section>
+
+  <section class="sec" id="who">
+    <h2>Who it's for</h2>
+    <p class="sub">Anywhere a group shares a shelf of parts and a few machines, and nobody remembers which drawer the last one went in.</p>
+    <div class="apps">
+      <div class="app"><b>School makerspaces</b><p>Named accounts with an activity log, so a teacher can see who took the last servo. QR labels on every bin.</p></div>
+      <div class="app"><b>Robotics teams</b><p>Projects reserve their parts, so the build team sees what's actually free. BOMs import from KiCad and EasyEDA.</p></div>
+      <div class="app"><b>Library and community labs</b><p>One printer page that tells a visitor what each machine can print before they try.</p></div>
+      <div class="app"><b>Repair cafés</b><p>Firmware images and flash commands kept with each board, so a fix can be repeated by someone else.</p></div>
+      <div class="app"><b>Small hardware startups</b><p>Price history per shop and real delivery times for planning a build. Backups are one file.</p></div>
+      <div class="app"><b>Home labs</b><p>Machines, their images and checksums, and the power bill, next to the parts that built them.</p></div>
+    </div>
+  </section>
+
+  <section class="sec built">
+    <div>
+      <h2>Small on purpose</h2>
+      <p>One Go binary, one SQLite file, one folder of photos. No database server, no <code>npm install</code>, no config file. Upgrading is replacing the binary; the database migrates itself.</p>
+      <p>Things I wrote rather than imported: a <b>KiCad footprint parser and renderer</b>, an <b>STL parser with a z-buffer rasteriser</b> for previews, and a paste-a-list parser so you never fill a form forty times.</p>
+      <p>An AI model is optional: Ollama, any OpenAI-compatible endpoint, or Anthropic. Whatever it suggests is <b>checked against the real inventory</b>; claim a part I don't own and it goes on the shopping list.</p>
+    </div>
+    <pre>go build -o backoffice ./cmd/backoffice
+./backoffice      # http://localhost:8080
+
+# a Pi or any ARM box: build anywhere, copy over
+GOOS=linux GOARCH=arm64 CGO_ENABLED=0 \
+  go build -o backoffice ./cmd/backoffice
+
+# or
+docker compose up -d</pre>
+  </section>
+
+  <footer><span>Backoffice</span><a href="https://github.com/bnvac/backoffice" target="_blank" rel="noopener">github.com/bnvac/backoffice</a></footer>
+</div>
+<script>
+(function(){
+var NS="http://www.w3.org/2000/svg",g=document.getElementById("wires");
+var rows=[["PARTS","Parts & labels","stock, drawers, QR","var(--vcc)"],["TOOLS","Workshop","what you can make","var(--sda)"],["PROJ","Projects & wiring","BOMs, pin maps","var(--scl)"],["PRINT","Printers & cases","materials, G-code","var(--clk)"],["FW","Firmware","which board runs what","var(--ok)"],["LAB","Machines","up, down, watts","var(--gnd)"],["SHOP","Orders & prices","real delivery times","var(--sda)"]];
+function a(t,o,txt){var e=document.createElementNS(NS,t);for(var k in o)e.setAttribute(k,o[k]);if(txt!=null)e.textContent=txt;g.appendChild(e);return e}
+rows.forEach(function(r,i){
+  var y=56+i*38, ty=34+i*44;
+  a("text",{x:30,y:y+4},r[0]);
+  a("path",{d:"M156 "+y+" C 240 "+y+", 250 "+(ty+19)+", 322 "+(ty+19),stroke:r[3],"class":"wire",style:"animation-delay:"+(i*.12)+"s"});
+  a("rect",{x:322,y:ty,width:184,height:38,rx:7,fill:"var(--bg)",stroke:"var(--line)"});
+  a("text",{x:334,y:ty+16,"class":"h"},r[1]);a("text",{x:334,y:ty+31},r[2]);
+});
+var F=[["Parts","var(--vcc)","Photos, counts, drawers, tags. Paste a shop link and it fills itself in."],
+["Prices & orders","var(--sda)","Price history per shop. Orders learn each shop's real delivery time."],
+["Projects","var(--scl)","A parts list that says what's missing. Building reserves the parts."],
+["Wiring","var(--scl)","Record pins and it draws them. Catches a pin used twice."],
+["Workshop","var(--sda)","Paste your tool list. It works out what you can make with them."],
+["Idea board","var(--sda)","Builds you can make tonight, from parts you own, and how to case them."],
+["Printers","var(--clk)","Which filaments each printer can take, and why not. Send G-code."],
+["Cases","var(--clk)","Find enclosures, parse the STL, measure before you print."],
+["Firmware","var(--ok)","Which board runs what, with the image, checksum and flash command."],
+["Machines","var(--gnd)","Homelab inventory with live up/down checks and a power total."],
+["Labels","var(--vcc)","QR codes and barcodes to a sheet. Scan to count from your phone."],
+["Accounts & backup","var(--gnd)","Per-person logins with an activity log. One-file backups."]];
+var box=document.getElementById("feats");
+F.forEach(function(f){var d=document.createElement("div");d.className="feat";var h=document.createElement("h3");var i=document.createElement("i");i.style.background=f[1];h.appendChild(i);h.appendChild(document.createTextNode(f[0]));var p=document.createElement("p");p.textContent=f[2];d.appendChild(h);d.appendChild(p);box.appendChild(d)});
+})();
+</script>
+</body>
+</html>

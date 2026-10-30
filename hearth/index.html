@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hearth Linux</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=IM+Fell+English:ital@0;1&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* Layout: a night sky with a castle and a campfire up top; below it a parchment folio whose leaves are the site's pages, switched by hash. One committed night palette. */
+:root{
+  --night:#0d0a14; --night2:#17111f; --parch:#ecdfc0; --parch2:#e1d0a8; --ink:#2a1c10; --ink2:#5b4630;
+  --crimson:#8e1f1f; --gold:#c8a24a; --fire:#ff9a3c; --moss:#3f5a2c; --snow:#e9ecf6;
+  --title:"Pirata One", "UnifrakturCook", Georgia, serif; --body:"IM Fell English", Georgia, serif; --code:"VT323", ui-monospace, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--night);color:var(--parch);font-family:var(--body);font-size:18px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:50px}
+a{color:var(--crimson)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1000px;margin:0 auto}
+
+.scene{position:relative;margin-top:16px;border:3px solid var(--gold);box-shadow:0 0 0 3px var(--night),0 0 0 5px #6b5320}
+canvas#sky{display:block;width:100%;height:auto;aspect-ratio:240/96;image-rendering:pixelated;image-rendering:crisp-edges}
+.crest{position:absolute;left:0;right:0;top:6%;text-align:center;pointer-events:none}
+.crest h1{font-family:var(--title);font-weight:400;font-size:clamp(40px,9vw,92px);line-height:1;margin:0;color:var(--parch);text-shadow:0 3px 0 #000,0 0 24px rgba(255,154,60,.35);letter-spacing:.02em}
+.crest p{margin:6px 0 0;font-style:italic;font-size:clamp(14px,2.2vw,21px);color:var(--parch2);text-shadow:0 2px 0 #000}
+
+nav.leaves{display:flex;gap:4px;margin-top:22px;flex-wrap:wrap}
+nav.leaves a{font-family:var(--title);font-size:21px;text-decoration:none;color:var(--parch2);padding:6px 16px 4px;border:2px solid #4a3a1a;border-bottom:0;border-radius:8px 8px 0 0;background:var(--night2)}
+nav.leaves a:hover{color:var(--parch)}
+nav.leaves a[aria-current="page"]{background:var(--parch);color:var(--ink);border-color:var(--gold)}
+
+.folio{background:var(--parch);color:var(--ink);border:2px solid var(--gold);border-radius:0 8px 8px 8px;padding:34px clamp(18px,4vw,48px) 40px;
+  background-image:radial-gradient(ellipse at 20% 10%,rgba(255,255,255,.35),transparent 60%),radial-gradient(ellipse at 90% 100%,rgba(120,80,30,.18),transparent 60%);
+  box-shadow:inset 0 0 60px rgba(90,60,20,.25)}
+.folio a{color:var(--crimson)}
+.leaf h2{font-family:var(--title);font-weight:400;font-size:clamp(30px,5vw,44px);line-height:1.05;margin:0 0 10px;color:var(--ink)}
+.leaf .lede{font-size:20px;max-width:58ch;margin:0 0 26px;color:var(--ink2)}
+.leaf .lede::first-letter{font-family:var(--title);float:left;font-size:3.4em;line-height:.8;padding:6px 8px 0 0;color:var(--crimson)}
+.rule{height:12px;margin:28px 0;background:
+  radial-gradient(circle at 50% 50%,var(--crimson) 0 4px,transparent 5px) center/24px 12px no-repeat,
+  linear-gradient(var(--ink2),var(--ink2)) left center/calc(50% - 18px) 1px no-repeat,
+  linear-gradient(var(--ink2),var(--ink2)) right center/calc(50% - 18px) 1px no-repeat}
+
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+.three h3,.deeds h3{font-family:var(--title);font-weight:400;font-size:25px;margin:0 0 4px;color:var(--crimson)}
+.three p,.deeds p{margin:0;color:var(--ink2)}
+.sigil{width:44px;height:44px;margin-bottom:8px;image-rendering:pixelated}
+.btn{display:inline-block;font-family:var(--title);font-size:22px;text-decoration:none;color:var(--parch)!important;background:var(--crimson);padding:6px 18px 4px;border-radius:4px;border:2px solid #5e1313;box-shadow:0 3px 0 #5e1313}
+.btn:hover{filter:brightness(1.12)}
+.btn.ghost{background:transparent;color:var(--ink)!important;border-color:var(--ink2);box-shadow:none}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+
+.armory{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.item{all:unset;cursor:pointer;display:grid;grid-template-columns:36px 1fr;gap:4px 10px;align-items:center;padding:10px 12px;border:1.5px solid var(--ink2);border-radius:6px;background:rgba(255,255,255,.25)}
+.item:hover,.item[aria-pressed="true"]{border-color:var(--crimson);background:rgba(255,255,255,.5)}
+.item:focus-visible{outline:2px solid var(--crimson);outline-offset:2px}
+.item canvas{width:36px;height:36px;grid-row:span 2;image-rendering:pixelated}
+.item b{font-family:var(--title);font-weight:400;font-size:21px;line-height:1}
+.item span{font-size:14px;font-style:italic;color:var(--ink2)}
+.item.off{opacity:.62}
+.scroll-note{margin-top:18px;padding:16px 18px;border:1.5px dashed var(--ink2);border-radius:6px;min-height:5.2em}
+.scroll-note b{font-family:var(--title);font-weight:400;font-size:22px;color:var(--crimson)}
+.scroll-note code,.codex code,.gate code{font-family:var(--code);font-size:21px;color:var(--ink)}
+
+.deeds{display:grid;gap:22px}
+.deed{display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;align-items:start}
+.deed .n{font-family:var(--title);font-size:40px;line-height:1;color:var(--gold);text-shadow:0 1px 0 var(--ink2);text-align:center}
+.deed .path{font-family:var(--code);font-size:19px;color:var(--moss);margin-top:4px}
+
+.codex{list-style:none;margin:0;padding:0;columns:2;column-gap:40px}
+.codex li{break-inside:avoid;padding:8px 0 10px;border-bottom:1px solid rgba(91,70,48,.35)}
+.codex code{font-size:22px;color:var(--crimson)}
+.codex kbd{float:right;font-family:var(--code);font-size:17px;color:var(--ink2);border:1px solid var(--ink2);border-radius:3px;padding:0 5px;margin-top:3px}
+.codex p{margin:2px 0 0;color:var(--ink2);font-size:16.5px}
+
+.gate pre{font-family:var(--code);font-size:21px;line-height:1.35;background:var(--ink);color:var(--parch);border-radius:6px;padding:16px 18px;overflow-x:auto;margin:0 0 18px;border:2px solid var(--gold)}
+.gate pre .c{color:#a8916b}
+.gate ol{padding-left:22px;margin:0 0 16px}
+.gate li{margin-bottom:6px}
+footer{margin-top:22px;text-align:center;font-style:italic;color:#a8916b;font-size:15px}
+@media (max-width:820px){.three{grid-template-columns:1fr}.codex{columns:1}nav.leaves a{font-size:18px;padding:5px 11px 3px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="scene">
+    <canvas id="sky" width="240" height="96" role="img" aria-label="Pixel art: a hooded figure sits by a campfire with a glowing laptop, a castle keep with lit windows and red banners on the hill behind, snow falling."></canvas>
+    <div class="crest"><h1>Hearth</h1><p>a private Linux for engineers</p></div>
+  </div>
+
+  <nav class="leaves" aria-label="Pages">
+    <a href="#hall">The Hall</a><a href="#armory">The Armory</a><a href="#workshop">The Workshop</a><a href="#codex">The Codex</a><a href="#gate">The Gate</a>
+  </nav>
+
+  <main class="folio">
+    <section class="leaf" id="p-hall" aria-labelledby="h-hall">
+      <h2 id="h-hall">Your machine, your keep.</h2>
+      <p class="lede">Hearth is a Linux distribution for people who build things. It runs your AI on your own GPU, keeps your passwords and traffic to yourself, ships the tools for circuits and 3D printing, and describes the whole system in a handful of files you can carry to the next machine.</p>
+      <div class="three">
+        <div><canvas class="sigil" width="12" height="12" data-s="fire"></canvas><h3>Everything runs here</h3><p>A local voice assistant thinks on your graphics card. No cloud account, no subscription, nothing sent away to be answered.</p></div>
+        <div><canvas class="sigil" width="12" height="12" data-s="shield"></canvas><h3>Private by default</h3><p>Tor for one app or all of them, and while it's on anything that would leak is refused, not let through. Secrets stay encrypted in git. Backups stay on your own drive.</p></div>
+        <div><canvas class="sigil" width="12" height="12" data-s="hammer"></canvas><h3>Built for the bench</h3><p>KiCad, FreeCAD, a slicer with real printer profiles, Klipper printers on the network, and a parts inventory that knows what's in your drawers.</p></div>
+      </div>
+      <div class="rule" role="separator"></div>
+      <p style="max-width:62ch;margin:0">It's built on NixOS, so the system is declared, not accumulated. Seventeen modules switch on and off with one command. Two machines, a desktop and a laptop, share one config and stay in step. Rebuild on new hardware and it's the same place.</p>
+      <div class="row"><a class="btn" href="#armory">Enter the Armory</a><a class="btn ghost" href="#gate">Install</a></div>
+    </section>
+
+    <section class="leaf" id="p-armory" aria-labelledby="h-armory" hidden>
+      <h2 id="h-armory">The Armory</h2>
+      <p class="lede">Each module is one feature, written once and switched on when you want it. Turning one off keeps it written, just unbuilt, so nothing is lost and anything comes back with a command.</p>
+      <div class="armory" id="armory"></div>
+      <div class="scroll-note" id="note" aria-live="polite"></div>
+    </section>
+
+    <section class="leaf" id="p-workshop" aria-labelledby="h-workshop" hidden>
+      <h2 id="h-workshop">The Workshop</h2>
+      <p class="lede">What an evening on Hearth looks like. Each of these is a few keystrokes, because the pieces were built to know about each other.</p>
+      <div class="deeds">
+        <div class="deed"><div class="n">I</div><div><h3>Design a board, then see what you're missing</h3><p>Lay it out in KiCad, export the BOM, and the parts inventory matches every line against your drawers. What's missing goes on a shopping list with the shop that delivered fastest last time.</p><div class="path">ee · backoffice</div></div></div>
+        <div class="deed"><div class="n">II</div><div><h3>Print the case, walk away</h3><p>Slice with real Elegoo profiles. The printer is found on the network, and a desktop notification arrives when the print finishes or fails.</p><div class="path">ee · printing</div></div></div>
+        <div class="deed"><div class="n">III</div><div><h3>Ask the machine, out loud</h3><p>Press a key and talk. Neb answers in a corner of the screen, running on the GPU through Vulkan. He can act on the desktop, and asks before typing or closing anything.</p><div class="path">assistant · ai</div></div></div>
+        <div class="deed"><div class="n">IV</div><div><h3>Pick up on the laptop</h3><p>Files follow over Syncthing, your open tabs jump across with one command, bookmarks merge at login. No sync service in the middle.</p><div class="path">sync</div></div></div>
+        <div class="deed"><div class="n">V</div><div><h3>Work where there's no internet</h3><p>At login you join the local neighborhood web: pages, signed mail and files with whoever is on the same Wi-Fi. No server anywhere.</p><div class="path">intraweb</div></div></div>
+        <div class="deed"><div class="n">VI</div><div><h3>Run anything from a git repo</h3><p>Name a repo and a type (Rust, Go, Node, Python, Docker) and it's built and kept on its newest commit, but only one that builds.</p><div class="path">platform</div></div></div>
+      </div>
+    </section>
+
+    <section class="leaf" id="p-codex" aria-labelledby="h-codex" hidden>
+      <h2 id="h-codex">The Codex</h2>
+      <p class="lede">The handful of commands that run the place. Everything of yours lives under Super+Alt, so the defaults stay where you expect them.</p>
+      <ul class="codex">
+        <li><code>mod on osint</code><kbd>rebuild</kbd><p>Switch a module on. <code>mod off</code> unbuilds it.</p></li>
+        <li><code>modtui</code><kbd>tui</kbd><p>Onboarding, modules, settings, AI model with a download bar.</p></li>
+        <li><code>rebuild</code><kbd>nrs</kbd><p>Update everything and switch, with a live progress bar.</p></li>
+        <li><code>nixmenu</code><kbd>Super+Alt+Space</kbd><p>Every action on this system, by category.</p></li>
+        <li><code>neb-voice</code><kbd>Super+Alt+N</kbd><p>Talk to the assistant.</p></li>
+        <li><code>tormode on</code><kbd>privacy</kbd><p>All traffic through Tor; anything that can't go is refused.</p></li>
+        <li><code>devlink tabs</code><kbd>sync</kbd><p>Send your browser tabs to the other machine.</p></li>
+        <li><code>update-mine</code><kbd>daily</kbd><p>Move your own apps to their newest commit that builds.</p></li>
+        <li><code>debloat remove discord</code><kbd>space</kbd><p>Drop an app from every module at once.</p></li>
+        <li><code>backup now</code><kbd>restic</kbd><p>Snapshot home and config to the external drive.</p></li>
+        <li><code>drives</code><kbd>Super+Alt+M</kbd><p>Mount and unlock drives. Nothing mounts by itself.</p></li>
+        <li><code>snow off</code><kbd>Super+Alt</kbd><p>Stop the snow on the wallpaper. Not recommended.</p></li>
+      </ul>
+    </section>
+
+    <section class="leaf gate" id="p-gate" aria-labelledby="h-gate" hidden>
+      <h2 id="h-gate">The Gate</h2>
+      <p class="lede">Start from any NixOS install. Keep its hardware file, take the rest from here.</p>
+<pre><span class="c"># keep your hardware config, take Hearth's</span>
+sudo nixos-generate-config
+sudo mv /etc/nixos /etc/nixos.orig
+sudo git clone https://github.com/bnvac/nixosconfig /etc/nixos
+sudo cp /etc/nixos.orig/hardware-configuration.nix /etc/nixos/
+sudo nixos-rebuild switch</pre>
+      <ol>
+        <li>Run <code>modtui</code> and choose <b>Onboarding</b>: desktop or laptop, a name, your modules, an AI model, and pairing with your other machine.</li>
+        <li>Updates are <code>nixup</code>: a pull and a rebuild. Or let it happen weekly.</li>
+        <li>To make it yours, fork the repository and clone the fork instead. <code>nixup</code> follows whichever you cloned.</li>
+      </ol>
+      <div class="row"><a class="btn" href="https://github.com/bnvac/nixosconfig" target="_blank" rel="noopener">The source</a></div>
+    </section>
+  </main>
+  <footer>Hearth is built on NixOS and runs on x86-64 desktops and laptops.</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+var PAL={k:"#120d1f",c:"#5a4a3a",C:"#3e3226",h:"#7a5a3a",s:"#e8b896",l:"#8f98b3",g:"#9fe1ff",G:"#58b8e8",b:"#2a1e16",r:"#8e1f1f",R:"#c23b2b",y:"#ffd25a",o:"#ff9a3c",w:"#e9ecf6",x:"#6d7493",X:"#4b5070",m:"#3f5a2c",t:"#a8916b",i:"#2a1c10",a:"#c8a24a"};
+var FIG=[
+"....cccc....",
+"...cCCCCc...",
+"..cCssssCc..",
+"..cCsksSCc..",
+"..cCssssCc..",
+"..ccCCCCcc..",
+".ccccccccl..",
+".cccCcccglG.",
+".cccCcccglG.",
+".ccccccllll.",
+".cccccccccc.",
+"..bbb..bbb.."];
+var SIG={
+fire:["............",".....o......",".....oo.....","....ooy.....","....oyyo....","...oyyyo....","...oyyyyo...","..ooyyyyoo..","..oyyyyyyo..","...hhhhhh...","..hh....hh..","............"],
+shield:["............","..aaaaaaaa..","..arrrrrra..","..arrwwrra..","..arwwwwra..","..arrwwrra..","..arrwwrra..","...arrrra...","...arrrra...","....arra....",".....aa.....","............"],
+hammer:["............","..xxxxxxx...","..xXXXXXx...","..xxxxxxx...",".....h......",".....h......",".....h......",".....h......",".....h......",".....h......",".....h......","............"],
+scroll:["............",".tttttttttt.","t.tiiiiiit.t",".ttttttttt..","..tiiiiit...","..ttttttt...","..tiiiiit...","..ttttttt...","..tiiiiit...",".ttttttttt..","t.tttttttt.t",".tttttttttt."],
+gear:["............","....x..x....","..xxxxxxxx..","..xXXXXXXx..",".xxX....Xxx.","..xX....Xx..","..xX....Xx..",".xxX....Xxx.","..xXXXXXXx..","..xxxxxxxx..","....x..x....","............"],
+key:["............","..aaa.......",".a...a......",".a...aaaaaaa",".a...a..a.a.","..aaa...a...","............","............","............","............","............","............"],
+lamp:["............",".....a......","....aaa.....","...ayyya....","...ayyya....","...ayyya....","....aaa.....","....aaa.....","...aaaaa....","............","............","............"],
+book:["............",".rrrrrrrrr..",".rwwwwwwwrr.",".rwiiiiiwrr.",".rwwwwwwwrr.",".rwiiiiiwrr.",".rwwwwwwwrr.",".rwiiiiiwrr.",".rwwwwwwwrr.",".rrrrrrrrrr.","..rrrrrrrrr.","............"]};
+function blit(ctx,rows,x,y){for(var r=0;r<rows.length;r++)for(var c=0;c<rows[r].length;c++){var ch=rows[r][c];if(ch!=="."&&PAL[ch]){ctx.fillStyle=PAL[ch];ctx.fillRect(x+c,y+r,1,1)}}}
+document.querySelectorAll("canvas[data-s]").forEach(function(cv){blit(cv.getContext("2d"),SIG[cv.dataset.s],0,0)});
+
+/* ---------- scene ---------- */
+var cv=document.getElementById("sky"),ctx=cv.getContext("2d"),W=240,H=96,G=78,FX=158,FY=84;
+var seed=11;function sr(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
+function R(a,b){return a+Math.random()*(b-a)}
+var stars=[];for(var i=0;i<60;i++)stars.push([Math.floor(sr()*W),Math.floor(sr()*44),sr()]);
+var snow=[];for(i=0;i<70;i++)snow.push({x:sr()*W,y:sr()*H,v:.1+sr()*.22,d:sr()*6});
+var windows=[[58,40],[63,40],[70,34],[75,34],[82,44],[90,40],[95,40],[70,48]];
+var flames=[],sparks=[],t=0;
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x,y,w,h)}
+function px(x,y,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),1,1)}
+function pine(x,y,h){for(var r=0;r<h;r++){var w=Math.floor(r*0.45)+1;rect(x-w,y-h+r,w*2+1,1,r%3===0?"#cfd9f2":(r%2?"#0d2a24":"#123b30"))}rect(x,y,1,3,"#2a1b14")}
+function castle(){
+  var stone="#2b2840",dark="#1f1c30",cap="#cfd9f2";
+  rect(52,46,50,22,stone);                         // curtain wall
+  for(var x=52;x<102;x+=4)rect(x,44,2,2,stone);    // crenels
+  rect(66,28,16,40,dark);                          // keep
+  for(x=66;x<82;x+=4)rect(x,26,2,2,dark);
+  rect(52,36,12,32,stone);rect(90,36,12,32,stone); // towers
+  for(x=52;x<64;x+=4)rect(x,34,2,2,stone);for(x=90;x<102;x+=4)rect(x,34,2,2,stone);
+  rect(52,34,12,1,cap);rect(90,34,12,1,cap);rect(66,26,16,1,cap);
+  rect(73,58,3,10,"#120d1f");                      // gate
+  // banners: two frames of wind
+  var f=Math.floor(t/18)%2;
+  [[58,26],[96,26],[74,16]].forEach(function(b){rect(b[0],b[1],1,9,"#8f98b3");rect(b[0]+1,b[1],5,3,"#c23b2b");rect(b[0]+1+(f?5:4),b[1]+(f?1:0),2,2,"#8e1f1f")});
+  windows.forEach(function(w,i){var on=Math.sin(t*.02+i*2)>-.7;rect(w[0],w[1],2,3,on?"#ffcf5a":"#3a3346")});
+}
+function frame(){
+  t++;
+  var bands=["#06040c","#0a0714","#0d0a1b","#110d24","#16112d","#1b1636"];
+  for(var b=0;b<bands.length;b++)rect(0,b*9,W,9,bands[b]);
+  rect(0,54,W,42,"#1e1a3c");
+  stars.forEach(function(s){px(s[0],s[1],Math.sin(t*.05+s[2]*20)>.6?"#fff":"#7f7aa8")});
+  ctx.fillStyle="#f3eccd";ctx.beginPath();ctx.arc(200,16,6,0,7);ctx.fill();
+  // hills
+  ctx.fillStyle="#16122c";for(var x=0;x<W;x++){var y=Math.round(62-8*Math.sin(x*.03+.4)-4*Math.sin(x*.09));ctx.fillRect(x,y,1,H-y)}
+  ctx.fillStyle="#120f24";for(x=30;x<130;x++){var yy=Math.round(68-10*Math.sin((x-30)/100*Math.PI));ctx.fillRect(x,yy,1,H-yy)}
+  castle();
+  for(x=6;x<W;x+=13)if(x<40||x>118)pine(x+(x*7)%4,G-1,9+(x*3)%6);
+  // ground
+  rect(0,G-2,W,H-G+2,"#c9d1ec");
+  for(x=0;x<W;x++){rect(x,G-2+Math.round(1.5*Math.sin(x*.11)),1,2,"#e2e8fb")}
+  rect(0,G+8,W,H,"#b4bde0");
+  pine(14,G+10,22);pine(30,G+14,16);pine(222,G+12,24);pine(206,G+14,14);
+  // firelight
+  var fl=.85+.15*Math.sin(t*.3)*Math.sin(t*.11);
+  var gr=ctx.createRadialGradient(FX,FY-3,2,FX,FY-3,40*fl);gr.addColorStop(0,"rgba(255,160,60,.55)");gr.addColorStop(.5,"rgba(255,110,40,.16)");gr.addColorStop(1,"rgba(255,110,40,0)");
+  ctx.globalCompositeOperation="lighter";ctx.fillStyle=gr;ctx.fillRect(FX-50,FY-50,100,70);ctx.globalCompositeOperation="source-over";
+  // log + figure
+  rect(122,G+3,20,4,"#6b4026");rect(122,G+3,20,1,"#8a5634");rect(141,G+3,1,4,"#c08b5c");
+  blit(ctx,FIG,126,G-7);
+  if(t%46<23)px(134,G-1,"#d6f4ff");
+  ["#6d7493","#4b5070","#7d84a3","#4b5070","#6d7493"].forEach(function(c,i){rect(FX-8+i*3,FY+1,3,2,c)});
+  rect(FX-6,FY-1,12,2,"#5b3520");
+  for(var k=0;k<3;k++)flames.push({x:FX+R(-4,4),y:FY-2,vx:R(-.08,.08),vy:R(-.42,-.24),life:0,max:R(13,24)});
+  if(Math.random()<.1)sparks.push({x:FX+R(-2,2),y:FY-8,vx:R(-.2,.2),vy:R(-.55,-.3),life:0,max:R(28,55)});
+  flames=flames.filter(function(f){f.life++;f.x+=f.vx+Math.sin((t+f.y)*.3)*.08;f.y+=f.vy;var p=f.life/f.max;var c=p<.2?"#fff4c2":p<.45?"#ffd25a":p<.7?"#ff9a2b":p<.9?"#e8461f":"#5a1f1a";px(f.x,f.y,c);if(p<.5)px(f.x+1,f.y,c);return f.life<f.max});
+  sparks=sparks.filter(function(s){s.life++;s.x+=s.vx;s.y+=s.vy;s.vy+=.004;if(s.life%6<4)px(s.x,s.y,"#ffd25a");return s.life<s.max});
+  snow.forEach(function(f){f.y+=f.v;f.x+=Math.sin((t+f.d*40)*.02)*.15;if(f.y>H){f.y=-2;f.x=Math.random()*W}px(f.x,f.y,"#eef3ff")});
+}
+function loop(){frame();if(!reduce)requestAnimationFrame(loop)}
+if(reduce){for(i=0;i<60;i++)frame()}else loop();
+
+/* ---------- armory ---------- */
+var mods=[
+ ["Desktop","fire",1,"A fast tiling desktop (dwm), lock screen, file manager, and the snowy live wallpaper."],
+ ["Apps","book",1,"Office, browsers with a password vault, chat, media, an e-book library, Onshape."],
+ ["Assistant","lamp",1,"Neb, a voice assistant with his own workspace, plus Ollama on the GPU and a web chat."],
+ ["AI","lamp",1,"Claude Code in the terminal."],
+ ["Sync","scroll",1,"Syncthing between your two machines, tab and screen hand-off, bookmark merge."],
+ ["EE","gear",1,"KiCad, EDA tools, OrcaSlicer with Elegoo profiles, FreeCAD."],
+ ["Printing","hammer",1,"Klipper printers found on the network, with a notification when a print finishes or fails."],
+ ["Gaming","fire",1,"Steam with Proton-GE, and a Minecraft launcher."],
+ ["Privacy","shield",1,"Tor per app or for everything, Proton VPN, I2P, an encrypted chat client. Tor stays off until you ask."],
+ ["Virt","gear",1,"Virtual machines with QEMU/KVM."],
+ ["Backoffice","book",1,"The workshop inventory app, synced between machines."],
+ ["Intraweb","scroll",1,"The local neighborhood web: pages, mail and files on your Wi-Fi with no server."],
+ ["Platform","gear",1,"Docker, Flatpak, AppImage, Distrobox, and apps built from any git repo."],
+ ["Backups","shield",1,"Daily restic snapshots of home and config to an external drive."],
+ ["Power","lamp",1,"Battery and thermal tuning on the laptop."],
+ ["Secrets","key",0,"Passwords and keys kept encrypted in git, unlocked by a key that never leaves the machine."],
+ ["OSINT","key",0,"A security and open-source intelligence toolkit."]
+];
+var arm=document.getElementById("armory"),note=document.getElementById("note");
+function show(m,b){arm.querySelectorAll(".item").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
+  note.textContent="";var h=document.createElement("b");h.textContent=m[0]+(m[2]?" · worn":" · in the chest");note.appendChild(h);
+  var p=document.createElement("div");p.textContent=m[3];note.appendChild(p);
+  var c=document.createElement("code");c.textContent="mod "+(m[2]?"off ":"on ")+m[0].toLowerCase();note.appendChild(c)}
+mods.forEach(function(m,i){
+  var b=document.createElement("button");b.type="button";b.className="item"+(m[2]?"":" off");b.setAttribute("aria-pressed","false");
+  var c=document.createElement("canvas");c.width=12;c.height=12;c.setAttribute("aria-hidden","true");blit(c.getContext("2d"),SIG[m[1]],0,0);
+  var n=document.createElement("b");n.textContent=m[0];var s=document.createElement("span");s.textContent=m[2]?"switched on":"off by default";
+  b.appendChild(c);b.appendChild(n);b.appendChild(s);b.addEventListener("click",function(){show(m,b)});arm.appendChild(b);if(i===2)show(m,b)});
+
+/* ---------- pages by hash ---------- */
+var pages=["hall","armory","workshop","codex","gate"];
+function route(){var h=(location.hash||"#hall").slice(1);if(pages.indexOf(h)<0)h="hall";
+  pages.forEach(function(p){document.getElementById("p-"+p).hidden=p!==h});
+  document.querySelectorAll("nav.leaves a").forEach(function(a){if(a.getAttribute("href")==="#"+h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+}
+window.addEventListener("hashchange",function(){route();var n=document.querySelector("nav.leaves");if(n.getBoundingClientRect().top<0)n.scrollIntoView({behavior:reduce?"auto":"smooth"})});
+route();
+})();
+</script>
+</body>
+</html>
