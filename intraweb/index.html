@@ -119,6 +119,7 @@ legend{color:#0046d5;padding:0 4px}
 .stage{margin:0;background:#1b1b1f;border:1px solid var(--face-lo);display:grid;place-items:center;padding:12px;aspect-ratio:16/10}
 .stage img{display:block;width:100%;height:100%;object-fit:contain;box-shadow:0 2px 10px rgba(0,0,0,.5)}
 .stage figcaption{color:#e6e6e6;font-size:12.5px;margin-top:10px;text-align:center}
+.cyc{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:10px;font-size:12px;color:var(--ink-soft)}
 .strip{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px}
 .strip button{flex:none;width:110px;height:72px;padding:3px;border:2px solid transparent;background:#eef1f7;cursor:pointer;display:grid;place-items:center}
 .strip button img{max-width:100%;max-height:100%;display:block}
@@ -126,6 +127,8 @@ legend{color:#0046d5;padding:0 4px}
 fieldset b{color:#0b2c7a}
 fieldset small{color:var(--ink-soft)}
 /* hosting paths */
+.kinds{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 4px}
+.kinds span{background:#fff;border:1px solid var(--face-lo);border-radius:999px;padding:2px 10px;font-size:12px}
 .hosts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .host{background:#fff;border:1px solid var(--face-lo);border-radius:4px;padding:10px 12px;display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start}
 .host svg{width:32px;height:32px}
@@ -194,6 +197,7 @@ fieldset small{color:var(--ink-soft)}
     <a class="icon" href="#how"><svg><use href="#mail"/></svg>Mail &amp; channels</a>
     <a class="icon" href="#around"><svg><use href="#note"/></svg>Neighbors' sites</a>
     <a class="icon" href="#radio"><svg><use href="#chipi"/></svg>Ways to host</a>
+    <a class="icon" href="#libraries"><svg><use href="#folder"/></svg>Media libraries</a>
   </nav>
 
   <main class="grid">
@@ -224,6 +228,16 @@ fieldset small{color:var(--ink-soft)}
         <div class="bar"><span class="t"><svg><use href="#chipi"/></svg><span id="h-radio">Ways to host a neighborhood</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
         <div class="body"><p style="margin:0 0 12px">intraweb only needs machines that can hear each other. No internet, and no router required.</p><div class="hosts"><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="18" width="24" height="8" rx="2" fill="#dfe6f3" stroke="#5b6b8c"/><path d="M10 18V9M22 18V9" stroke="#5b6b8c" stroke-width="2"/><circle cx="9" cy="22" r="1.5" fill="#3ec44a"/><circle cx="14" cy="22" r="1.5" fill="#3ec44a"/></svg><div><b>Any Wi-Fi</b><p>The network you already have. Everyone runs one command and appears in about a second.</p><code>intraweb up</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="7" width="22" height="18" rx="2" fill="#2f8a3a" stroke="#1b5e27"/><rect x="9" y="11" width="8" height="8" fill="#c0c4cc"/><path d="M20 11h4M20 15h4M20 19h4" stroke="#d4af37" stroke-width="2"/></svg><div><b>A hub on a Pi</b><p>Leave a Raspberry Pi on as the meeting place. People open intranet.local instead of an address.</p><code>intraweb up --hub --hub-name oak</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="8" width="18" height="12" rx="1" fill="#2a5bd7" stroke="#1d3f99"/><path d="M4 22h24l-2 3H6z" fill="#c0c4cc" stroke="#7a8296"/><path d="M12 13a6 6 0 0 1 8 0M14 15.5a3 3 0 0 1 4 0" stroke="#fff" fill="none" stroke-width="1.5"/></svg><div><b>One laptop, no router</b><p>A Linux laptop makes the Wi-Fi itself. Everyone else joins it.</p><code>nmcli device wifi hotspot ssid intraweb</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="12" width="9" height="8" rx="1" fill="#c0c4cc" stroke="#7a8296"/><rect x="21" y="12" width="9" height="8" rx="1" fill="#c0c4cc" stroke="#7a8296"/><path d="M11 16c4 0 5-5 10 0" stroke="#e8a020" stroke-width="2.5" fill="none"/></svg><div><b>Two laptops, one cable</b><p>Plug Ethernet straight between them. They give themselves addresses and find each other.</p><code>intraweb up   # on both</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#chipi"/></svg><div><b>A $5 ESP32</b><p>A pocket access point on a battery bank for up to 10 devices. Phones get a page saying what to run.</p><code>hardware/esp32-ap</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="10" y="4" width="12" height="24" rx="2" fill="#333" stroke="#111"/><rect x="12" y="7" width="8" height="16" fill="#8fd0ff"/><path d="M13 12a4 4 0 0 1 6 0" stroke="#fff" fill="none"/></svg><div><b>A phone or an old router</b><p>A hotspot with mobile data off, or a router with nothing in the internet port.</p><code>intraweb doctor   # if nobody shows up</code></div></div></div>
         <div class="btns" style="justify-content:flex-end;margin-top:12px"><a class="xpbtn" href="https://github.com/bnvac/intraweb/tree/main/hardware/esp32-ap" target="_blank" rel="noopener">ESP32 firmware…</a><a class="xpbtn def" href="#around">Next &gt;</a></div></div>
+      </section>
+
+      <section class="win" id="libraries" aria-labelledby="h-libs">
+        <div class="bar"><span class="t"><svg><use href="#folder"/></svg><span id="h-libs">Media libraries</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
+        <div class="body">
+          <p style="margin:0 0 10px">Already run Jellyfin, Navidrome, Calibre-Web or Immich? List it once and it shows up as a button on your card for everyone in range. Their browser opens it straight from your machine; nothing streams through intraweb.</p>
+          <div class="cmd" style="display:block;line-height:1.7">C:\&gt; intraweb library add Films 8096<br>C:\&gt; intraweb library add Music 4533<br>C:\&gt; intraweb libraries bob</div>
+          <div class="kinds"><span>&#9654; video</span><span>&#9834; music</span><span>&#8801; books</span><span>&#9635; photos</span></div>
+          <p class="note" style="margin-top:6px">The service needs to listen on your network and your firewall needs to allow its port. A neighbor's list is checked before it's shown, so it can't point anywhere but their own machine.</p>
+        </div>
       </section>
 
       <section class="win" id="how" aria-labelledby="h-how">
@@ -290,9 +304,10 @@ fieldset small{color:var(--ink-soft)}
       <div class="bar"><span class="t"><svg><use href="#globe"/></svg><span id="h-shots">Screenshots — Windows Picture Viewer</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
       <div class="body">
         <figure class="stage"><img id="shot" src="img/iw-dashboard.jpg" alt="The intraweb dashboard: alice hosting, three neighbors in range" width="1920" height="1200"></figure>
-        <div class="strip" role="group" aria-label="Choose a screenshot"><button type="button" aria-pressed="true" data-src="img/iw-dashboard.jpg" data-alt="The intraweb dashboard: alice hosting, three neighbors in range"><img src="img/iw-dashboard.jpg" alt="The intraweb dashboard: alice hosting, three neighbors in range"></button><button type="button" aria-pressed="false" data-src="img/iw-chat.jpg" data-alt="The neighborhood channel"><img src="img/iw-chat.jpg" alt="The neighborhood channel"></button><button type="button" aria-pressed="false" data-src="img/iw-mail.jpg" data-alt="Signed mail between neighbors"><img src="img/iw-mail.jpg" alt="Signed mail between neighbors"></button><button type="button" aria-pressed="false" data-src="img/iw-guestbook.jpg" data-alt="Alice's guestbook"><img src="img/iw-guestbook.jpg" alt="Alice's guestbook"></button><button type="button" aria-pressed="false" data-src="img/iw-esp32.jpg" data-alt="The page a laptop or phone sees on the ESP32 network"><img src="img/iw-esp32.jpg" alt="The page a laptop or phone sees on the ESP32 network"></button></div>
+        <div class="cyc"><button type="button" class="xpbtn" id="prev" aria-label="Previous screenshot">&#9664; Previous</button><span id="count">1 / 6</span><button type="button" class="xpbtn" id="next" aria-label="Next screenshot">Next &#9654;</button></div>
+        <div class="strip" role="group" aria-label="Choose a screenshot"><button type="button" aria-pressed="true" data-src="img/iw-dashboard.jpg" data-alt="The intraweb dashboard: alice hosting, three neighbors in range"><img src="img/iw-dashboard.jpg" alt="The intraweb dashboard: alice hosting, three neighbors in range"></button><button type="button" aria-pressed="false" data-src="img/iw-libraries.jpg" data-alt="Neighbor cards with media library buttons: Films and Field recordings on bob, Cookbooks on carol"><img src="img/iw-libraries.jpg" alt="Media library buttons on neighbor cards"></button><button type="button" aria-pressed="false" data-src="img/iw-chat.jpg" data-alt="The neighborhood channel"><img src="img/iw-chat.jpg" alt="The neighborhood channel"></button><button type="button" aria-pressed="false" data-src="img/iw-mail.jpg" data-alt="Signed mail between neighbors"><img src="img/iw-mail.jpg" alt="Signed mail between neighbors"></button><button type="button" aria-pressed="false" data-src="img/iw-guestbook.jpg" data-alt="Alice's guestbook"><img src="img/iw-guestbook.jpg" alt="Alice's guestbook"></button><button type="button" aria-pressed="false" data-src="img/iw-esp32.jpg" data-alt="The page a laptop or phone sees on the ESP32 network"><img src="img/iw-esp32.jpg" alt="The page a laptop or phone sees on the ESP32 network"></button></div>
       </div>
-      <div class="status"><span>Four real nodes on one machine</span><span>5 pictures</span></div>
+      <div class="status"><span>Four real nodes on one machine</span><span>6 pictures</span></div>
     </section>
     <section class="around" id="around" aria-labelledby="h-around">
       <h2 id="h-around">Around the neighborhood</h2>
@@ -374,7 +389,12 @@ if(reduce){render(lines.length)}else{
 }
 
 /* picture viewer */
-document.querySelectorAll(".strip button").forEach(function(b){b.addEventListener("click",function(){var im=document.getElementById("shot");im.src=b.dataset.src;im.alt=b.dataset.alt;document.querySelectorAll(".strip button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))})})});
+var shotsB=[].slice.call(document.querySelectorAll(".strip button")),cur=0;
+function showShot(i){cur=(i+shotsB.length)%shotsB.length;shotsB[cur].click()}
+document.getElementById("prev").addEventListener("click",function(){showShot(cur-1)});
+document.getElementById("next").addEventListener("click",function(){showShot(cur+1)});
+document.querySelector(".viewer").addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){showShot(cur-1)}if(e.key==="ArrowRight"){showShot(cur+1)}});
+document.querySelectorAll(".strip button").forEach(function(b){b.addEventListener("click",function(){cur=shotsB.indexOf(b);document.getElementById("count").textContent=(cur+1)+" / "+shotsB.length;var im=document.getElementById("shot");im.src=b.dataset.src;im.alt=b.dataset.alt;document.querySelectorAll(".strip button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))})})});
 /* minimize toggles */
 document.querySelectorAll("[data-min]").forEach(function(b){b.addEventListener("click",function(){var w=b.closest(".win");w.classList.toggle("min");b.setAttribute("aria-label",w.classList.contains("min")?"Restore":"Minimize")})});
 /* property-sheet tabs */
