@@ -1,0 +1,30 @@
+@font-face{font-family:"Barlow Condensed";font-style:italic;font-weight:800;src:url("/assets/fonts/barlow-condensed-800-italic.ttf") format("truetype");font-display:swap}
+/* v2: the city behind everything, the name on top, the page scrolling up over it.
+   Drop the Kabisat file at /assets/fonts/ (see README); until then Barlow
+   Condensed, a tall italic face, stands in. */
+@font-face{font-family:"Kabisat";src:url("/assets/fonts/kabisat-demo-italic-tall.woff2") format("woff2"),url("/assets/fonts/kabisat-demo-italic-tall.otf") format("opentype"),url("/assets/fonts/kabisat-demo-italic-tall.ttf") format("truetype");font-display:swap}
+:root{--v2-display:"Kabisat","Barlow Condensed",Impact,sans-serif;--v2-pink:#ff2bd6;--v2-cyan:#22e3ff}
+html,body{background:#05040b!important}
+#city{position:fixed;inset:0;z-index:0;display:block;pointer-events:none}
+.masthead{background:rgba(6,4,14,.55)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom-color:rgba(255,255,255,.08)!important;position:fixed!important;top:0;left:0;right:0;z-index:20}
+.masthead__menu-item{background:transparent!important}
+.greedy-nav{background:transparent!important}
+.city-hero{position:relative;z-index:1;height:100svh;min-height:560px;display:grid;place-items:center;text-align:center;padding:0 16px}
+.city-hero__name{margin:0;font-family:var(--v2-display);font-style:italic;font-weight:800;font-size:clamp(6rem,24vw,20rem);line-height:.82;letter-spacing:.005em;color:#fff;
+  text-shadow:0 0 18px rgba(255,43,214,.75),0 0 46px rgba(255,43,214,.45),0 0 90px rgba(34,227,255,.35),3px 3px 0 rgba(34,227,255,.55)}
+.city-hero__say{margin:.9em auto 0;max-width:36em;font-size:clamp(.95rem,1.8vw,1.2rem);color:rgba(235,230,255,.85);text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.city-hero__cue{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(235,230,255,.7);text-decoration:none}
+.city-hero__cue::after{content:"";display:block;width:1px;height:38px;margin:10px auto 0;background:linear-gradient(var(--v2-cyan),transparent);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){.city-hero__cue::after{animation:none}}
+#main{position:relative;z-index:2;background:rgba(8,6,18,.86)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.07);border-radius:22px 22px 0 0;padding-top:2.6em!important;box-shadow:0 -30px 80px -20px rgba(255,43,214,.25)}
+.page__footer{position:relative!important;z-index:2;background:rgba(6,4,14,.92)!important}
+.v2 .hero--yc .hero__name{display:none}
+.v2 .hero__say b,.v2 .nowbar__k{color:#fff}
+.v2 .nowbar__k i{background:var(--v2-pink);box-shadow:0 0 0 3px rgba(255,43,214,.25)}
+.v2 h2.sec{font-family:var(--v2-display);font-style:italic;letter-spacing:.06em}
+body.v2{padding-top:0!important}
+.city-hero>div{position:relative}
+.city-hero>div::before{content:"";position:absolute;inset:-18% -12%;z-index:-1;background:radial-gradient(ellipse at center,rgba(5,3,12,.55),transparent 68%);pointer-events:none}
+.city-hero{overflow:hidden}
+.city-hero__say{display:inline-block;padding:.5em 1em;border-radius:12px;background:rgba(6,4,14,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
