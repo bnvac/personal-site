@@ -371,3 +371,10 @@ body{letter-spacing:-.005em}
 h1,h2,h3,.page__title,.hero__name{letter-spacing:-.03em}
 .hero__say b{color:var(--global-base-color)}
 ::selection{color:#111312;background:#e9b44c}
+
+/* Off the screen: photos from the lab and events, three across, cropped to the work cards' shape */
+.work--field{grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 22px;margin:0 0 3.2em}
+.work--field .work__shot{aspect-ratio:4/3}
+.work--field .work__shot img{height:100%;object-fit:cover}
+@media (max-width:52em){.work--field{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:40em){.work--field{grid-template-columns:minmax(0,1fr)}}
