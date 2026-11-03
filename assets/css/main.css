@@ -406,3 +406,5 @@ body{padding-bottom:0!important}
 html[data-theme="dark"] .nowbar__i{border-color:#2a2d31;background:rgba(255,255,255,.03)}
 .hero__cta{margin-top:1.6em!important}
 @media (max-width:40em){.nowbar__i{white-space:normal}}
+/* proof strip removed: keep the hero's divider before Selected work */
+.hero--yc{border-bottom:1px solid var(--global-border-color)!important;padding-bottom:2em!important;margin-bottom:3em!important}
