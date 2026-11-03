@@ -399,3 +399,10 @@ body{padding-bottom:0!important}
 .greedy-nav a{margin:0 .7rem!important;font-size:.84rem}
 .greedy-nav .visible-links li:first-child a{margin-left:0!important}
 .masthead__menu-item--lg{padding-right:1.2em}
+/* Currently building: label on its own line, items as even pills */
+.nowbar{display:flex!important;flex-wrap:wrap;gap:8px!important;margin:1.4em 0 0!important}
+.nowbar__k{flex-basis:100%;margin-bottom:2px}
+.nowbar__i{display:inline-flex;align-items:center;gap:.4em;padding:.38em .8em;border:1px solid var(--global-border-color);border-radius:999px;font-size:.76rem;white-space:nowrap}
+html[data-theme="dark"] .nowbar__i{border-color:#2a2d31;background:rgba(255,255,255,.03)}
+.hero__cta{margin-top:1.6em!important}
+@media (max-width:40em){.nowbar__i{white-space:normal}}
