@@ -66,9 +66,8 @@ python3 tools/build_v2.py
 ```
 
 It writes `site/v2/` from the v1 pages: same content, with the cyberpunk
-stylesheet (`site/assets/v2/v2.css`), the city background (`city.js`), the
-pixel logo on the front page (`logo.js`) and the neon-sign colours
-(`signs.js`). Links between pages stay inside `/v2/`. Project pages keep
+stylesheet (`site/assets/v2/v2.css`), the city background (`city.js`) and
+the neon-sign colours (`signs.js`). Links between pages stay inside `/v2/`. Project pages keep
 their own designs. Don't hand-edit `site/v2/`; it is overwritten.
 
 ## Fonts
