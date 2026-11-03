@@ -14,12 +14,12 @@
   };
   var word = (cv.dataset.word || 'BNVAC').toUpperCase().split('');
   var cx = cv.getContext('2d'), dpr, s, depth, W, H;
-  var COLS = 6, ROWS = 7, GAP = 1.4; // gap between letters, in cells
+  var COLS = 6, ROWS = 7, GAP = .55; // gap between letters, in cells
 
   function size() {
     dpr = Math.min(2, window.devicePixelRatio || 1);
     var cssW = Math.min(innerWidth * .9, 1100);
-    var cells = word.length * COLS + (word.length - 1) * GAP + 3; // +3 for extrusion room
+    var cells = word.length * COLS + (word.length - 1) * GAP + 5; // +3 for extrusion room
     s = Math.floor(cssW / cells);
     depth = Math.max(3, Math.round(s * .42));
     W = Math.ceil(cells * s + depth * 2); H = Math.ceil(ROWS * s + depth * 2 + s * 1.4);
@@ -34,8 +34,17 @@
       var ox = depth + (i * (COLS + GAP)) * s + s * 1.4;
       var bob = reduce ? 0 : Math.sin(t * 1.6 + i * .7) * s * .16;
       var oy = depth * .3 + s * .5 + bob;
-      for (var r = 0; r < ROWS; r++) for (var c = 0; c < COLS; c++) if (g[r][c] === '1')
-        out.push({ i: i, r: r, c: c, x: Math.round(ox + c * s + (ROWS - 1 - r) * s * .13), y: Math.round(oy + r * s) });
+      var mine = [];
+      for (var r = 0; r < ROWS; r++) for (var c = 0; c < COLS; c++) if (g[r][c] === '1') mine.push([r, c]);
+      // the flicks: a cell kicked out left at the foot, right at the top
+      var bl = mine.filter(function (q) { return q[0] === ROWS - 1; }).sort(function (a, b) { return a[1] - b[1]; })[0];
+      var tr = mine.filter(function (q) { return q[0] === 0; }).sort(function (a, b) { return b[1] - a[1]; })[0];
+      if (bl) mine.push([bl[0], bl[1] - 1]);
+      if (tr) mine.push([tr[0], tr[1] + 1]);
+      mine.forEach(function (q) {
+        var r = q[0], c = q[1];
+        out.push({ i: i, r: r, c: c, x: Math.round(ox + c * s + (ROWS - 1 - r) * s * .16), y: Math.round(oy + r * s) });
+      });
     });
     return out;
   }
@@ -47,27 +56,28 @@
     var list = cells(), set = {};
     list.forEach(function (p) { set[p.i + ':' + p.r + ':' + p.c] = 1; });
     var o = Math.max(2, Math.round(s * .16)); // outline width
-    // 1. outline around face and extrusion
-    cx.fillStyle = '#07020f';
-    list.forEach(function (p) { cx.fillRect(p.x - o, p.y - o, s + depth + o * 2, s + depth + o * 2); });
-    // 2. extrusion: one solid deep side
-    for (var k = depth; k > 0; k--) {
-      cx.fillStyle = k > depth * .55 ? '#2a0a4a' : '#4b1475';
-      list.forEach(function (p) { cx.fillRect(p.x + k, p.y + k, s, s); });
-    }
-    // 3. face: vertical cyan-to-pink gradient across the whole word
     var top = Math.min.apply(null, list.map(function (p) { return p.y; })), bot = top + ROWS * s;
     var gr = cx.createLinearGradient(0, top, 0, bot);
     gr.addColorStop(0, '#9ff8ff'); gr.addColorStop(.18, '#35e0ff'); gr.addColorStop(.55, '#a46bff'); gr.addColorStop(1, '#ff2bd6');
-    cx.fillStyle = gr;
-    list.forEach(function (p) { cx.fillRect(p.x, p.y, s + 1, s + 1); });
-    // 4. bevel only on outer edges of each letter
-    var b = Math.max(2, Math.round(s * .16));
-    list.forEach(function (p) {
-      if (!has(set, p.i, p.r - 1, p.c)) { cx.fillStyle = 'rgba(255,255,255,.75)'; cx.fillRect(p.x, p.y, s, b); }
-      if (!has(set, p.i, p.r, p.c - 1)) { cx.fillStyle = 'rgba(255,255,255,.45)'; cx.fillRect(p.x, p.y, b, s); }
-      if (!has(set, p.i, p.r + 1, p.c)) { cx.fillStyle = 'rgba(40,0,60,.35)'; cx.fillRect(p.x, p.y + s - b, s, b); }
-      if (!has(set, p.i, p.r, p.c + 1)) { cx.fillStyle = 'rgba(40,0,60,.25)'; cx.fillRect(p.x + s - b, p.y, b, s); }
+    var bv = Math.max(2, Math.round(s * .16));
+    // each letter whole, left to right, so every letter's outline sits over
+    // the one before it: squashed together, but still separated
+    word.forEach(function (_, li) {
+      var L = list.filter(function (p) { return p.i === li; });
+      cx.fillStyle = '#07020f';
+      L.forEach(function (p) { cx.fillRect(p.x - o, p.y - o, s + depth + o * 2, s + depth + o * 2); });
+      for (var k = depth; k > 0; k--) {
+        cx.fillStyle = k > depth * .55 ? '#2a0a4a' : '#4b1475';
+        L.forEach(function (p) { cx.fillRect(p.x + k, p.y + k, s, s); });
+      }
+      cx.fillStyle = gr;
+      L.forEach(function (p) { cx.fillRect(p.x, p.y, s + 1, s + 1); });
+      L.forEach(function (p) {
+        if (!has(set, p.i, p.r - 1, p.c)) { cx.fillStyle = 'rgba(255,255,255,.75)'; cx.fillRect(p.x, p.y, s, bv); }
+        if (!has(set, p.i, p.r, p.c - 1)) { cx.fillStyle = 'rgba(255,255,255,.45)'; cx.fillRect(p.x, p.y, bv, s); }
+        if (!has(set, p.i, p.r + 1, p.c)) { cx.fillStyle = 'rgba(40,0,60,.35)'; cx.fillRect(p.x, p.y + s - bv, s, bv); }
+        if (!has(set, p.i, p.r, p.c + 1)) { cx.fillStyle = 'rgba(40,0,60,.25)'; cx.fillRect(p.x + s - bv, p.y, bv, s); }
+      });
     });
     // 5. a moving sheen across the face
     if (!reduce) {

@@ -12,6 +12,10 @@
   function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
   function pick(a) { return a[(rnd() * a.length) | 0]; }
   var NEON = ['#ff2bd6', '#22e3ff', '#b16cff', '#ffcf3a', '#ff4d6d', '#3dffb5'];
+  // Optional photo wallpaper: if the canvas names one and it loads, it is
+  // drawn instead of the generated city (rain, dimming and parallax stay).
+  var WALL = null;
+  if (cv.dataset.wallpaper) { var wi = new Image(); wi.onload = function () { WALL = wi; }; wi.src = cv.dataset.wallpaper; }
   var WORDS = ['INTRAWEB', 'HEARTH', 'STDNT', 'BACKOFFICE', 'SMART SHELF', 'BASELAYER', 'ARTWORK', 'BNVAC', '24/7', 'OPEN'];
 
   function offscreen(w, h) { var c = document.createElement('canvas'); c.width = w * dpr; c.height = h * dpr; var g = c.getContext('2d'); g.scale(dpr, dpr); return { c: c, g: g }; }
@@ -109,6 +113,7 @@
     t = (t || 0) / 1000;
     var s = scrollY;
     cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (WALL) { wallpaper(s, t); return; }
     // sky
     var sk = cx.createLinearGradient(0, 0, 0, horizon);
     sk.addColorStop(0, '#03030b'); sk.addColorStop(.6, '#0d0a26'); sk.addColorStop(1, '#2a0f4a');
@@ -139,6 +144,26 @@
     // rain
     if (drops.length) {
       cx.strokeStyle = 'rgba(170,200,255,.16)'; cx.lineWidth = 1; cx.beginPath();
+      drops.forEach(function (d) { cx.moveTo(d.x, d.y); cx.lineTo(d.x - d.l * .12, d.y + d.l); d.y += d.v; d.x -= d.v * .12; if (d.y > H) { d.y = -20; d.x = Math.random() * (W + 40); } });
+      cx.stroke();
+    }
+    var dim = Math.min(.7, s / (H * 1.1) * .7);
+    if (dim > 0) { cx.fillStyle = 'rgba(3,3,10,' + dim + ')'; cx.fillRect(0, 0, W, H); }
+  }
+
+  function wallpaper(s, t) {
+    // cover the screen, slightly zoomed so it can drift up as you scroll
+    var z = 1.14, iw = WALL.naturalWidth, ih = WALL.naturalHeight;
+    var k = Math.max(W / iw, H / ih) * z, dw = iw * k, dh = ih * k;
+    var x = (W - dw) / 2, y = (H - dh) / 2 - Math.min(s * .12, (dh - H) / 2);
+    cx.fillStyle = '#05040b'; cx.fillRect(0, 0, W, H);
+    cx.imageSmoothingQuality = 'high'; cx.drawImage(WALL, x, y, dw, dh);
+    // tint and vignette so the name reads and a small image doesn't look soft
+    var v = cx.createRadialGradient(W / 2, H * .45, Math.min(W, H) * .2, W / 2, H * .5, Math.max(W, H) * .75);
+    v.addColorStop(0, 'rgba(10,4,24,.15)'); v.addColorStop(1, 'rgba(4,2,12,.75)');
+    cx.fillStyle = v; cx.fillRect(0, 0, W, H);
+    if (drops.length) {
+      cx.strokeStyle = 'rgba(170,200,255,.14)'; cx.lineWidth = 1; cx.beginPath();
       drops.forEach(function (d) { cx.moveTo(d.x, d.y); cx.lineTo(d.x - d.l * .12, d.y + d.l); d.y += d.v; d.x -= d.v * .12; if (d.y > H) { d.y = -20; d.x = Math.random() * (W + 40); } });
       cx.stroke();
     }

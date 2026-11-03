@@ -73,3 +73,14 @@ License (`site/assets/fonts/OFL-BarlowCondensed.txt`).
 Don't add the Kabisat file to `.gitignore` to keep it out of git: the
 Neocities CLI skips anything listed there, so it would not upload either.
 Just leave it uncommitted.
+
+## v2 wallpaper
+
+v2 draws its own city. To use a photo instead, put it at
+`site/assets/v2/wallpaper.jpg`; if that file exists it is shown in place of
+the drawn city, with the rain, parallax and dimming kept. Delete the file (or
+the `data-wallpaper` attribute on `#city` in `site/v2/index.html`) to go back.
+
+The placeholder used while designing is a game screenshot and is not
+committed. Swap in an image you have the rights to before v2 goes public.
+A wide image, 2560px or more, looks sharpest.
