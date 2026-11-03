@@ -1,0 +1,565 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+<meta charset="utf-8">
+
+
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>bnvac — v2</title>
+
+
+
+<meta name="description" content="Radar sensing, machine learning systems, and neural interfaces.">
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "bnvac",
+      "url" : null,
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+<!-- Open Graph protocol data (https://ogp.me/), used by social media -->
+<meta property="og:locale" content="en-US">
+<meta property="og:site_name" content="bnvac"> 
+<meta property="og:title" content="bnvac">
+
+
+
+
+
+
+
+<!-- end Open Graph protocol -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="/assets/v2/v2.css">
+<script>document.documentElement.setAttribute("data-theme","dark")</script>
+
+    
+
+<!-- start custom head snippets -->
+
+<!-- Support for Academicons -->
+
+<!-- Support for Font Awesome -->
+ <link rel="preload" href="/assets/css/fontawesome.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/css/fontawesome.css"></noscript>
+
+<!-- favicon from https://commons.wikimedia.org/wiki/File:OOjs_UI_icon_academic-progressive.svg -->
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-180x180.png"/>
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg"/>
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32"/>
+<link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192"/>
+<link rel="manifest" href="/images/manifest.json"/>
+<link rel="icon" href="/images/favicon.ico"/>
+<meta name="theme-color" content="var(--global-bg-color)"/>
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="v2">
+<canvas id="city" aria-hidden="true"></canvas>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><span class="navicon"></span></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg persist selected">
+              <a href="/">bnvac</a>
+          </li>
+          
+            
+            <li class="masthead__menu-item ">
+              <a href="/education/">Education</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item ">
+              <a href="/experience/">Experience</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item ">
+              <a href="/publications/">Publications</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item ">
+              <a href="/software/">Software</a>
+            </li>
+
+
+            <li class="masthead__menu-item ">
+              <a href="/awards/">Honors & Awards</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item ">
+              <a href="/certifications/">Certifications</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item ">
+              <a href="/contact/">Contact</a>
+            </li>
+          
+          <li id="theme-toggle" class="masthead__menu-item persist tail">
+            <a role="button" aria-labelledby="theme-icon"><i id="theme-icon" class="fa-solid fa-sun" aria-hidden="true" title="toggle theme"></i></a>
+          </li>
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    
+
+
+
+
+
+<header class="city-hero" aria-label="bnvac">
+  <div>
+    <h1 class="city-hero__name">bnvac</h1>
+    <p class="city-hero__say">I build sensing systems and research infrastructure. When the tool I need doesn&rsquo;t exist, I write it.</p>
+  </div>
+  <a class="city-hero__cue" href="#main">Scroll</a>
+</header>
+
+<div id="main" role="main" class="page--home">
+  
+
+
+  <div class="sidebar sticky">
+  
+
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    
+    	<img src="/images/profile.jpg" class="author__avatar" alt="bnvac"  fetchpriority="high" />
+    
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">bnvac</h3>
+    
+    <p class="author__bio">Radar sensing, machine learning systems, and neural interfaces.</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      <!-- Font Awesome icons / Biographic information  -->
+      
+        <li class="author__desktop"><i class="fas fa-fw fa-location-dot icon-pad-right" aria-hidden="true"></i>Millis, MA</li>
+      
+      
+        <li class="author__desktop"><i class="fas fa-fw fa-building-columns icon-pad-right" aria-hidden="true"></i>MIT Beaver Works</li>
+      
+      
+      
+        <li><a href="mailto:benvaccaro@proton.me"><i class="fas fa-fw fa-envelope icon-pad-right" aria-hidden="true"></i>Email</a></li>
+      
+
+      <!-- Font Awesome and Academicons icons / Academic websites -->
+      
+            
+      
+            
+      
+      
+                              
+      
+      
+      
+      
+      
+
+      <!-- Font Awesome icons / Repositories and software development -->
+      
+            
+            
+      
+        <li><a href="https://github.com/bnvac"><i class="fab fa-fw fa-github icon-pad-right" aria-hidden="true"></i>GitHub</a></li>
+      
+            
+            
+
+      <!-- Font Awesome icons / Social media -->
+              
+      
+      
+            
+      
+                  
+                  
+      
+      
+        <li><a href="https://instagram.com/bnvac"><i class="fab fa-fw fa-instagram icon-pad-right" aria-hidden="true"></i>Instagram</a></li>
+            
+            
+      
+        <li><a href="https://www.linkedin.com/in/bnvac"><i class="fab fa-fw fa-linkedin icon-pad-right" aria-hidden="true"></i>LinkedIn</a></li>
+            
+      
+            
+                  
+            
+      
+            
+            
+      
+              
+      
+                      
+      
+      
+            
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="bnvac">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">bnvac
+</h1>
+          
+        
+        
+            
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+<div class="hero hero--yc">
+  <div class="hero__main">
+  <h1 class="hero__name">bnvac</h1>
+  <p class="hero__say">I build sensing systems and research infrastructure. <b>When the tool I need doesn&rsquo;t exist, I write it.</b></p>
+  <p class="hero__meta"><span>Millis, MA</span><span>MIT Lincoln Laboratory</span><span>Millis High School, 2027</span></p>
+  <div class="nowbar" aria-label="Currently building"><span class="nowbar__k"><i aria-hidden="true"></i>Currently building</span>
+    <span class="nowbar__i"><b>Wireless brain&ndash;computer interface</b> &middot; Rev&nbsp;A at Solderable</span>
+    <span class="nowbar__i"><b>CubeSat</b> &middot; leading the team at Lincoln Lab</span>
+    <span class="nowbar__i"><b>Synthetic-aperture radar</b> &middot; on drones at Beaver Works</span>
+  </div>
+    <p class="hero__cta"><a class="hbtn hbtn--p" href="mailto:benvaccaro@proton.me"><i class="fas fa-envelope" aria-hidden="true"></i>Email me</a><a class="hbtn" href="https://github.com/bnvac"><i class="fab fa-github" aria-hidden="true"></i>GitHub</a><a class="hbtn" href="https://www.linkedin.com/in/bnvac"><i class="fab fa-linkedin" aria-hidden="true"></i>LinkedIn</a></p>
+  </div>
+  <img class="hero__photo" src="/images/profile.jpg" alt="bnvac" width="640" height="640" fetchpriority="high">
+</div>
+
+
+<h2 class="sec">Selected work <a href="/software/">All software &rarr;</a></h2>
+
+<div class="band band--work-left">
+  <div class="band__work">
+<ul class="work">
+  <li>
+    <a class="work__shot" href="/images/software/stdnt.jpg" data-lightbox data-title="stdnt.xyz" data-caption="Every free thing a student can get &mdash; tools, API keys, 131 scholarships, 181 STEM programmes &mdash; in one searchable page, matched to you on-device.">
+      <img src="/images/home/stdnt.jpg" alt="stdnt.xyz"
+      width="1000" height="625" loading="lazy" decoding="async"></a>
+    <h3><a href="/software/#stdnt-xyz">stdnt.xyz</a></h3>
+    <p>Every free thing a student can get &mdash; tools, API keys, 131 scholarships, 181 STEM programmes &mdash; in one searchable page, matched to you on-device.</p>
+    <p class="work__tags"><span>JavaScript</span><span>Zero dependencies</span><span>Open source</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/software/backoffice-1.jpg" data-lightbox data-title="backoffice" data-caption="A self-hosted inventory for the parts in a lab drawer, with project bills of materials and pin budgets. One static binary, one SQLite file.">
+      <img src="/images/home/backoffice.jpg" alt="backoffice"
+      width="1000" height="625" loading="lazy" decoding="async"></a>
+    <h3><a href="/backoffice/">backoffice</a></h3>
+    <p>A self-hosted inventory for the parts in a lab drawer, with project bills of materials and pin budgets. One static binary, one SQLite file.</p>
+    <p class="work__tags"><span>Go</span><span>SQLite</span><span>Runs on a Pi</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/software/intraweb.jpg" data-lightbox data-title="intraweb" data-caption="A zero-config intranet. One binary on the same Wi-Fi, or on a $5 ESP32 with no router at all, and you can see each other, visit pages, and send signed mail and encrypted channels.">
+      <img src="/images/home/intraweb.jpg" alt="intraweb"
+      width="1000" height="625" loading="lazy" decoding="async"></a>
+    <h3><a href="/intraweb/">intraweb</a></h3>
+    <p>Your neighborhood web. A zero-config intranet with no server and no internet: you are a keypair and a folder, and a hub is just a place to meet.</p>
+    <p class="work__tags"><span>Rust</span><span>Ed25519</span><span>ESP32 access point</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/software/baselayer.jpg" data-lightbox data-title="baselayer" data-caption="A NixOS configuration builder that runs entirely in the browser and emits real flake.nix files. No backend &mdash; the link is the config.">
+      <img src="/images/home/baselayer.jpg" alt="baselayer"
+      width="1000" height="625" loading="lazy" decoding="async"></a>
+    <h3><a href="/software/#baselayer">baselayer</a></h3>
+    <p>A NixOS configuration builder that runs entirely in the browser and emits real flake.nix files. No backend &mdash; the link <em>is</em> the config.</p>
+    <p class="work__tags"><span>JavaScript</span><span>59 services</span><span>No backend</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/software/hearth.jpg" data-lightbox data-title="Hearth" data-caption="A private Linux distribution for engineers, built on NixOS: local AI on your own GPU, Tor without leaks, and the tools for circuits and 3D printing, in seventeen switchable modules.">
+      <img src="/images/home/hearth.jpg" alt="Hearth"
+      width="1000" height="625" loading="lazy" decoding="async"></a>
+    <h3><a href="/hearth/">Hearth</a></h3>
+    <p>A private Linux for engineers. Local AI on your own GPU, privacy by default, and the bench tools built in, as seventeen modules you switch on with one command.</p>
+    <p class="work__tags"><span>NixOS</span><span>17 modules</span><span>Two machines, one config</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/software/alphafold.jpg" data-lightbox data-title="AlphaFold viral study" data-caption="AlphaFold2 is measurably worse at predicting viral proteins: 233 solved structures, median TM-score 0.927 against 0.970, p = 1.3 &times; 10&#8315;&#8312;.">
+      <img src="/images/home/alphafold.jpg" alt="AlphaFold viral study"
+      width="1000" height="625" loading="lazy" decoding="async"></a>
+    <h3><a href="/alphafold/">AlphaFold viral study</a></h3>
+    <p>AlphaFold2 is measurably worse at predicting viral proteins: 233 solved structures, median TM-score 0.927 against 0.970, p = 1.3 &times; 10&#8315;&#8312;.</p>
+    <p class="work__tags"><span>Python</span><span>TM-align</span><span>Paper in progress</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/software/smart-shelf.jpg" data-lightbox data-title="Smart Shelf" data-caption="Inventory and forecasting for a food pantry: volunteers scan what comes in and goes out, and the public needs list writes itself.">
+      <img src="/images/home/smart-shelf.jpg" alt="Smart Shelf"
+      width="1000" height="625" loading="lazy" decoding="async"></a>
+    <h3><a href="/smart-shelf/">Smart Shelf</a></h3>
+    <p>Inventory and forecasting for a food pantry: volunteers scan what comes in and goes out, and the public needs list writes itself.</p>
+    <p class="work__tags"><span>Django</span><span>Forecasting</span><span>Coming to local pantries</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/software/artwork-1.jpg" data-lightbox data-title="artwork" data-caption="A pomodoro timer whose background is a museum painting that paints itself, stroke by stroke, for exactly as long as you work.">
+      <img src="/images/home/artwork.jpg" alt="artwork"
+      width="1000" height="625" loading="lazy" decoding="async"></a>
+    <h3><a href="/software/#artwork">artwork</a></h3>
+    <p>A pomodoro timer whose background is a museum painting that paints itself, stroke by stroke, for exactly as long as you work.</p>
+    <p class="work__tags"><span>JavaScript</span><span>7 museum APIs</span><span>Live</span></p>
+  </li>
+</ul>
+  </div>
+  <div class="band__say">
+<p>I am a senior at Millis High School, outside Boston, class of 2027.</p>
+    <p>Most of what I build starts the same way. I go looking for something, find that it does not exist or has quietly stopped being maintained, and write it myself. <strong>stdnt.xyz</strong> exists because the scholarship spreadsheets students pass around always die. <strong>backoffice</strong> exists because I kept buying the same ESP32 twice. <strong>artwork</strong> exists because I wanted a timer worth looking at for twenty-five minutes.</p>
+    <p>The other half is research: synthetic-aperture radar on unmanned aircraft at <strong>MIT Beaver Works</strong>, a CubeSat team I lead at <strong>Lincoln Laboratory</strong>, training-data pipelines at <strong>Mantis AI</strong> in CSAIL, and a wireless brain&ndash;computer interface at <strong>Solderable</strong> on a Rev&nbsp;A grant.</p>
+    <p>Away from a screen I captain a <strong>SeaPerch</strong> robotics team, run hackathons for <strong>Hack Club &times; NASA</strong>, and am working toward Eagle Scout. If you are building something, <a href="/contact/">say hello</a>.</p>
+  </div>
+</div>
+
+<h2 class="sec">In the lab and at hackathons</h2>
+
+<ul class="work work--field">
+  <li>
+    <a class="work__shot" href="/images/field/bwsi-build-room.jpg" data-lightbox data-title="Airframe build day" data-caption="Airframe, tools and laptops across a table in the Beaver Works build room.">
+      <img src="/images/field/bwsi-build-room.jpg" alt="Airframe, tools and laptops across a table in the Beaver Works build room." width="1100" height="1100" loading="lazy" decoding="async"></a>
+    <h3>Airframe build day</h3>
+    <p>Airframe, tools and laptops across a table in the Beaver Works build room.</p>
+    <p class="work__tags"><span>Research</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/field/flight-cage.jpg" data-lightbox data-title="Flight tests" data-caption="A quadrotor held over the landing pad in the netted motion-capture cage.">
+      <img src="/images/field/flight-cage.jpg" alt="A quadrotor held over the landing pad in the netted motion-capture cage." width="1100" height="1100" loading="lazy" decoding="async"></a>
+    <h3>Flight tests</h3>
+    <p>A quadrotor held over the landing pad in the netted motion-capture cage.</p>
+    <p class="work__tags"><span>Research</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/field/sar-backprojection.jpg" data-lightbox data-title="A scene, backprojected" data-caption="A synthetic-aperture radar image formed by backprojection, axes in metres.">
+      <img src="/images/field/sar-backprojection.jpg" alt="A synthetic-aperture radar image formed by backprojection, axes in metres." width="1100" height="1100" loading="lazy" decoding="async"></a>
+    <h3>A scene, backprojected</h3>
+    <p>A synthetic-aperture radar image formed by backprojection, axes in metres.</p>
+    <p class="work__tags"><span>Radar</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/field/wearable-rig.jpg" data-lightbox data-title="Gait sensing, first fitting" data-caption="A microcontroller and a ribbon of jumper wires taped around an ankle.">
+      <img src="/images/field/wearable-rig.jpg" alt="A microcontroller and a ribbon of jumper wires taped around an ankle." width="1100" height="1100" loading="lazy" decoding="async"></a>
+    <h3>Gait sensing, first fitting</h3>
+    <p>A microcontroller and a ribbon of jumper wires taped around an ankle.</p>
+    <p class="work__tags"><span>Hardware</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/field/lab-bench.jpg" data-lightbox data-title="The bench" data-caption="Pegboard, whiteboard and a monitor, before a long week.">
+      <img src="/images/field/lab-bench.jpg" alt="Pegboard, whiteboard and a monitor, before a long week." width="1100" height="1100" loading="lazy" decoding="async"></a>
+    <h3>The bench</h3>
+    <p>Pegboard, whiteboard and a monitor, before a long week.</p>
+    <p class="work__tags"><span>Hardware</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/field/spot.jpg" data-lightbox data-title="Spot, off shift" data-caption="A Boston Dynamics Spot folded up between runs.">
+      <img src="/images/field/spot.jpg" alt="A Boston Dynamics Spot folded up between runs." width="1100" height="1100" loading="lazy" decoding="async"></a>
+    <h3>Spot, off shift</h3>
+    <p>A Boston Dynamics Spot folded up between runs.</p>
+    <p class="work__tags"><span>Robotics</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/field/blueprint-first.jpg" data-lightbox data-title="First place, Blueprint" data-caption="Advanced track at MIT Blueprint: a working prototype designed and demoed in ten hours.">
+      <img src="/images/field/blueprint-first.jpg" alt="Advanced track at MIT Blueprint: a working prototype designed and demoed in ten hours." width="1100" height="1100" loading="lazy" decoding="async"></a>
+    <h3>First place, Blueprint</h3>
+    <p>Advanced track at MIT Blueprint: a working prototype designed and demoed in ten hours.</p>
+    <p class="work__tags"><span>Hackathon</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/field/hackathon-cohort.jpg" data-lightbox data-title="The whole cohort" data-caption="Everyone at the hackathon, under one sign.">
+      <img src="/images/field/hackathon-cohort.jpg" alt="Everyone at the hackathon, under one sign." width="1100" height="1100" loading="lazy" decoding="async"></a>
+    <h3>The whole cohort</h3>
+    <p>Everyone at the hackathon, under one sign.</p>
+    <p class="work__tags"><span>Community</span></p>
+  </li>
+  <li>
+    <a class="work__shot" href="/images/field/lecture-hall.jpg" data-lightbox data-title="Hardware weekend" data-caption="Mid-session, laptops open and circuits on the screen.">
+      <img src="/images/field/lecture-hall.jpg" alt="Mid-session, laptops open and circuits on the screen." width="1100" height="1100" loading="lazy" decoding="async"></a>
+    <h3>Hardware weekend</h3>
+    <p>Mid-session, laptops open and circuits on the screen.</p>
+    <p class="work__tags"><span>Community</span></p>
+  </li>
+</ul>
+
+<h2 class="sec">Elsewhere</h2>
+
+<ul class="links">
+  <li><a href="https://github.com/bnvac"><i class="fab fa-github" aria-hidden="true"></i><b>GitHub</b><span>bnvac</span></a></li>
+  <li><a href="mailto:benvaccaro@proton.me"><i class="fas fa-envelope" aria-hidden="true"></i><b>Email</b><span>benvaccaro@proton.me</span></a></li>
+  <li><a href="https://www.linkedin.com/in/bnvac"><i class="fab fa-linkedin" aria-hidden="true"></i><b>LinkedIn</b><span>bnvac</span></a></li>
+  <li><a href="https://instagram.com/bnvac"><i class="fab fa-instagram" aria-hidden="true"></i><b>Instagram</b><span>bnvac</span></a></li>
+</ul>
+
+<ul class="record">
+  <li><a href="/experience/"><b>Experience</b><span>Nine roles since 2023 &mdash; MIT Lincoln Laboratory, Mantis AI in CSAIL, Synthica, Solderable.</span></a></li>
+  <li><a href="/awards/"><b>Honors &amp; Awards</b><span>1st overall at MIT Blueprint, 4th at the Special Competitive Studies Project at Harvard, the Xerox Innovation and Technology Award.</span></a></li>
+  <li><a href="/education/"><b>Education</b><span>MIT Beaver Works Summer Institute, on the UAS-SAR course. Millis High School, class of 2027.</span></a></li>
+  <li><a href="/certifications/"><b>Certifications</b><span>Seven, including the MIT Build a CubeSat Challenge and Red Cross first aid, CPR and AED.</span></a></li>
+  <li><a href="/publications/"><b>Publications</b><span>First paper in preparation.</span></a></li>
+  <li><a href="/software/"><b>Software</b><span>Eight projects written up in full, and ten more repositories.</span></a></li>
+</ul>
+
+
+        
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+
+      </footer>
+
+      
+
+      
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+
+<!-- end custom footer snippets -->
+
+        
+
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+      <li><a href="https://github.com/bnvac"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">
+  &copy; 2026 bnvac, Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>, a fork of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.<br />
+  Site last updated 2026-08-25, <a href="/sitemap/" style="text-transform: uppercase;">Sitemap</a>
+</div>
+
+      </footer>
+    </div>
+
+    <script type="module" src="/assets/js/main.min.js"></script>
+    <script src="/assets/js/lightbox.js"></script>
+    <script src="/assets/js/carousel.js"></script>
+    <script src="/assets/v2/city.js"></script>
+    <script>document.documentElement.setAttribute("data-theme","dark")</script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+
