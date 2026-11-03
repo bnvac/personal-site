@@ -147,7 +147,7 @@
       drops.forEach(function (d) { cx.moveTo(d.x, d.y); cx.lineTo(d.x - d.l * .12, d.y + d.l); d.y += d.v; d.x -= d.v * .12; if (d.y > H) { d.y = -20; d.x = Math.random() * (W + 40); } });
       cx.stroke();
     }
-    var dim = Math.min(.7, s / (H * 1.1) * .7);
+    var dim = Math.max(+cv.dataset.dim || 0, Math.min(.7, s / (H * 1.1) * .7));
     if (dim > 0) { cx.fillStyle = 'rgba(3,3,10,' + dim + ')'; cx.fillRect(0, 0, W, H); }
   }
 
@@ -167,7 +167,7 @@
       drops.forEach(function (d) { cx.moveTo(d.x, d.y); cx.lineTo(d.x - d.l * .12, d.y + d.l); d.y += d.v; d.x -= d.v * .12; if (d.y > H) { d.y = -20; d.x = Math.random() * (W + 40); } });
       cx.stroke();
     }
-    var dim = Math.min(.7, s / (H * 1.1) * .7);
+    var dim = Math.max(+cv.dataset.dim || 0, Math.min(.7, s / (H * 1.1) * .7));
     if (dim > 0) { cx.fillStyle = 'rgba(3,3,10,' + dim + ')'; cx.fillRect(0, 0, W, H); }
   }
 
