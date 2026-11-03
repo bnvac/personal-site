@@ -383,3 +383,19 @@ a{text-decoration-thickness:1px;text-underline-offset:.18em}
 .role__body>p:not(.role-meta){margin-top:0}
 .hbtn,.hbtn:hover{text-decoration:none!important}
 .hero__cta{margin-top:1.7em}
+
+/* ---- One container for header, content and footer ---------------------
+   The template sized the masthead to 1280px, the content to 1120px and
+   pinned the footer to the screen, so nothing lined up and the footer sat
+   on top of the page. Everything now shares one width and one gutter. */
+:root{--wrap:1120px;--gut:clamp(18px,4vw,40px)}
+.masthead__inner-wrap,#main,.page__footer footer{max-width:var(--wrap)!important;margin-left:auto!important;margin-right:auto!important;padding-left:var(--gut)!important;padding-right:var(--gut)!important;float:none!important}
+#main .page,#main .archive{width:100%!important;float:none!important;margin-left:0!important;margin-right:0!important;padding-left:0!important;padding-right:0!important}
+.page__footer{position:static!important;float:none!important;margin-top:4em!important}
+body{padding-bottom:0!important}
+@media (max-width:68em){.band--work-left{grid-template-columns:minmax(0,1fr)}.band--work-left .band__say{max-width:44em}}
+@media (min-width:52em) and (max-width:68em){.band .work{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* the nav fits the narrower header: smaller type and gaps, so every link shows on a laptop */
+.greedy-nav a{margin:0 .7rem!important;font-size:.84rem}
+.greedy-nav .visible-links li:first-child a{margin-left:0!important}
+.masthead__menu-item--lg{padding-right:1.2em}
