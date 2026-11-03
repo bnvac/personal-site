@@ -1,179 +1,210 @@
-/* v2 background: an original night city, drawn in the browser.
-   Glass towers in three depths, holographic billboards for the projects,
-   a cable-stayed bridge, water that reflects it all, haze and light rain.
-   Static layers are painted once to offscreen canvases; only the signs'
-   flicker, the billboard scanlines and the rain animate. */
+/* v2 background: a city you descend through as you scroll.
+   The top of the page is sky above the tower tops; the bottom is the wet,
+   lit street. Three layers of towers move at different rates (the near
+   ones fastest), so going down feels like dropping between buildings.
+   Windows are a repeating texture per layer, so a frame is a handful of
+   rectangles, not thousands. An optional photo (data-wallpaper) replaces
+   the city when set. */
 (function () {
   var cv = document.getElementById('city');
   if (!cv) return;
   var cx = cv.getContext('2d');
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var W, H, dpr, seed, layers, boards, drops, horizon;
+  var W, H, dpr, seed, layers, cars, drops, depth;
+  var NEON = ['#ff2bd6', '#22e3ff', '#b16cff', '#ffd23f', '#ff4d6d', '#3dffb5'];
+  var WORDS = ['INTRAWEB', 'HEARTH', 'STDNT', 'BACKOFFICE', 'SMART SHELF', 'BASELAYER', 'ARTWORK', 'BNVAC', 'OPEN 24/7', 'MILLIS', 'NOODLES', 'HOTEL'];
   function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
   function pick(a) { return a[(rnd() * a.length) | 0]; }
-  var NEON = ['#ff2bd6', '#22e3ff', '#b16cff', '#ffcf3a', '#ff4d6d', '#3dffb5'];
-  // Optional photo wallpaper: if the canvas names one and it loads, it is
-  // drawn instead of the generated city (rain, dimming and parallax stay).
+
   var WALL = null;
   if (cv.dataset.wallpaper) { var wi = new Image(); wi.onload = function () { WALL = wi; }; wi.src = cv.dataset.wallpaper; }
-  var WORDS = ['INTRAWEB', 'HEARTH', 'STDNT', 'BACKOFFICE', 'SMART SHELF', 'BASELAYER', 'ARTWORK', 'BNVAC', '24/7', 'OPEN'];
 
-  function offscreen(w, h) { var c = document.createElement('canvas'); c.width = w * dpr; c.height = h * dpr; var g = c.getContext('2d'); g.scale(dpr, dpr); return { c: c, g: g }; }
-
-  function tower(g, x, w, top, base, depth) {
-    // glass body: dark navy to violet, lighter at one edge
-    var gr = g.createLinearGradient(x, 0, x + w, 0);
-    var a = [8 + depth * 4, 10 + depth * 4, 28 + depth * 10], b = [22 + depth * 8, 14 + depth * 4, 52 + depth * 14];
-    gr.addColorStop(0, 'rgb(' + b.join(',') + ')'); gr.addColorStop(.5, 'rgb(' + a.join(',') + ')'); gr.addColorStop(1, 'rgb(' + a.map(function (v) { return v * .7 | 0; }).join(',') + ')');
-    g.fillStyle = gr; g.fillRect(x, top, w, base - top);
-    // stepped crown or spire
-    var r = rnd();
-    if (r < .3) { g.fillRect(x + w * .2, top - h(18), w * .6, h(18)); g.fillRect(x + w * .4, top - h(40), w * .2, h(22)); }
-    else if (r < .5) { g.fillRect(x + w * .48, top - h(70), 2, h(70)); }
-    // floors: thin horizontal light bands, some vertical neon strips
-    var band = 5 + depth * 2;
-    for (var y = top + 6; y < base; y += band) {
-      if (rnd() < .55) {
-        var lit = rnd(), alpha = .12 + lit * .45;
-        g.fillStyle = lit > .85 ? 'rgba(255,200,120,' + alpha + ')' : 'rgba(110,200,255,' + alpha + ')';
-        var x0 = x + 3, x1 = x + w - 3;
-        while (x0 < x1) { var seg = 6 + rnd() * 30; if (rnd() < .7) g.fillRect(x0, y, Math.min(seg, x1 - x0), 1.2 + depth * .4); x0 += seg + 2; }
-      }
+  function windowTile(n) {
+    // a tile of lit and dark windows; the near layer has bigger windows
+    var tw = 64, th = 96, c = document.createElement('canvas'); c.width = tw * dpr; c.height = th * dpr;
+    var g = c.getContext('2d'); g.scale(dpr, dpr);
+    var cw = 4 + n * 2, ch = 3 + n * 1.5, gx = 7 + n * 3, gy = 7 + n * 3;
+    for (var y = 2; y < th - ch; y += gy) for (var x = 2; x < tw - cw; x += gx) {
+      var r = rnd();
+      if (r < .18 + n * .05) g.fillStyle = 'rgba(255,196,120,' + (.45 + rnd() * .5) + ')';
+      else if (r < .42 + n * .05) g.fillStyle = 'rgba(110,210,255,' + (.25 + rnd() * .5) + ')';
+      else g.fillStyle = 'rgba(255,255,255,.03)';
+      g.fillRect(x, y, cw, ch);
     }
-    if (rnd() < .45 + depth * .15) {
-      var col = pick(NEON); g.save(); g.shadowColor = col; g.shadowBlur = 10 + depth * 6; g.fillStyle = col;
-      var sx = rnd() < .5 ? x + 2 : x + w - 4; g.fillRect(sx, top + (base - top) * rnd() * .3, 2 + depth, (base - top) * (.3 + rnd() * .5)); g.restore();
-    }
-    if (rnd() < .5) { g.save(); g.shadowColor = '#ff2b4a'; g.shadowBlur = 8; g.fillStyle = '#ff5a6e'; g.fillRect(x + w * .48, top - 4, 3, 3); g.restore(); } // aircraft light
+    return cx.createPattern(c, 'repeat');
   }
-  function h(v) { return v * (H / 900); }
 
   function build() {
     dpr = Math.min(2, window.devicePixelRatio || 1);
     W = innerWidth; H = innerHeight; seed = 20261103;
     cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
-    horizon = H * .78;
-    layers = []; boards = [];
+    depth = H * 5;            // the full fall, top of the sky to the street
+    layers = [];
     var spec = [
-      { n: 0, hMin: .18, hMax: .42, wMin: 26, wMax: 60, gap: 2, speed: .04, fade: .55 },
-      { n: 1, hMin: .26, hMax: .62, wMin: 40, wMax: 90, gap: 4, speed: .09, fade: .25 },
-      { n: 2, hMin: .32, hMax: .80, wMin: 60, wMax: 140, gap: 10, speed: .16, fade: 0 }
+      { n: 0, travel: .45, wMin: 30, wMax: 70, topMin: .55, topMax: 1.3, col: [24, 16, 60], haze: .5 },
+      { n: 1, travel: .72, wMin: 50, wMax: 110, topMin: .9, topMax: 2.0, col: [16, 11, 42], haze: .22 },
+      { n: 2, travel: 1.0, wMin: 90, wMax: 190, topMin: 1.25, topMax: 2.8, col: [7, 5, 18], haze: 0 }
     ];
     spec.forEach(function (s) {
-      var L = offscreen(W, H * 1.2), g = L.g, base = horizon + H * .02 * s.n, x = -30;
-      while (x < W + 30) {
-        var w = s.wMin + rnd() * (s.wMax - s.wMin);
-        // taller near the middle so the skyline peaks behind the name
-        var mid = 1 - Math.abs((x + w / 2) / W - .5) * 1.2;
-        var top = base - H * (s.hMin + rnd() * (s.hMax - s.hMin)) * (.6 + .6 * mid);
-        tower(g, x, w, top, base + 4, s.n);
-        if (s.n >= 1 && w > 50 && rnd() < .32) boards.push({ layer: layers.length, x: x + w * .12, y: top + (base - top) * (.12 + rnd() * .35), w: w * .76, h: Math.min((base - top) * .3, w * (.8 + rnd() * .9)), word: pick(WORDS), c1: pick(NEON), c2: pick(NEON), ph: rnd() * 6 });
-        x += w + s.gap * rnd();
+      var towers = [], x = -40;
+      while (x < W + 40) {
+        var w = s.wMin + rnd() * (s.wMax - s.wMin), mid = 1 - Math.abs((x + w / 2) / W - .5) * 1.1;
+        var top = H * (s.topMin + rnd() * (s.topMax - s.topMin)) * (1.25 - .45 * mid);
+        var t = { x: x, w: w, top: top, crown: rnd(), signs: [], strips: [] };
+        // billboards and neon strips at random depths down the tower
+        for (var y = top + 60; y < depth - H * .3; y += H * (.35 + rnd() * .6)) {
+          if (s.n >= 1 && rnd() < .55) t.signs.push({ y: y, h: Math.min(w * (.6 + rnd() * .9), H * .3), word: pick(WORDS), c1: pick(NEON), c2: pick(NEON), ph: rnd() * 6, vertical: rnd() < .35 });
+          if (rnd() < .5) t.strips.push({ y: y + rnd() * 80, h: 80 + rnd() * H * .5, c: pick(NEON), side: rnd() < .5 });
+        }
+        towers.push(t);
+        x += w + (s.n === 2 ? 14 + rnd() * 40 : rnd() * 8);
       }
-      if (s.fade) { g.fillStyle = 'rgba(30,14,70,' + s.fade + ')'; g.fillRect(0, 0, W, base + 6); }
-      layers.push({ c: L.c, speed: s.speed });
+      // skybridges between neighbouring near/mid towers
+      var bridges = [];
+      if (s.n >= 1) for (var i = 0; i < towers.length - 1; i++) if (rnd() < .45) {
+        var a = towers[i], b = towers[i + 1], yy = Math.max(a.top, b.top) + 80 + rnd() * (depth * .6);
+        if (yy < depth - H * .4) bridges.push({ x: a.x + a.w - 2, w: b.x - (a.x + a.w) + 4, y: yy, c: pick(NEON) });
+      }
+      layers.push({ s: s, towers: towers, bridges: bridges, tile: windowTile(s.n) });
     });
-    // bridge, on the right, over the water
-    var B = offscreen(W, H), g = B.g, bx = W * .62, by = horizon + h(6), pyl = [bx + W * .07, bx + W * .25];
-    g.strokeStyle = 'rgba(200,220,255,.55)'; g.lineWidth = 1;
-    pyl.forEach(function (px) {
-      g.fillStyle = '#1a1838'; g.fillRect(px - 3, by - h(150), 6, h(150));
-      for (var k = 1; k <= 9; k++) { g.beginPath(); g.moveTo(px, by - h(140)); g.lineTo(px - k * W * .009, by); g.moveTo(px, by - h(140)); g.lineTo(px + k * W * .009, by); g.stroke(); }
-    });
-    g.save(); g.shadowColor = '#22e3ff'; g.shadowBlur = 8; g.fillStyle = '#7fe9ff'; g.fillRect(bx - W * .05, by, W * .5, 2); g.restore();
-    layers.push({ c: B.c, speed: .16, bridge: true });
+    cars = [];
+    for (var k = 0; k < (reduce ? 0 : 26); k++) cars.push({ y: depth * (.25 + rnd() * .65), x: rnd() * W, v: (rnd() < .5 ? -1 : 1) * (60 + rnd() * 160), c: rnd() < .5 ? '#ff4d6d' : '#bfefff', layer: 1 + (rnd() < .5 ? 1 : 0) });
     drops = [];
-    for (var i = 0; i < (reduce ? 0 : Math.round(W * H / 14000)); i++) drops.push({ x: rnd() * W, y: rnd() * H, l: 8 + rnd() * 14, v: 8 + rnd() * 8 });
+    for (var j = 0; j < (reduce ? 0 : Math.round(W * H / 12000)); j++) drops.push({ x: rnd() * W, y: rnd() * H, l: 8 + rnd() * 14, v: 8 + rnd() * 8 });
   }
 
-  function board(b, t, oy) {
-    var y = b.y + oy;
+  function progress() {
+    var max = document.documentElement.scrollHeight - innerHeight;
+    return max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+  }
+
+  function sky(p) {
+    // night sky at the top, magenta smog in the middle, warm street glow below
+    var g = cx.createLinearGradient(0, 0, 0, H);
+    function mix(a, b, t) { return a.map(function (v, i) { return Math.round(v + (b[i] - v) * t); }); }
+    var topC = p < .5 ? mix([3, 3, 12], [28, 8, 44], p * 2) : mix([28, 8, 44], [40, 10, 30], (p - .5) * 2);
+    var botC = p < .5 ? mix([40, 14, 76], [110, 24, 110], p * 2) : mix([110, 24, 110], [150, 60, 40], (p - .5) * 2);
+    g.addColorStop(0, 'rgb(' + topC + ')'); g.addColorStop(1, 'rgb(' + botC + ')');
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+  }
+
+  function sign(sg, x, w, y, t) {
     cx.save();
-    var gr = cx.createLinearGradient(b.x, y, b.x, y + b.h);
-    gr.addColorStop(0, b.c1); gr.addColorStop(1, b.c2);
-    cx.globalAlpha = .82 + .18 * Math.sin(t * 2 + b.ph);
-    cx.shadowColor = b.c1; cx.shadowBlur = 22; cx.fillStyle = gr; cx.fillRect(b.x, y, b.w, b.h);
-    cx.shadowBlur = 0;
-    // scanlines drifting down the board
-    cx.fillStyle = 'rgba(0,0,0,.22)';
-    var off = (t * 18 + b.ph * 10) % 4;
-    for (var sy = y + off; sy < y + b.h; sy += 4) cx.fillRect(b.x, sy, b.w, 1.4);
-    // a simple shape and the word, stacked if the board is tall
-    cx.fillStyle = 'rgba(255,255,255,.9)';
-    var fs = Math.max(8, Math.min(b.w / (b.word.length * .62), b.h * .22));
-    cx.font = '800 ' + fs + 'px "Barlow Condensed", Impact, sans-serif'; cx.textAlign = 'center'; cx.textBaseline = 'middle';
-    if (b.h > b.w * 1.1) {
-      cx.globalAlpha *= .7; cx.beginPath(); cx.arc(b.x + b.w / 2, y + b.h * .38, Math.min(b.w, b.h) * .22, 0, 6.3); cx.fill(); cx.globalAlpha = 1;
-      cx.fillText(b.word, b.x + b.w / 2, y + b.h * .8);
-    } else cx.fillText(b.word, b.x + b.w / 2, y + b.h / 2);
+    var h = sg.h, bw = sg.vertical ? Math.max(18, w * .22) : w * .8, bx = sg.vertical ? x + w - bw - 4 : x + w * .1;
+    if (sg.vertical) h = Math.max(h, bw * 4);
+    var gr = cx.createLinearGradient(bx, y, bx, y + h); gr.addColorStop(0, sg.c1); gr.addColorStop(1, sg.c2);
+    var flick = Math.sin(t * 2 + sg.ph) > -.96 ? 1 : .35;
+    cx.globalAlpha = (.8 + .2 * Math.sin(t * 1.3 + sg.ph)) * flick;
+    cx.shadowColor = sg.c1; cx.shadowBlur = 24; cx.fillStyle = gr; cx.fillRect(bx, y, bw, h); cx.shadowBlur = 0;
+    cx.fillStyle = 'rgba(0,0,0,.22)'; var off = (t * 16 + sg.ph * 10) % 4;
+    for (var sy = y + off; sy < y + h; sy += 4) cx.fillRect(bx, sy, bw, 1.3);
+    cx.fillStyle = 'rgba(255,255,255,.92)'; cx.textAlign = 'center'; cx.textBaseline = 'middle';
+    if (sg.vertical) {
+      var letters = sg.word.replace(/\s/g, '').split(''), fs = Math.min(bw * .8, h / letters.length * .85);
+      cx.font = '800 ' + fs + 'px "Barlow Condensed", Impact, sans-serif';
+      letters.forEach(function (l, i) { cx.fillText(l, bx + bw / 2, y + (i + .5) * (h / letters.length)); });
+    } else {
+      var f2 = Math.max(9, Math.min(bw / (sg.word.length * .6), h * .3));
+      cx.font = '800 ' + f2 + 'px "Barlow Condensed", Impact, sans-serif';
+      cx.fillText(sg.word, bx + bw / 2, y + h / 2);
+    }
     cx.restore();
   }
 
-  function frame(t) {
-    t = (t || 0) / 1000;
-    var s = scrollY;
+  function frame(ms) {
+    var t = (ms || 0) / 1000, p = progress();
     cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (WALL) { wallpaper(s, t); return; }
-    // sky
-    var sk = cx.createLinearGradient(0, 0, 0, horizon);
-    sk.addColorStop(0, '#03030b'); sk.addColorStop(.6, '#0d0a26'); sk.addColorStop(1, '#2a0f4a');
-    cx.fillStyle = sk; cx.fillRect(0, 0, W, H);
-    var glow = cx.createRadialGradient(W * .45, horizon, 10, W * .45, horizon, W * .6);
-    glow.addColorStop(0, 'rgba(120,60,255,.35)'); glow.addColorStop(1, 'rgba(120,60,255,0)');
-    cx.fillStyle = glow; cx.fillRect(0, 0, W, H);
-    // city layers, parallax
-    var oys = [];
-    layers.forEach(function (L, i) { var oy = -s * L.speed; oys[i] = oy; cx.drawImage(L.c, 0, 0, L.c.width, L.c.height, 0, oy, W, L.c.height / dpr); });
-    boards.forEach(function (b) { board(b, t, oys[b.layer]); });
-    // water: reflect the band just above the horizon, squashed and rippled
-    var wy = horizon + h(8) - s * .16;
-    cx.fillStyle = '#05040e'; cx.fillRect(0, wy, W, H - wy + 10);
-    cx.save(); cx.globalAlpha = .45; cx.translate(0, wy * 2); cx.scale(1, -1);
-    var src = cv, sh = Math.min(h(260), wy);
-    for (var y = 0; y < sh; y += 3) {
-      var dx = Math.sin(y * .18 + t * 2.2) * 3;
-      cx.drawImage(src, 0, (wy - y - 3) * dpr, W * dpr, 3 * dpr, dx, wy - y - 3, W, 3);
+    if (WALL) { wallpaper(p); rain(); return; }
+    sky(p);
+    // moon and smog glow, which drift up out of view as you descend
+    var my = H * .22 - p * H * 1.5;
+    if (my > -160) {
+      var mr = Math.min(W, H) * .06, halo = cx.createRadialGradient(W * .78, my, mr * .6, W * .78, my, mr * 5);
+      halo.addColorStop(0, 'rgba(255,170,230,.35)'); halo.addColorStop(1, 'rgba(255,170,230,0)');
+      cx.fillStyle = halo; cx.fillRect(W * .78 - mr * 5, my - mr * 5, mr * 10, mr * 10);
+      var disc = cx.createRadialGradient(W * .78 - mr * .3, my - mr * .3, mr * .1, W * .78, my, mr);
+      disc.addColorStop(0, '#fff4fb'); disc.addColorStop(.7, '#ffc6ea'); disc.addColorStop(1, '#e58ad0');
+      cx.fillStyle = disc; cx.beginPath(); cx.arc(W * .78, my, mr, 0, 6.3); cx.fill();
     }
-    cx.restore();
-    var wf = cx.createLinearGradient(0, wy, 0, H); wf.addColorStop(0, 'rgba(5,4,14,.1)'); wf.addColorStop(1, 'rgba(5,4,14,.9)');
-    cx.fillStyle = wf; cx.fillRect(0, wy, W, H - wy + 10);
-    // haze over the base of the skyline
-    var hz = cx.createLinearGradient(0, horizon - h(160), 0, horizon + h(20));
-    hz.addColorStop(0, 'rgba(90,40,160,0)'); hz.addColorStop(1, 'rgba(90,40,160,.28)');
-    cx.fillStyle = hz; cx.fillRect(0, 0, W, horizon + h(20));
-    // rain
-    if (drops.length) {
-      cx.strokeStyle = 'rgba(170,200,255,.16)'; cx.lineWidth = 1; cx.beginPath();
-      drops.forEach(function (d) { cx.moveTo(d.x, d.y); cx.lineTo(d.x - d.l * .12, d.y + d.l); d.y += d.v; d.x -= d.v * .12; if (d.y > H) { d.y = -20; d.x = Math.random() * (W + 40); } });
-      cx.stroke();
+    layers.forEach(function (L) {
+      var s = L.s, cam = p * (depth - H) * s.travel;           // how far this layer has scrolled
+      L.towers.forEach(function (tw) {
+        var top = tw.top - cam, bottom = depth - cam;
+        if (top > H || bottom < 0) return;
+        var y0 = Math.max(top, -10), y1 = Math.min(bottom, H + 10);
+        var gr = cx.createLinearGradient(tw.x, 0, tw.x + tw.w, 0);
+        var c = s.col, lc = c.map(function (v) { return v + 14; });
+        gr.addColorStop(0, 'rgb(' + lc + ')'); gr.addColorStop(.6, 'rgb(' + c + ')'); gr.addColorStop(1, 'rgb(' + c.map(function (v) { return v * .6 | 0; }) + ')');
+        cx.fillStyle = gr; cx.fillRect(tw.x, y0, tw.w, y1 - y0);
+        // windows: the pattern is anchored to the tower so it scrolls with it
+        cx.save(); cx.beginPath(); cx.rect(tw.x + 3, Math.max(top + 10, -10), tw.w - 6, y1 - Math.max(top + 10, -10)); cx.clip();
+        cx.translate(tw.x, -cam % 96); cx.fillStyle = L.tile; cx.fillRect(0, -96, tw.w, H + 200); cx.restore();
+        // crown
+        if (top > -120 && top < H) {
+          cx.fillStyle = 'rgb(' + c + ')';
+          if (tw.crown < .3) { cx.fillRect(tw.x + tw.w * .2, top - 22, tw.w * .6, 22); cx.fillRect(tw.x + tw.w * .42, top - 60, tw.w * .16, 40); }
+          else if (tw.crown < .55) { cx.fillRect(tw.x + tw.w * .48, top - 90, 3, 90); cx.save(); cx.shadowColor = '#ff3355'; cx.shadowBlur = 10; cx.fillStyle = Math.sin(t * 3 + tw.x) > 0 ? '#ff5a6e' : '#5a1020'; cx.fillRect(tw.x + tw.w * .48 - 1, top - 92, 5, 5); cx.restore(); }
+          else if (tw.crown < .75) { cx.beginPath(); cx.moveTo(tw.x, top); cx.lineTo(tw.x + tw.w / 2, top - tw.w * .5); cx.lineTo(tw.x + tw.w, top); cx.fill(); }
+        }
+        tw.strips.forEach(function (st) {
+          var y = st.y - cam; if (y > H || y + st.h < 0) return;
+          cx.save(); cx.shadowColor = st.c; cx.shadowBlur = 14 + s.n * 6; cx.fillStyle = st.c;
+          cx.fillRect(st.side ? tw.x + 2 : tw.x + tw.w - 5, y, 2 + s.n, st.h); cx.restore();
+        });
+        tw.signs.forEach(function (sg) { var y = sg.y - cam; if (y > H || y + sg.h * 4 < 0) return; sign(sg, tw.x, tw.w, y, t); });
+      });
+      L.bridges.forEach(function (b) {
+        var y = b.y - cam; if (y < -20 || y > H + 20) return;
+        cx.fillStyle = 'rgb(' + s.col + ')'; cx.fillRect(b.x, y, b.w, 14 + s.n * 4);
+        cx.save(); cx.shadowColor = b.c; cx.shadowBlur = 12; cx.fillStyle = b.c; cx.fillRect(b.x, y + 4, b.w, 2); cx.restore();
+      });
+      // flying traffic weaves between the layers
+      cars.forEach(function (car) {
+        if (car.layer !== s.n) return;
+        var y = car.y - cam; if (y < -10 || y > H + 10) return;
+        car.x += car.v / 60; if (car.x > W + 40) car.x = -40; if (car.x < -40) car.x = W + 40;
+        cx.save(); cx.shadowColor = car.c; cx.shadowBlur = 10; cx.fillStyle = car.c;
+        cx.fillRect(car.x, y, 10 + s.n * 4, 2.5); cx.globalAlpha = .35; cx.fillRect(car.x - car.v * .12, y + .5, car.v * .12, 1.5); cx.restore();
+      });
+      if (s.haze) { cx.fillStyle = 'rgba(40,14,80,' + s.haze + ')'; cx.fillRect(0, 0, W, H); }
+    });
+    // the street: shows up as the near layer reaches its bottom
+    var street = depth - p * (depth - H) - H * .18;
+    if (street < H) {
+      var sg = cx.createLinearGradient(0, street, 0, H);
+      sg.addColorStop(0, 'rgba(255,90,140,.55)'); sg.addColorStop(.1, 'rgba(20,8,24,.95)'); sg.addColorStop(1, '#050308');
+      cx.fillStyle = sg; cx.fillRect(0, street, W, H - street + 2);
+      // light trails along the road and their reflections
+      for (var i = 0; i < 4; i++) {
+        var ly = street + 14 + i * 10, run = (t * (90 + i * 40)) % (W + 200) - 100;
+        cx.save(); cx.shadowColor = i % 2 ? '#ff4d6d' : '#ffe8b0'; cx.shadowBlur = 12; cx.fillStyle = i % 2 ? 'rgba(255,77,109,.8)' : 'rgba(255,232,176,.8)';
+        cx.fillRect(i % 2 ? W - run - 160 : run, ly, 160, 2); cx.restore();
+      }
+      cx.fillStyle = 'rgba(255,43,214,.08)'; for (var k = 0; k < 12; k++) cx.fillRect((k * 137) % W, street + 50 + (k * 31) % 90, 60 + (k * 23) % 80, 2);
     }
-    var dim = Math.max(+cv.dataset.dim || 0, Math.min(.7, s / (H * 1.1) * .7));
-    if (dim > 0) { cx.fillStyle = 'rgba(3,3,10,' + dim + ')'; cx.fillRect(0, 0, W, H); }
+    rain();
   }
 
-  function wallpaper(s, t) {
-    // cover the screen, slightly zoomed so it can drift up as you scroll
+  function rain() {
+    if (!drops.length) return;
+    cx.strokeStyle = 'rgba(170,200,255,.16)'; cx.lineWidth = 1; cx.beginPath();
+    drops.forEach(function (d) { cx.moveTo(d.x, d.y); cx.lineTo(d.x - d.l * .12, d.y + d.l); d.y += d.v; d.x -= d.v * .12; if (d.y > H) { d.y = -20; d.x = Math.random() * (W + 40); } });
+    cx.stroke();
+    var base = +cv.dataset.dim || 0;
+    if (base) { cx.fillStyle = 'rgba(3,3,10,' + base + ')'; cx.fillRect(0, 0, W, H); }
+  }
+
+  function wallpaper(p) {
     var z = 1.14, iw = WALL.naturalWidth, ih = WALL.naturalHeight;
     var k = Math.max(W / iw, H / ih) * z, dw = iw * k, dh = ih * k;
-    var x = (W - dw) / 2, y = (H - dh) / 2 - Math.min(s * .12, (dh - H) / 2);
     cx.fillStyle = '#05040b'; cx.fillRect(0, 0, W, H);
-    cx.imageSmoothingQuality = 'high'; cx.drawImage(WALL, x, y, dw, dh);
-    // tint and vignette so the name reads and a small image doesn't look soft
+    cx.drawImage(WALL, (W - dw) / 2, (H - dh) / 2 - p * (dh - H) / 2, dw, dh);
     var v = cx.createRadialGradient(W / 2, H * .45, Math.min(W, H) * .2, W / 2, H * .5, Math.max(W, H) * .75);
-    v.addColorStop(0, 'rgba(10,4,24,.15)'); v.addColorStop(1, 'rgba(4,2,12,.75)');
-    cx.fillStyle = v; cx.fillRect(0, 0, W, H);
-    if (drops.length) {
-      cx.strokeStyle = 'rgba(170,200,255,.14)'; cx.lineWidth = 1; cx.beginPath();
-      drops.forEach(function (d) { cx.moveTo(d.x, d.y); cx.lineTo(d.x - d.l * .12, d.y + d.l); d.y += d.v; d.x -= d.v * .12; if (d.y > H) { d.y = -20; d.x = Math.random() * (W + 40); } });
-      cx.stroke();
-    }
-    var dim = Math.max(+cv.dataset.dim || 0, Math.min(.7, s / (H * 1.1) * .7));
-    if (dim > 0) { cx.fillStyle = 'rgba(3,3,10,' + dim + ')'; cx.fillRect(0, 0, W, H); }
+    v.addColorStop(0, 'rgba(10,4,24,.15)'); v.addColorStop(1, 'rgba(4,2,12,.75)'); cx.fillStyle = v; cx.fillRect(0, 0, W, H);
   }
 
-  function loop(t) { frame(t); if (!reduce) requestAnimationFrame(loop); }
+  function loop(ms) { frame(ms); if (!reduce) requestAnimationFrame(loop); }
   function start() { build(); requestAnimationFrame(loop); }
-  // wait for the sign font so billboard words use it
   (document.fonts && document.fonts.load ? document.fonts.load('800 20px "Barlow Condensed"').catch(function () {}) : Promise.resolve()).then(start);
   if (reduce) addEventListener('scroll', function () { requestAnimationFrame(frame); }, { passive: true });
   var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { build(); frame(); }, 150); });
