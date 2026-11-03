@@ -28,3 +28,9 @@ body.v2{padding-top:0!important}
 .city-hero>div::before{content:"";position:absolute;inset:-18% -12%;z-index:-1;background:radial-gradient(ellipse at center,rgba(5,3,12,.55),transparent 68%);pointer-events:none}
 .city-hero{overflow:hidden}
 .city-hero__say{display:inline-block;padding:.5em 1em;border-radius:12px;background:rgba(6,4,14,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+
+/* pixel logo */
+.city-hero__name{font-size:0!important;line-height:0!important;text-shadow:none!important}
+#logo{display:block;margin:0 auto;image-rendering:pixelated;filter:drop-shadow(0 0 18px rgba(255,43,214,.55)) drop-shadow(0 0 40px rgba(34,227,255,.3)) drop-shadow(4px 6px 0 #05020c)}
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.city-hero__say{margin-top:1.6em!important}
