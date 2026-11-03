@@ -60,7 +60,7 @@ a{color:var(--link)}
 .status span:first-child{flex:1}
 
 /* hero window */
-.hero h1{font-size:clamp(28px,4.6vw,44px);margin:2px 0 4px;letter-spacing:-.02em;line-height:1.05;font-weight:700;color:#0b2c7a}
+.hero h1{font-size:clamp(34px,5.6vw,60px);margin:2px 0 4px;letter-spacing:-.02em;line-height:1.05;font-weight:700;color:#0b2c7a}
 .hero .slogan{font-size:15px;color:var(--ink-soft);margin:0 0 16px}
 .hero p{max-width:58ch;line-height:1.55;margin:0 0 14px;font-size:13.5px}
 .cmd{font-family:var(--mono);background:var(--face-hi);border:1px solid var(--face-lo);border-right-color:var(--face-hi);border-bottom-color:var(--face-hi);box-shadow:inset 1px 1px 0 #716f64;padding:8px 10px;display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 16px;overflow-x:auto}
@@ -137,6 +137,8 @@ fieldset small{color:var(--ink-soft)}
 .ctls{display:flex;gap:2px;margin-left:auto}
 .ctl:focus-visible{outline:1px dotted #fff;outline-offset:1px}
 .demo{grid-column:1/-1}
+.more{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:960px){.more{grid-template-columns:1fr}}
 .demo .addr{display:flex;gap:8px;align-items:center;padding:4px 6px;border-bottom:1px solid var(--face-lo);font-size:12px}
 .demo .addr code{flex:1;background:#fff;border:1px solid #7f9db9;padding:2px 6px;font-family:var(--ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .demo-body{padding:0;background:#111}
@@ -247,7 +249,7 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
           <div class="cmd"><span>C:\&gt; intraweb up</span><span style="color:var(--ink-soft)">that's the whole setup</span></div>
           <div class="btns">
             <a class="xpbtn def" href="https://github.com/bnvac/intraweb" target="_blank" rel="noopener">Get it…</a>
-            <a class="xpbtn" href="#how">How it works</a>
+            <a class="xpbtn" href="#demo">Live demo</a><a class="xpbtn" href="#how">How it works</a>
             <a class="xpbtn" href="#around">Neighbors' sites</a>
           </div>
           <div class="tri">
@@ -259,28 +261,38 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
         <div class="status"><span>Single static binary · Rust · no runtime dependencies</span><span>Protocol v2</span></div>
       </section>
 
-      <section class="win" id="radio" aria-labelledby="h-radio">
-        <div class="bar"><span class="t"><svg><use href="#chipi"/></svg><span id="h-radio">Ways to host a neighborhood</span></span></div>
-        <div class="body"><p style="margin:0 0 12px">intraweb only needs machines that can hear each other. No internet, and no router required.</p><div class="hosts"><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="18" width="24" height="8" rx="2" fill="#dfe6f3" stroke="#5b6b8c"/><path d="M10 18V9M22 18V9" stroke="#5b6b8c" stroke-width="2"/><circle cx="9" cy="22" r="1.5" fill="#3ec44a"/><circle cx="14" cy="22" r="1.5" fill="#3ec44a"/></svg><div><b>Any Wi-Fi</b><p>The network you already have. Everyone runs one command and appears in about a second.</p><code>intraweb up</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="7" width="22" height="18" rx="2" fill="#2f8a3a" stroke="#1b5e27"/><rect x="9" y="11" width="8" height="8" fill="#c0c4cc"/><path d="M20 11h4M20 15h4M20 19h4" stroke="#d4af37" stroke-width="2"/></svg><div><b>A hub on a Pi</b><p>Leave a Raspberry Pi on as the meeting place. People open intranet.local instead of an address.</p><code>intraweb up --hub --hub-name oak</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="8" width="18" height="12" rx="1" fill="#2a5bd7" stroke="#1d3f99"/><path d="M4 22h24l-2 3H6z" fill="#c0c4cc" stroke="#7a8296"/><path d="M12 13a6 6 0 0 1 8 0M14 15.5a3 3 0 0 1 4 0" stroke="#fff" fill="none" stroke-width="1.5"/></svg><div><b>One laptop, no router</b><p>A Linux laptop makes the Wi-Fi itself. Everyone else joins it.</p><code>nmcli device wifi hotspot ssid intraweb</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="12" width="9" height="8" rx="1" fill="#c0c4cc" stroke="#7a8296"/><rect x="21" y="12" width="9" height="8" rx="1" fill="#c0c4cc" stroke="#7a8296"/><path d="M11 16c4 0 5-5 10 0" stroke="#e8a020" stroke-width="2.5" fill="none"/></svg><div><b>Two laptops, one cable</b><p>Plug Ethernet straight between them. They give themselves addresses and find each other.</p><code>intraweb up   # on both</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#chipi"/></svg><div><b>A $5 ESP32</b><p>A pocket access point on a battery bank for up to 10 devices. Phones get a page saying what to run.</p><code>hardware/esp32-ap</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="10" y="4" width="12" height="24" rx="2" fill="#333" stroke="#111"/><rect x="12" y="7" width="8" height="16" fill="#8fd0ff"/><path d="M13 12a4 4 0 0 1 6 0" stroke="#fff" fill="none"/></svg><div><b>A phone or an old router</b><p>A hotspot with mobile data off, or a router with nothing in the internet port.</p><code>intraweb doctor   # if nobody shows up</code></div></div></div>
-        <div class="btns" style="justify-content:flex-end;margin-top:12px"><a class="xpbtn" href="https://github.com/bnvac/intraweb/tree/main/hardware/esp32-ap" target="_blank" rel="noopener">ESP32 firmware…</a><a class="xpbtn def" href="#around">Next &gt;</a></div></div>
-      </section>
+    </div>
 
-      <section class="win" id="libraries" aria-labelledby="h-libs">
-        <div class="bar"><span class="t"><svg><use href="#folder"/></svg><span id="h-libs">Media libraries — bring your self-hosted apps</span></span></div>
+    <div class="col">
+      <section class="win" id="roster" aria-labelledby="h-roster">
+        <div class="bar"><span class="t"><svg><use href="#globe"/></svg><span id="h-roster">Neighborhood — 4 online</span></span></div>
         <div class="body">
-          <p style="margin:0 0 10px">Already running a media server or another self-hosted app? It shows up as a button on your card for everyone in range, and opens straight from your machine. Nothing streams through intraweb.</p>
-          <fieldset><legend>Recognized automatically</legend><div class="kinds"><span>&#9654; Jellyfin</span><span>&#9654; Plex</span><span>&#9834; Navidrome</span><span>&#8801; Audiobookshelf</span><span>&#8801; Calibre-Web</span><span>&#8801; Kavita</span><span>&#8801; Komga</span><span>&#9635; Immich</span><span>&#9635; PhotoPrism</span><span>&#8599; Kiwix</span><span>&#8599; Home Assistant</span><span>&#8599; Paperless-ngx</span><span>&#8599; Mealie</span><span>&#8599; Forgejo</span><span>&#8599; Gitea</span></div><small>Anything else works too: add it by its port.</small></fieldset>
-          <div class="steps3">
-            <div><b>1</b>Open your dashboard and find <i>Media libraries</i>.</div>
-            <div><b>2</b>Click <i>Find services on this computer</i>.</div>
-            <div><b>3</b>Click <i>Add</i>. Neighbors see the button right away.</div>
-          </div>
-          <img class="shotsm" src="img/iw-connect.jpg" alt="The Media libraries box on the dashboard: Jellyfin and Navidrome listed, Kiwix found with an Add button." width="1920" height="1200" loading="lazy">
-          <div class="cmd" style="display:block;line-height:1.7;margin-top:12px">C:\&gt; intraweb library detect --add<br>C:\&gt; intraweb library add Films 8096<br>C:\&gt; intraweb libraries bob</div>
-          <p class="note" style="margin-top:6px">The service must listen on your network and your firewall must allow its port. Only you can change your list or scan your own machine; a neighbor asking gets refused.</p>
+          <div class="scroll"><table class="roster">
+            <thead><tr><th>Name</th><th>Fingerprint</th><th>Seen</th><th>Trust</th></tr></thead>
+            <tbody id="rosterbody"></tbody>
+          </table></div>
+          <p class="note">An example roster. The red row is a familiar name on a new key: it's called out, never merged. A <b>✓</b> means you compared fingerprints in person.</p>
         </div>
+        <div class="status"><span>1 hub in range · intranet.local</span><span>mDNS + beacon</span></div>
       </section>
 
+      <section class="win term" id="cmdwin" aria-labelledby="h-term">
+        <div class="bar"><span class="t"><svg><use href="#cmd"/></svg><span id="h-term">Command Prompt</span></span></div>
+        <div class="body" id="term" aria-live="off"></div>
+      </section>
+
+    </div>
+
+    <section class="win demo" id="demo" aria-labelledby="h-demo">
+      <div class="bar"><span class="t"><svg><use href="#globe"/></svg><span id="h-demo">Live demo — the real dashboard</span></span></div>
+      <div class="addr"><span>Address</span><code>http://localhost:8420/</code><a class="xpbtn" href="demo/index.html" target="_blank" rel="noopener">Open full size</a></div>
+      <div class="body demo-body">
+        <iframe src="demo/index.html" title="intraweb dashboard demo" loading="lazy"></iframe>
+      </div>
+      <div class="status"><span>The real dashboard code, running on data captured from four nodes. Nothing you do is sent.</span><span>Demo</span></div>
+    </section>
+    <div class="more">
+    <div class="col">
       <section class="win" id="how" aria-labelledby="h-how">
         <div class="bar"><span class="t"><svg><use href="#key"/></svg><span id="h-how">How it works — Properties</span></span></div>
         <div class="body">
@@ -320,35 +332,30 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
         </div>
       </section>
     </div>
-
     <div class="col">
-      <section class="win" id="roster" aria-labelledby="h-roster">
-        <div class="bar"><span class="t"><svg><use href="#globe"/></svg><span id="h-roster">Neighborhood — 4 online</span></span></div>
+      <section class="win" id="radio" aria-labelledby="h-radio">
+        <div class="bar"><span class="t"><svg><use href="#chipi"/></svg><span id="h-radio">Ways to host a neighborhood</span></span></div>
+        <div class="body"><p style="margin:0 0 12px">intraweb only needs machines that can hear each other. No internet, and no router required.</p><div class="hosts"><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="18" width="24" height="8" rx="2" fill="#dfe6f3" stroke="#5b6b8c"/><path d="M10 18V9M22 18V9" stroke="#5b6b8c" stroke-width="2"/><circle cx="9" cy="22" r="1.5" fill="#3ec44a"/><circle cx="14" cy="22" r="1.5" fill="#3ec44a"/></svg><div><b>Any Wi-Fi</b><p>The network you already have. Everyone runs one command and appears in about a second.</p><code>intraweb up</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="7" width="22" height="18" rx="2" fill="#2f8a3a" stroke="#1b5e27"/><rect x="9" y="11" width="8" height="8" fill="#c0c4cc"/><path d="M20 11h4M20 15h4M20 19h4" stroke="#d4af37" stroke-width="2"/></svg><div><b>A hub on a Pi</b><p>Leave a Raspberry Pi on as the meeting place. People open intranet.local instead of an address.</p><code>intraweb up --hub --hub-name oak</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="8" width="18" height="12" rx="1" fill="#2a5bd7" stroke="#1d3f99"/><path d="M4 22h24l-2 3H6z" fill="#c0c4cc" stroke="#7a8296"/><path d="M12 13a6 6 0 0 1 8 0M14 15.5a3 3 0 0 1 4 0" stroke="#fff" fill="none" stroke-width="1.5"/></svg><div><b>One laptop, no router</b><p>A Linux laptop makes the Wi-Fi itself. Everyone else joins it.</p><code>nmcli device wifi hotspot ssid intraweb</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="12" width="9" height="8" rx="1" fill="#c0c4cc" stroke="#7a8296"/><rect x="21" y="12" width="9" height="8" rx="1" fill="#c0c4cc" stroke="#7a8296"/><path d="M11 16c4 0 5-5 10 0" stroke="#e8a020" stroke-width="2.5" fill="none"/></svg><div><b>Two laptops, one cable</b><p>Plug Ethernet straight between them. They give themselves addresses and find each other.</p><code>intraweb up   # on both</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#chipi"/></svg><div><b>A $5 ESP32</b><p>A pocket access point on a battery bank for up to 10 devices. Phones get a page saying what to run.</p><code>hardware/esp32-ap</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="10" y="4" width="12" height="24" rx="2" fill="#333" stroke="#111"/><rect x="12" y="7" width="8" height="16" fill="#8fd0ff"/><path d="M13 12a4 4 0 0 1 6 0" stroke="#fff" fill="none"/></svg><div><b>A phone or an old router</b><p>A hotspot with mobile data off, or a router with nothing in the internet port.</p><code>intraweb doctor   # if nobody shows up</code></div></div></div>
+        <div class="btns" style="justify-content:flex-end;margin-top:12px"><a class="xpbtn" href="https://github.com/bnvac/intraweb/tree/main/hardware/esp32-ap" target="_blank" rel="noopener">ESP32 firmware…</a><a class="xpbtn def" href="#around">Next &gt;</a></div></div>
+      </section>
+      <section class="win" id="libraries" aria-labelledby="h-libs">
+        <div class="bar"><span class="t"><svg><use href="#folder"/></svg><span id="h-libs">Media libraries — bring your self-hosted apps</span></span></div>
         <div class="body">
-          <div class="scroll"><table class="roster">
-            <thead><tr><th>Name</th><th>Fingerprint</th><th>Seen</th><th>Trust</th></tr></thead>
-            <tbody id="rosterbody"></tbody>
-          </table></div>
-          <p class="note">An example roster. The red row is a familiar name on a new key: it's called out, never merged. A <b>✓</b> means you compared fingerprints in person.</p>
+          <p style="margin:0 0 10px">Already running a media server or another self-hosted app? It shows up as a button on your card for everyone in range, and opens straight from your machine. Nothing streams through intraweb.</p>
+          <fieldset><legend>Recognized automatically</legend><div class="kinds"><span>&#9654; Jellyfin</span><span>&#9654; Plex</span><span>&#9834; Navidrome</span><span>&#8801; Audiobookshelf</span><span>&#8801; Calibre-Web</span><span>&#8801; Kavita</span><span>&#8801; Komga</span><span>&#9635; Immich</span><span>&#9635; PhotoPrism</span><span>&#8599; Kiwix</span><span>&#8599; Home Assistant</span><span>&#8599; Paperless-ngx</span><span>&#8599; Mealie</span><span>&#8599; Forgejo</span><span>&#8599; Gitea</span></div><small>Anything else works too: add it by its port.</small></fieldset>
+          <div class="steps3">
+            <div><b>1</b>Open your dashboard and find <i>Media libraries</i>.</div>
+            <div><b>2</b>Click <i>Find services on this computer</i>.</div>
+            <div><b>3</b>Click <i>Add</i>. Neighbors see the button right away.</div>
+          </div>
+          <img class="shotsm" src="img/iw-connect.jpg" alt="The Media libraries box on the dashboard: Jellyfin and Navidrome listed, Kiwix found with an Add button." width="1920" height="1200" loading="lazy">
+          <div class="cmd" style="display:block;line-height:1.7;margin-top:12px">C:\&gt; intraweb library detect --add<br>C:\&gt; intraweb library add Films 8096<br>C:\&gt; intraweb libraries bob</div>
+          <p class="note" style="margin-top:6px">The service must listen on your network and your firewall must allow its port. Only you can change your list or scan your own machine; a neighbor asking gets refused.</p>
         </div>
-        <div class="status"><span>1 hub in range · intranet.local</span><span>mDNS + beacon</span></div>
       </section>
-
-      <section class="win term" id="cmdwin" aria-labelledby="h-term">
-        <div class="bar"><span class="t"><svg><use href="#cmd"/></svg><span id="h-term">Command Prompt</span></span></div>
-        <div class="body" id="term" aria-live="off"></div>
-      </section>
-
+    </div>
     </div>
 
-    <section class="win demo" id="demo" aria-labelledby="h-demo">
-      <div class="bar"><span class="t"><svg><use href="#globe"/></svg><span id="h-demo">Live demo — the real dashboard</span></span></div>
-      <div class="addr"><span>Address</span><code>http://localhost:8420/</code><a class="xpbtn" href="demo/index.html" target="_blank" rel="noopener">Open full size</a></div>
-      <div class="body demo-body">
-        <iframe src="demo/index.html" title="intraweb dashboard demo" loading="lazy"></iframe>
-      </div>
-      <div class="status"><span>The real dashboard code, running on data captured from four nodes. Nothing you do is sent.</span><span>Demo</span></div>
-    </section>
     <section class="win viewer" id="shots" aria-labelledby="h-shots">
       <div class="bar"><span class="t"><svg><use href="#globe"/></svg><span id="h-shots">Screenshots — Windows Picture Viewer</span></span></div>
       <div class="body">
