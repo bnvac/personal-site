@@ -77,7 +77,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .shots{position:relative}
 .shots img{display:block;border-radius:14px;border:1px solid var(--line);box-shadow:0 30px 80px -30px rgba(0,0,0,.45);max-width:100%;height:auto}
-.shots .desk{width:100%}
+.shots .desk{width:100%;position:relative}
+.shots .back{position:absolute;width:78%;right:-34px;top:-38px;opacity:.55;filter:saturate(.8)}
+@media (max-width:980px){.shots .back{display:none}}
 .shots .phone{position:absolute;right:-6px;bottom:-26px;width:31%;border-radius:22px;border:6px solid #111}
 
 /* app window */
@@ -266,7 +268,8 @@ textarea{width:100%;font-family:var(--mono);font-size:13px;resize:vertical}
     <div class="row"><a class="btn primary big" href="#app">Try the demo</a><a class="btn big" href="#public">See the public list</a></div>
   </div>
   <div class="shots">
-    <img class="desk" src="img/ss-hero.jpg" alt="Smart Shelf Today screen in dark mode: big buttons to give out, receive or count, and what is running low." width="2000" height="1250">
+    <img class="back" src="img/ss-hero-fc.jpg" alt="" width="1736" height="1082" aria-hidden="true">
+    <img class="desk" src="img/ss-hero.jpg" alt="Smart Shelf Today screen: give out, receive or count a shelf, and what is running low." width="1736" height="1082">
   </div>
 </div></section>
 

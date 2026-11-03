@@ -35,7 +35,12 @@ a{color:inherit}
 .hero{position:relative;text-align:center;padding-block:90px 60px;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));overflow:hidden}
 .bg{position:absolute;inset:-60px -40px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;transform:perspective(1400px) rotateX(18deg) rotateZ(-7deg) scale(1.15);opacity:1;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 50% 58% at 50% 46%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 50% 58% at 50% 46%,#000 60%,transparent 100%)}
 .bg img{width:100%;height:auto;border-radius:10px;border:1px solid #3a3f4a;box-shadow:0 20px 50px rgba(0,0,0,.5)}
-.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 42%,rgba(12,13,16,.8) 0%,rgba(12,13,16,.6) 38%,rgba(12,13,16,.12) 75%,rgba(12,13,16,0) 100%),linear-gradient(transparent 75%,var(--bg));pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 42%,rgba(12,13,16,.88) 0%,rgba(12,13,16,.7) 38%,rgba(12,13,16,.12) 75%,rgba(12,13,16,0) 100%),linear-gradient(transparent 75%,var(--bg));pointer-events:none}
+.product{margin:56px 0 0;width:min(1080px,100%);border:1px solid #2f343e;border-radius:12px;overflow:hidden;background:var(--panel);box-shadow:0 50px 120px -40px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.03),0 -20px 80px -30px rgba(229,181,42,.18)}
+.product .chrome{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.product .chrome i{width:10px;height:10px;border-radius:50%;background:var(--vcc)}.product .chrome i:nth-child(2){background:var(--sda)}.product .chrome i:nth-child(3){background:var(--ok)}
+.product .chrome span{margin-left:10px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.product img{display:block;width:100%;height:auto}
 .hero-in{position:relative;z-index:1;padding-inline:max(16px,env(safe-area-inset-left,0px));display:grid;justify-items:center;grid-template-columns:minmax(0,1fr)}
 .eyebrow{display:inline-flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:rgba(12,13,16,.7)}
 .eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
@@ -120,8 +125,9 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-s
       <h1>Your whole workshop, in <span>one app</span>.</h1>
       <p class="lede">Parts, tools, projects, 3D printers, firmware and the machines on your shelf, connected. It knows what you can build tonight, what you're missing, what your printer can handle and which board is running what.</p>
       <div class="term"><code id="one">git clone https://github.com/bnvac/backoffice &amp;&amp; cd backoffice &amp;&amp; go build ./cmd/backoffice</code><button type="button" id="copy">Copy</button></div>
-      <div class="cta"><a class="btn p" href="#tour">See it</a><a class="btn" href="https://github.com/bnvac/backoffice" target="_blank" rel="noopener">GitHub</a></div>
+      <div class="cta"><a class="btn p" href="#demo">Try the live demo</a><a class="btn" href="#tour">See the screens</a><a class="btn" href="https://github.com/bnvac/backoffice" target="_blank" rel="noopener">GitHub</a></div>
       <div class="stats"><div><b>12</b>areas, one database</div><div><b>19k</b>lines of Go</div><div><b>0</b>config files</div><div><b>1</b>SQLite file to back up</div></div>
+      <figure class="product"><div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>backoffice.local:8080</span></div><img src="img/bo-dashboard.jpg" alt="The Backoffice dashboard in dark mode: stock, open projects, recent parts with photos, printers and machines." width="2400" height="1500" loading="eager"></figure>
     </div>
   </section>
 
