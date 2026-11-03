@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Backoffice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: product landing. Centred claim, then the real app as the hero image, then a tabbed tour of every area with real screenshots. Wire colours (bench convention) are the only accents. */
+:root{
+  --bg:#0c0d10; --panel:#15171c; --panel2:#1c1f26; --fg:#eceef1; --muted:#9298a3; --line:#262a32;
+  --vcc:#e0473c; --sda:#e5b52a; --scl:#3b86e0; --ok:#4f9a6a;
+  --serif:"Source Serif 4", Georgia, serif; --sans:"IBM Plex Sans", system-ui, sans-serif; --mono:"IBM Plex Mono", ui-monospace, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:60px}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sda);outline-offset:2px}
+.in{max-width:1160px;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:16px;flex-wrap:wrap}
+.brand{font-family:var(--serif);font-weight:700;font-size:20px;display:flex;align-items:center;gap:10px}
+.brand i{display:flex;flex-direction:column;gap:3px}
+.brand i b{display:block;width:16px;height:3px;border-radius:2px}
+.nav{display:flex;gap:18px;font-size:14px;color:var(--muted);flex-wrap:wrap;align-items:center}
+.nav a{text-decoration:none}.nav a:hover{color:var(--fg)}
+.nav .gh{color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:5px 12px}
+
+.hero{position:relative;text-align:center;padding-block:90px 60px;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));overflow:hidden}
+.bg{position:absolute;inset:-60px -40px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;transform:perspective(1400px) rotateX(18deg) rotateZ(-7deg) scale(1.15);opacity:1;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 50% 58% at 50% 46%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 50% 58% at 50% 46%,#000 60%,transparent 100%)}
+.bg img{width:100%;height:auto;border-radius:10px;border:1px solid #3a3f4a;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 42%,rgba(12,13,16,.8) 0%,rgba(12,13,16,.6) 38%,rgba(12,13,16,.12) 75%,rgba(12,13,16,0) 100%),linear-gradient(transparent 75%,var(--bg));pointer-events:none}
+.hero-in{position:relative;z-index:1;padding-inline:max(16px,env(safe-area-inset-left,0px));display:grid;justify-items:center;grid-template-columns:minmax(0,1fr)}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:rgba(12,13,16,.7)}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.5rem,6.4vw,4.6rem);line-height:1.02;letter-spacing:-.02em;margin:18px auto 18px;max-width:15ch;text-wrap:balance}
+h1 span{background:linear-gradient(90deg,var(--vcc),var(--sda) 50%,var(--scl));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{color:#c3c8d1;font-size:clamp(17px,2vw,19px);max-width:58ch;margin:0 auto 24px}
+.term{display:flex;align-items:center;width:min(680px,100%);background:#0a0b0e;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:18px;text-align:left}
+.term code{flex:1;min-width:0;font-family:var(--mono);font-size:13.5px;padding:11px 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--fg)}
+.term code::before{content:"$ ";color:var(--sda)}
+.term button{border:0;border-left:1px solid var(--line);background:var(--panel2);color:var(--fg);font:600 13px var(--sans);padding:11px 16px;cursor:pointer;align-self:stretch}
+.term button:hover{background:#262a33}
+.cta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:9px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid var(--line);background:var(--panel)}
+.btn.p{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn:hover{filter:brightness(1.1)}
+.stats{display:flex;justify-content:center;gap:clamp(18px,5vw,56px);flex-wrap:wrap;margin-top:40px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.stats b{display:block;font-family:var(--serif);font-size:26px;color:var(--fg)}
+.car{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:32px;align-items:center}
+.car .stage{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 40px 100px -40px rgba(59,134,224,.35);aspect-ratio:16/10;background:var(--panel)}
+.car .stage img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .25s}
+.car .nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(12,13,16,.8);color:var(--fg);font-size:26px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.car .nav:hover{background:var(--panel2)}
+.car .prev{left:12px}.car .next{right:12px}
+.ctext .k{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.ctext .k i{width:14px;height:3px;border-radius:2px}
+.ctext h3{font-family:var(--serif);font-weight:700;font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.15;margin:10px 0 10px;text-wrap:balance}
+.ctext p{margin:0 0 14px;color:var(--muted);font-size:16px}
+.ctext .n{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.dots{display:flex;gap:10px;margin-top:20px;overflow-x:auto;padding-bottom:6px}
+.dot{flex:none;width:118px;border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:4px;cursor:pointer;color:var(--muted);display:grid;gap:4px;text-align:left}
+.dot img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:5px;opacity:.7}
+.dot span{font-size:12px;padding:0 3px 2px}
+.dot[aria-selected="true"]{border-color:var(--fg);color:var(--fg)}
+.dot[aria-selected="true"] img{opacity:1}
+.dot:focus-visible,.car .nav:focus-visible,.term button:focus-visible{outline:2px solid var(--sda);outline-offset:2px}
+h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.1;margin:0 0 10px;letter-spacing:-.01em;text-wrap:balance}
+.sec{padding-block:80px 10px}
+.sub{color:var(--muted);margin:0 0 28px;max-width:62ch;font-size:17px}
+.feats{display:grid;gap:64px}
+.feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:44px;align-items:center}
+.feat.flip .ft{order:2}
+.feat .k{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.feat .k i{width:14px;height:3px;border-radius:2px}
+.feat h3{font-family:var(--serif);font-weight:700;font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.15;margin:10px 0 10px;text-wrap:balance}
+.feat p{margin:0;color:var(--muted);font-size:16px;max-width:44ch}
+.feat img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);box-shadow:0 30px 70px -40px rgba(0,0,0,.8)}
+.apps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.app{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;align-content:start}
+.app img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;filter:saturate(.9)}
+.app div{padding:14px 16px 16px}
+.app b{display:block;margin-bottom:4px;font-size:16px}
+.app p{margin:0;color:var(--muted);font-size:14.5px}
+.credit{margin:10px 0 0;font-size:12px;color:var(--muted)}
+.built{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:start}
+.built p{color:var(--muted);margin:0 0 12px}
+.built p b{color:var(--fg);font-weight:500}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-family:var(--mono);font-size:13.5px;line-height:1.65;overflow-x:auto;margin:0}
+code{font-family:var(--mono);font-size:.9em}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;margin-top:70px}
+@media (max-width:900px){.car{grid-template-columns:1fr;gap:18px}.apps{grid-template-columns:1fr 1fr}.built{grid-template-columns:1fr}.bg{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.apps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="in">
+  <header class="top"><span class="brand"><i aria-hidden="true"><b style="background:var(--vcc)"></b><b style="background:var(--sda)"></b><b style="background:var(--scl)"></b></i>Backoffice</span>
+    <nav class="nav" aria-label="Page"><a href="#tour">Screens</a><a href="#who">Who it's for</a><a class="gh" href="https://github.com/bnvac/backoffice" target="_blank" rel="noopener">GitHub ↗</a></nav></header>
+
+  <section class="hero">
+    <div class="bg" aria-hidden="true"><img src="img/bo-parts.jpg" alt="" loading="eager"><img src="img/bo-ideas.jpg" alt="" loading="eager"><img src="img/bo-project.jpg" alt="" loading="eager"><img src="img/bo-materials.jpg" alt="" loading="eager"><img src="img/bo-machines.jpg" alt="" loading="eager"><img src="img/bo-part.jpg" alt="" loading="eager"><img src="img/bo-wiring.jpg" alt="" loading="eager"><img src="img/bo-firmware.jpg" alt="" loading="eager"><img src="img/bo-workshop.jpg" alt="" loading="eager"></div>
+    <div class="hero-in">
+      <span class="eyebrow"><i></i>self-hosted · one binary · runs on a Pi</span>
+      <h1>Your whole workshop, in <span>one app</span>.</h1>
+      <p class="lede">Parts, tools, projects, 3D printers, firmware and the machines on your shelf, connected. It knows what you can build tonight, what you're missing, what your printer can handle and which board is running what.</p>
+      <div class="term"><code id="one">git clone https://github.com/bnvac/backoffice &amp;&amp; cd backoffice &amp;&amp; go build ./cmd/backoffice</code><button type="button" id="copy">Copy</button></div>
+      <div class="cta"><a class="btn p" href="#tour">See it</a><a class="btn" href="https://github.com/bnvac/backoffice" target="_blank" rel="noopener">GitHub</a></div>
+      <div class="stats"><div><b>12</b>areas, one database</div><div><b>19k</b>lines of Go</div><div><b>0</b>config files</div><div><b>1</b>SQLite file to back up</div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="tour">
+    <h2>Everything on the bench, connected</h2>
+    <p class="sub">The real app in dark mode, running on an example workshop.</p>
+    <div class="car" aria-roledescription="carousel" aria-label="Backoffice screenshots">
+      <div class="stage">
+        <img id="cimg" src="img/bo-dashboard.jpg" alt="" width="2400" height="1500">
+        <button type="button" class="nav prev" id="cprev" aria-label="Previous screen">&#8249;</button>
+        <button type="button" class="nav next" id="cnext" aria-label="Next screen">&#8250;</button>
+      </div>
+      <div class="ctext" aria-live="polite"><span class="k" id="ck"></span><h3 id="ch"></h3><p id="ct"></p><span class="n" id="cn"></span></div>
+    </div>
+    <div class="dots" role="tablist" aria-label="Choose a screen"><button type="button" class="dot" role="tab" aria-selected="true" aria-label="Dashboard" data-i="0"><img src="img/bo-dashboard.jpg" alt=""><span>Dashboard</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Parts" data-i="1"><img src="img/bo-parts.jpg" alt=""><span>Parts</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="One part" data-i="2"><img src="img/bo-part.jpg" alt=""><span>One part</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Projects" data-i="3"><img src="img/bo-project.jpg" alt=""><span>Projects</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Wiring" data-i="4"><img src="img/bo-wiring.jpg" alt=""><span>Wiring</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Idea board" data-i="5"><img src="img/bo-ideas.jpg" alt=""><span>Idea board</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Printers" data-i="6"><img src="img/bo-materials.jpg" alt=""><span>Printers</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Firmware" data-i="7"><img src="img/bo-firmware.jpg" alt=""><span>Firmware</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Machines" data-i="8"><img src="img/bo-machines.jpg" alt=""><span>Machines</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Workshop" data-i="9"><img src="img/bo-workshop.jpg" alt=""><span>Workshop</span></button></div>
+  </section>
+
+  <section class="sec" id="who">
+    <h2>Built for anyone who shares a shelf</h2>
+    <p class="sub">A group, a few machines, and nobody remembers which drawer the last one went in.</p>
+    <div class="apps"><article class="app"><img src="img/who-makerspace.jpg" alt="" loading="lazy" width="900" height="560"><div><b>School makerspaces</b><p>Named logins with an activity log, so you know who took the last servo. QR labels on every bin.</p></div></article><article class="app"><img src="img/who-robotics.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Robotics teams</b><p>Projects reserve their parts, so the build team sees what's actually free. BOMs import from KiCad and EasyEDA.</p></div></article><article class="app"><img src="img/who-community.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Community labs</b><p>One page that tells visitors what each printer can print before they try.</p></div></article><article class="app"><img src="img/who-repair.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Repair cafés</b><p>Firmware images and flash commands kept with each board, so someone else can repeat a fix.</p></div></article><article class="app"><img src="img/who-startup.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Hardware startups</b><p>Price history per shop and real delivery times for planning a build. Backups are one file.</p></div></article><article class="app"><img src="img/who-homelab.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Home labs</b><p>Machines, install images, checksums and the power bill, next to the parts that built them.</p></div></article></div>
+    <p class="credit">Photos from Unsplash.</p>
+  </section>
+
+  <section class="sec built">
+    <div>
+      <h2>Small on purpose</h2>
+      <p>One Go binary, one SQLite file, one folder of photos. No database server, no <code>npm install</code>, no config. Upgrading is replacing the binary.</p>
+      <p>Written rather than imported: a <b>KiCad footprint parser and renderer</b>, an <b>STL parser with a z-buffer rasteriser</b>, and a paste-a-list parser for tools and plans.</p>
+      <p>An AI model is optional (Ollama, OpenAI-compatible or Anthropic), and anything it suggests is <b>checked against the real inventory</b> before you see it.</p>
+    </div>
+    <pre>go build -o backoffice ./cmd/backoffice
+./backoffice          # http://localhost:8080
+
+# a Pi: build anywhere, copy over
+GOOS=linux GOARCH=arm64 CGO_ENABLED=0 \
+  go build -o backoffice ./cmd/backoffice
+
+# or
+docker compose up -d</pre>
+  </section>
+
+  <footer><span>Backoffice</span><a href="https://github.com/bnvac/backoffice" target="_blank" rel="noopener">github.com/bnvac/backoffice</a></footer>
+</div>
+
+<script>
+(function(){
+var S=[{n:"dashboard",c:"var(--ok)",k:"Dashboard",h:"Your whole shelf at a glance.",t:"Search everything, paste a shop link to add a part, and see stock, value and what changed recently."},{n:"parts",c:"var(--vcc)",k:"Parts",h:"Every part, with a photo and a place.",t:"Paste a product link from Adafruit, Pimoroni or The Pi Hut and the photo, price and part number fill in. Filter by drawer, maker, interface and tag."},{n:"part",c:"var(--vcc)",k:"One part",h:"Stock, prices, and what's already reserved.",t:"Change counts from the page or by scanning the drawer's QR label. Parts reserved by a project show as committed. Each shop's price sits next to its delivery time."},{n:"project",c:"var(--scl)",k:"Projects",h:"A parts list that knows what you're missing.",t:"Import a BOM from KiCad or EasyEDA and it matches each line to your drawers. Marking a project as building reserves its parts."},{n:"wiring",c:"var(--scl)",k:"Wiring",h:"Enter the pins. It draws the wires.",t:"Colors follow bench convention: red for power, black for ground. Shared buses are worked out for you."},{n:"ideas",c:"var(--sda)",k:"Idea board",h:"What you can build tonight, from what you own.",t:"It only suggests builds it can name every part for, then says how to box it based on your tools."},{n:"materials",c:"var(--ok)",k:"Printers",h:"What each printer can actually print.",t:"Record a printer once: hotend, bed, nozzle, enclosure. Every filament comes back as ready, with care, or not possible, with the reasons. G-code goes straight to Klipper or OctoPrint."},{n:"firmware",c:"var(--sda)",k:"Firmware",h:"Which board is running what.",t:"Keeps each firmware image, its checksum and the exact command to flash it again."},{n:"machines",c:"var(--vcc)",k:"Machines",h:"Your homelab, up or down.",t:"Address, OS, install image and checksum for each machine, a live up/down check, and total power use in watts and kWh a year."},{n:"workshop",c:"var(--sda)",k:"Workshop",h:"Your tools, and what they let you make.",t:"Paste your tool list. It works out print size, soldering ability and more, and the idea board uses that."}],i=0,img=document.getElementById("cimg");
+function show(n){i=(n+S.length)%S.length;var d=S[i];img.style.opacity=.2;var pre=new Image();pre.onload=function(){img.src=pre.src;img.alt="Backoffice "+d.k.toLowerCase()+" screen";img.style.opacity=1};pre.src="img/bo-"+d.n+".jpg";
+  var k=document.getElementById("ck");k.textContent="";var b=document.createElement("i");b.style.background=d.c;k.appendChild(b);k.appendChild(document.createTextNode(d.k));
+  document.getElementById("ch").textContent=d.h;document.getElementById("ct").textContent=d.t;document.getElementById("cn").textContent=(i+1)+" / "+S.length;
+  document.querySelectorAll(".dot").forEach(function(x,j){x.setAttribute("aria-selected",String(j===i))})}
+document.getElementById("cprev").addEventListener("click",function(){show(i-1)});
+document.getElementById("cnext").addEventListener("click",function(){show(i+1)});
+document.querySelectorAll(".dot").forEach(function(x){x.addEventListener("click",function(){show(+x.dataset.i)})});
+document.querySelector(".car").addEventListener("keydown",function(e){if(e.key==="ArrowLeft")show(i-1);if(e.key==="ArrowRight")show(i+1)});
+var sx=null;img.parentNode.addEventListener("touchstart",function(e){sx=e.touches[0].clientX},{passive:true});img.parentNode.addEventListener("touchend",function(e){if(sx==null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)show(i+(dx<0?1:-1));sx=null});
+document.getElementById("copy").addEventListener("click",function(){var b=this,t=document.getElementById("one").textContent;function done(m){b.textContent=m;setTimeout(function(){b.textContent="Copy"},1600)}try{navigator.clipboard.writeText(t).then(function(){done("Copied")},function(){done("Select it")})}catch(e){done("Select it")}});
+show(0);
+})();
+</script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap");
 /*! Minimal Mistakes | MIT License | Copyright (c) 2013-2020 Michael Rose
  * Adapted by the Academic Pages template (https://github.com/academicpages)
  * https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
@@ -338,3 +339,35 @@ a{text-decoration-thickness:1px;text-underline-offset:.18em}
 .proof li{border-left-color:var(--global-border-color)}
 .work h3 a{color:var(--global-text-color)}
 .work h3 a:hover{text-decoration:underline}
+
+/* ---- Graphite ---------------------------------------------------------------
+   One mono face everywhere, a graphite ground in the dark theme and a pale
+   paper one in the light, and amber kept for the few marks that are not words.
+   Font Awesome icons are <i> elements, so excluding <i> leaves them alone.
+   -------------------------------------------------------------------------- */
+:root{
+  --g-mono:"Geist Mono",ui-monospace,Menlo,Consolas,monospace;
+  --global-bg-color:#f4f4f1;--global-footer-bg-color:#ecece7;
+  --global-border-color:#e0e1dc;--global-dark-border-color:#c2c5be;
+  --global-text-color:#1d201d;--global-text-color-light:#6b716b;
+  --global-base-color:#a56b05;--global-thead-color:#ecece7;
+  --global-code-background-color:#ecece7;--global-code-text-color:#1d201d;
+  --global-link-color:#1d201d;--global-link-color-hover:#000;--global-link-color-visited:#1d201d;
+  --global-masthead-link-color:#1d201d;--global-masthead-link-color-hover:#000;
+}
+html[data-theme="dark"]{
+  --global-bg-color:#111312;--global-footer-bg-color:#111312;
+  --global-border-color:#262a27;--global-dark-border-color:#3b403c;
+  --global-text-color:#e3e6e1;--global-text-color-light:#848c86;
+  --global-base-color:#e9b44c;--global-thead-color:#1a1d1b;
+  --global-code-background-color:#1a1d1b;--global-code-text-color:#e3e6e1;
+  --global-link-color:#e3e6e1;--global-link-color-hover:#fff;--global-link-color-visited:#e3e6e1;
+  --global-masthead-link-color:#e3e6e1;--global-masthead-link-color-hover:#fff;
+}
+html{font-size:15px}
+@media (min-width:48em){html{font-size:16.5px}}
+html body,html body :not(i){font-family:var(--g-mono)!important}
+body{letter-spacing:-.005em}
+h1,h2,h3,.page__title,.hero__name{letter-spacing:-.03em}
+.hero__say b{color:var(--global-base-color)}
+::selection{color:#111312;background:#e9b44c}

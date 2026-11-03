@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>intraweb</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: a desktop. Windows sit in a two-column grid on a sky; a taskbar is pinned to the bottom. One committed look. */
+:root{
+  --sky-top:#2b6fd6; --sky-bot:#9fd0ff; --hill:#3f9b2e; --hill-dark:#2f7a20;
+  --title-a:#0a5ae0; --title-b:#3d95ff; --title-c:#0047c9; --frame:#0b4fd1;
+  --face:#ece9d8; --face-hi:#ffffff; --face-lo:#aca899; --ink:#111111; --ink-soft:#4b4b4b;
+  --link:#0b46c5; --task:#245edb; --task-hi:#3c81f3; --start:#3c9a37; --start-hi:#5fc256; --tray:#0f97e8;
+  --term-bg:#0c0c0c; --term-fg:#cfd6cf; --term-ok:#7ee07a; --red:#c4271b; --gold:#f2c94c;
+  --ui:Tahoma, "Noto Sans", Verdana, "Segoe UI", sans-serif; --mono:"Lucida Console", "JetBrains Mono", Consolas, monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--ui);font-size:13px;color:var(--ink);min-height:100vh;
+  background:
+    radial-gradient(120% 60% at 30% 108%, var(--hill) 0 46%, transparent 46.3%),
+    radial-gradient(90% 50% at 95% 112%, var(--hill-dark) 0 48%, transparent 48.3%),
+    radial-gradient(60% 18% at 75% 22%, rgba(255,255,255,.55), transparent 70%),
+    radial-gradient(40% 12% at 20% 14%, rgba(255,255,255,.45), transparent 70%),
+    linear-gradient(var(--sky-top), var(--sky-bot) 70%);
+  background-attachment:fixed;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:max(20px,env(safe-area-inset-top,0px));padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+a{color:var(--link)}
+:focus-visible{outline:1px dotted var(--ink);outline-offset:2px}
+
+.desk{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:84px minmax(0,1fr);gap:18px}
+.icons{display:flex;flex-direction:column;gap:18px;padding-top:6px}
+.icon{display:grid;justify-items:center;gap:4px;color:#fff;text-decoration:none;font-size:12px;text-align:center;text-shadow:1px 1px 2px rgba(0,0,0,.7);padding:4px;border:1px dotted transparent}
+.icon:hover,.icon:focus-visible{border-color:rgba(255,255,255,.7);background:rgba(11,79,209,.35);outline:none}
+.icon svg{width:36px;height:36px;filter:drop-shadow(1px 2px 1px rgba(0,0,0,.35))}
+
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:start}
+.col{display:grid;gap:22px;min-width:0}
+
+.win{background:var(--face);border:3px solid var(--frame);border-top:0;border-radius:8px 8px 0 0;box-shadow:2px 3px 14px rgba(0,0,0,.35);min-width:0}
+.bar{display:flex;align-items:center;gap:6px;height:30px;padding:0 4px 0 8px;border-radius:7px 7px 0 0;margin:0 -3px;
+  background:linear-gradient(var(--title-b) 0%, var(--title-a) 12%, var(--title-a) 70%, var(--title-c) 100%);color:#fff;font-weight:700;font-size:13px;text-shadow:1px 1px 1px rgba(0,0,0,.45)}
+.bar .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
+.bar .t svg{width:16px;height:16px;flex:none}
+.ctl{width:21px;height:21px;border:1px solid #fff;border-radius:3px;background:linear-gradient(#5b9cff,#2463e0);display:grid;place-items:center;cursor:pointer;padding:0}
+.ctl.x{background:linear-gradient(#e9876a,#c6371c)}
+.ctl svg{width:9px;height:9px;stroke:#fff;stroke-width:2;fill:none}
+.menu{display:flex;gap:2px;padding:2px 6px;border-bottom:1px solid var(--face-lo);font-size:12px}
+.menu span{padding:2px 6px}
+.body{padding:16px;min-width:0}
+.win.min .menu,.win.min .body,.win.min .status{display:none}
+.status{display:flex;gap:2px;padding:2px;border-top:1px solid var(--face-lo);font-size:11.5px;color:var(--ink-soft)}
+.status span{padding:2px 6px;border:1px solid var(--face-lo);border-right-color:var(--face-hi);border-bottom-color:var(--face-hi)}
+.status span:first-child{flex:1}
+
+/* hero window */
+.hero h1{font-size:clamp(28px,4.6vw,44px);margin:2px 0 4px;letter-spacing:-.02em;line-height:1.05;font-weight:700;color:#0b2c7a}
+.hero .slogan{font-size:15px;color:var(--ink-soft);margin:0 0 16px}
+.hero p{max-width:58ch;line-height:1.55;margin:0 0 14px;font-size:13.5px}
+.cmd{font-family:var(--mono);background:var(--face-hi);border:1px solid var(--face-lo);border-right-color:var(--face-hi);border-bottom-color:var(--face-hi);box-shadow:inset 1px 1px 0 #716f64;padding:8px 10px;display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 16px;overflow-x:auto}
+.xpbtn{font:inherit;font-size:12.5px;min-width:86px;padding:5px 14px;border:1px solid #003c74;border-radius:3px;background:linear-gradient(#fff,#ecebe6 86%,#d6d0c5);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+.xpbtn:hover{box-shadow:inset 0 0 0 2px #f8b636}
+.xpbtn.def{box-shadow:inset 0 0 0 1px #6c90d9}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0 0}
+.tri div{background:var(--face-hi);border:1px solid var(--face-lo);padding:10px 12px;border-radius:3px}
+.tri b{display:block;color:#0b2c7a;margin-bottom:4px}
+.tri span{color:var(--ink-soft);font-size:12.5px;line-height:1.45}
+
+/* roster */
+.roster{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--face-lo);font-size:12.5px}
+.roster th{text-align:left;font-weight:400;padding:3px 8px;background:linear-gradient(#fff,#ebeadb);border-bottom:1px solid #d6d2c2;border-right:1px solid #d6d2c2;white-space:nowrap}
+.roster td{padding:5px 8px;white-space:nowrap;border-bottom:1px solid #f1efe4}
+.roster td.n{display:flex;align-items:center;gap:8px}
+.roster canvas{width:18px;height:18px;image-rendering:pixelated;border:1px solid #c9c5b5}
+.roster .fp{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft)}
+.roster tr.warn td{background:#fff1ef}
+.badge{font-size:10.5px;padding:0 5px;border-radius:2px;background:#dde8fb;color:#0b46c5;border:1px solid #9db8ea}
+.badge.r{background:#fde2de;color:var(--red);border-color:#f0a99f}
+.note{font-size:12px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
+.scroll{overflow-x:auto}
+
+/* terminal */
+.term .body{background:var(--term-bg);color:var(--term-fg);font-family:var(--mono);font-size:12.5px;line-height:1.55;min-height:230px;white-space:pre-wrap;overflow-x:auto}
+.term .ok{color:var(--term-ok)} .term .dim{color:#7d867d} .term .y{color:var(--gold)}
+.caret{display:inline-block;width:8px;height:14px;background:var(--term-fg);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* tabs */
+.tabs{display:flex;gap:0;padding-left:4px;position:relative;z-index:1;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:12px;padding:4px 10px;border:1px solid #919b9c;border-bottom:0;border-radius:3px 3px 0 0;background:linear-gradient(#fff,#f3f3ef);margin-right:-1px;cursor:pointer;color:var(--ink)}
+.tabs button[aria-selected="true"]{background:#fcfcfe;border-top:2px solid #f8b636;padding-bottom:6px;margin-bottom:-1px}
+.tabpanel{border:1px solid #919b9c;background:#fcfcfe;padding:14px 16px;line-height:1.55}
+.tabpanel h3{margin:0 0 6px;font-size:13.5px;color:#0b2c7a}
+.tabpanel p{margin:0 0 8px;max-width:62ch}
+.tabpanel code{font-family:var(--mono);font-size:12px;background:#eef1f7;padding:0 3px}
+fieldset{border:1px solid #d0d0bf;border-radius:4px;padding:8px 12px;margin:10px 0 0}
+legend{color:#0046d5;padding:0 4px}
+
+/* wizard */
+.wiz{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;background:#fff;margin:0;padding:0}
+.wiz-side svg{display:block;width:100%;height:100%;min-height:200px}
+.wiz-main{padding:14px 16px 14px 0;line-height:1.55}
+.wiz-main h3{margin:0 0 6px;font-size:15px;color:#0b2c7a}
+.wiz-main p{margin:0 0 10px;max-width:60ch}
+.steps{margin:0 0 10px;padding-left:20px}
+.steps li{margin-bottom:5px}
+.wiz code{font-family:var(--mono);font-size:12px;background:#eef1f7;padding:0 3px}
+@media (max-width:560px){.wiz{grid-template-columns:1fr}.wiz-side{display:none}.wiz-main{padding:14px}}
+/* picture viewer */
+.viewer{grid-column:1/-1}
+.viewer .body{background:#fff;padding:12px}
+.stage{margin:0;background:#1b1b1f;border:1px solid var(--face-lo);display:grid;place-items:center;padding:12px;aspect-ratio:16/10}
+.stage img{display:block;width:100%;height:100%;object-fit:contain;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+.stage figcaption{color:#e6e6e6;font-size:12.5px;margin-top:10px;text-align:center}
+.cyc{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:10px;font-size:12px;color:var(--ink-soft)}
+.strip{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px}
+.strip button{flex:none;width:110px;height:72px;padding:3px;border:2px solid transparent;background:#eef1f7;cursor:pointer;display:grid;place-items:center}
+.strip button img{max-width:100%;max-height:100%;display:block}
+.strip button[aria-pressed="true"]{border-color:#316ac5;background:#c1d2ee}
+fieldset b{color:#0b2c7a}
+fieldset small{color:var(--ink-soft)}
+/* hosting paths */
+.kinds{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 4px}
+.kinds span{background:#fff;border:1px solid var(--face-lo);border-radius:999px;padding:2px 10px;font-size:12px}
+.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.steps3 div{background:#fff;border:1px solid var(--face-lo);border-radius:4px;padding:8px 10px;font-size:12.5px;line-height:1.45}
+.steps3 b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--title-a);color:#fff;font-size:11px;margin-right:6px}
+.shotsm{display:block;width:100%;height:auto;border:1px solid var(--face-lo)}
+@media (max-width:640px){.steps3{grid-template-columns:1fr}}
+.hosts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.host{background:#fff;border:1px solid var(--face-lo);border-radius:4px;padding:10px 12px;display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start}
+.host svg{width:32px;height:32px}
+.host b{color:#0b2c7a;display:block;margin-bottom:2px}
+.host p{margin:0 0 6px;font-size:12.5px;line-height:1.45;color:var(--ink-soft)}
+.host code{font-family:var(--mono);font-size:11.5px;background:#eef1f7;padding:1px 4px;display:inline-block;word-break:break-all}
+/* floating neighbor sites */
+.around{grid-column:1/-1;padding:10px 0 20px}
+.around h2{display:inline-block;color:#fff;font-size:24px;margin:0;padding:8px 14px 2px;background:linear-gradient(var(--title-b),var(--title-a));border-radius:6px 6px 0 0}
+.around>p{color:#fff;margin:0 0 26px;padding:6px 14px 10px;background:rgba(11,63,168,.85);border-radius:0 6px 6px 6px;max-width:62ch}
+.float{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 34px}
+.ie{background:var(--face);border:3px solid var(--frame);border-top:0;border-radius:8px 8px 0 0;box-shadow:4px 8px 22px rgba(0,0,0,.4);transform:rotate(var(--r));transition:transform .25s;min-width:0}
+.ie:hover{transform:rotate(0) scale(1.02);z-index:2;position:relative}
+.ie .addr{display:flex;gap:8px;align-items:center;padding:4px 6px;border-bottom:1px solid var(--face-lo);font-size:12px}
+.ie .addr code{flex:1;background:#fff;border:1px solid #7f9db9;padding:2px 6px;font-family:var(--ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ie img{display:block;width:100%;height:auto}
+@media (max-width:960px){.hosts{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.hosts,.float{grid-template-columns:1fr}.ie{transform:none}}
+@media (prefers-reduced-motion:reduce){.ie{transition:none}}
+/* notepad */
+.np .body{background:#fff;font-family:var(--mono);font-size:12.5px;line-height:1.6;border:1px solid var(--face-lo);margin:6px;padding:12px 14px;max-height:none}
+.np ol{margin:0;padding-left:22px}
+.np li{margin-bottom:8px}
+.np b{font-weight:600}
+
+/* taskbar */
+.taskbar{position:fixed;left:0;right:0;bottom:0;height:calc(38px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);display:flex;align-items:stretch;
+  background:linear-gradient(#3e86f2 0%, var(--task) 8%, var(--task) 88%, #1941a5);border-top:1px solid #0e3ea6;z-index:4;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.start{display:flex;align-items:center;gap:6px;padding:0 20px 0 10px;border-radius:0 12px 12px 0;color:#fff;font-weight:700;font-style:italic;font-size:16px;text-shadow:1px 1px 2px rgba(0,0,0,.5);
+  background:linear-gradient(#5ec95a,var(--start) 30%,var(--start) 80%,#2b7a27);text-decoration:none;box-shadow:inset -2px 0 3px rgba(0,0,0,.25)}
+.start:hover{filter:brightness(1.1)}
+.start svg{width:18px;height:18px}
+.tasks{flex:1;display:flex;gap:4px;padding:4px 6px;min-width:0;overflow:hidden}
+.tasks a{flex:0 1 160px;min-width:0;display:flex;align-items:center;gap:6px;padding:0 8px;border-radius:3px;color:#fff;text-decoration:none;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--task-hi);border:1px solid #1b4fc1}
+.tasks a:hover{filter:brightness(1.1)}
+.tray{display:flex;align-items:center;gap:10px;padding:0 12px;color:#fff;font-size:12px;background:linear-gradient(#18b4f5,var(--tray) 20%,#0b7cd0);border-left:1px solid #0b5aa8}
+.balloon{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(48px + env(safe-area-inset-bottom,0px));background:#ffffe1;border:1px solid #000;border-radius:8px;padding:10px 12px 10px 12px;max-width:270px;font-size:12px;box-shadow:2px 3px 6px rgba(0,0,0,.3);z-index:5;transition:opacity .4s, transform .4s}
+.balloon b{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.balloon.off{opacity:0;transform:translateY(8px);pointer-events:none}
+.balloon button{position:absolute;top:4px;right:6px;border:0;background:none;cursor:pointer;font-size:13px;color:var(--ink-soft)}
+
+@media (max-width:960px){.grid{grid-template-columns:1fr}.desk{grid-template-columns:1fr}.icons{flex-direction:row;flex-wrap:wrap}.tri{grid-template-columns:1fr}}
+@media (max-width:560px){.tasks a:nth-child(n+2){display:none}.menu{display:none}}
+@media (prefers-reduced-motion:reduce){.caret{animation:none}.balloon{transition:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="globe" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#2f8ef0" stroke="#0b4fd1" stroke-width="1.5"/><path d="M8 11c3 1 4 4 7 3s3-5 6-4 2 6-1 8-6 1-6 5-4 1-5-2-3-6-1-10" fill="#5bc04e"/><ellipse cx="12" cy="9" rx="5" ry="2.5" fill="#fff" opacity=".35"/></symbol>
+    <symbol id="folder" viewBox="0 0 32 32"><path d="M3 8h10l3 3h13v16H3z" fill="#f5c84b" stroke="#c49222"/><path d="M3 13h26v14H3z" fill="#fbd96b" stroke="#c49222"/></symbol>
+    <symbol id="mail" viewBox="0 0 32 32"><rect x="3" y="7" width="26" height="18" rx="2" fill="#fff" stroke="#6b7d99"/><path d="M3 8l13 10L29 8" fill="none" stroke="#2f6fd6" stroke-width="2"/></symbol>
+    <symbol id="key" viewBox="0 0 32 32"><circle cx="11" cy="16" r="6" fill="#f2c94c" stroke="#a37a12" stroke-width="1.5"/><circle cx="11" cy="16" r="2" fill="#fff"/><path d="M17 16h12v4h-3v-2h-2v3h-3v-5" fill="#f2c94c" stroke="#a37a12" stroke-width="1.2"/></symbol>
+    <symbol id="cmd" viewBox="0 0 32 32"><rect x="3" y="5" width="26" height="22" fill="#111" stroke="#666"/><rect x="3" y="5" width="26" height="4" fill="#2f6fd6"/><path d="M7 14l4 3-4 3M13 21h6" stroke="#fff" stroke-width="1.6" fill="none"/></symbol>
+    <symbol id="note" viewBox="0 0 32 32"><rect x="6" y="3" width="20" height="26" fill="#fff" stroke="#6b7d99"/><path d="M10 10h12M10 14h12M10 18h12M10 22h8" stroke="#9db3d6"/></symbol>
+    <symbol id="chipi" viewBox="0 0 32 32"><rect x="6" y="9" width="20" height="16" rx="1" fill="#1d1d1f" stroke="#555"/><rect x="9" y="4" width="14" height="7" fill="#2a8a3a" stroke="#1b5e27"/><path d="M11 6h2v3h2V6h2v3h2V6h2" stroke="#d4af37" fill="none"/><rect x="11" y="13" width="10" height="8" fill="#c0c4cc"/><path d="M4 12h2M4 16h2M4 20h2M26 12h2M26 16h2M26 20h2" stroke="#c0c4cc"/></symbol>
+    <symbol id="flag" viewBox="0 0 32 32"><path d="M4 7c4-2 7 2 11 0v9c-4 2-7-2-11 0z" fill="#f25022"/><path d="M17 7c4-2 7 2 11 0v9c-4 2-7-2-11 0z" fill="#7fba00"/><path d="M4 18c4-2 7 2 11 0v9c-4 2-7-2-11 0z" fill="#00a4ef"/><path d="M17 18c4-2 7 2 11 0v9c-4 2-7-2-11 0z" fill="#ffb900"/></symbol>
+  </defs>
+</svg>
+
+<div class="desk">
+  <nav class="icons" aria-label="Desktop">
+    <a class="icon" href="https://github.com/bnvac/intraweb" target="_blank" rel="noopener"><svg><use href="#folder"/></svg>Source</a>
+    <a class="icon" href="#roster"><svg><use href="#globe"/></svg>Neighbor&shy;hood</a>
+    <a class="icon" href="#how"><svg><use href="#mail"/></svg>Mail &amp; channels</a>
+    <a class="icon" href="#around"><svg><use href="#note"/></svg>Neighbors' sites</a>
+    <a class="icon" href="#radio"><svg><use href="#chipi"/></svg>Ways to host</a>
+    <a class="icon" href="#libraries"><svg><use href="#folder"/></svg>Media libraries</a>
+  </nav>
+
+  <main class="grid">
+    <div class="col">
+      <section class="win hero" id="main" aria-labelledby="h-main">
+        <div class="bar"><span class="t"><svg><use href="#globe"/></svg>intraweb</span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl" type="button" aria-label="Maximize" tabindex="-1"><svg viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
+        <div class="menu" aria-hidden="true"><span>File</span><span>Edit</span><span>View</span><span>Neighbors</span><span>Help</span></div>
+        <div class="body">
+          <h1 id="h-main">intraweb</h1>
+          <p class="slogan">your neighborhood web</p>
+          <p>A local intranet that needs no internet, no servers and no setup. Put one binary on a laptop or a Raspberry Pi, join the same Wi-Fi as everyone else, and you can see each other, visit each other's pages, swap files and send signed mail. Nodes find each other in about a second.</p>
+          <div class="cmd"><span>C:\&gt; intraweb up</span><span style="color:var(--ink-soft)">that's the whole setup</span></div>
+          <div class="btns">
+            <a class="xpbtn def" href="https://github.com/bnvac/intraweb" target="_blank" rel="noopener">Get it…</a>
+            <a class="xpbtn" href="#how">How it works</a>
+            <a class="xpbtn" href="#around">Neighbors' sites</a>
+          </div>
+          <div class="tri">
+            <div><b>You are a keypair and a folder.</b><span>An Ed25519 key is your name. Copy the vault to another machine and you're still you.</span></div>
+            <div><b>Hubs are places, not owners.</b><span>A hub hands out addresses. It never stores, proxies or relays anyone's content.</span></div>
+            <div><b>One folder, many neighborhoods.</b><span>Home, the makerspace, a field site. All serve the same vault, nothing copied.</span></div>
+          </div>
+        </div>
+        <div class="status"><span>Single static binary · Rust · no runtime dependencies</span><span>Protocol v2</span></div>
+      </section>
+
+      <section class="win" id="radio" aria-labelledby="h-radio">
+        <div class="bar"><span class="t"><svg><use href="#chipi"/></svg><span id="h-radio">Ways to host a neighborhood</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
+        <div class="body"><p style="margin:0 0 12px">intraweb only needs machines that can hear each other. No internet, and no router required.</p><div class="hosts"><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="18" width="24" height="8" rx="2" fill="#dfe6f3" stroke="#5b6b8c"/><path d="M10 18V9M22 18V9" stroke="#5b6b8c" stroke-width="2"/><circle cx="9" cy="22" r="1.5" fill="#3ec44a"/><circle cx="14" cy="22" r="1.5" fill="#3ec44a"/></svg><div><b>Any Wi-Fi</b><p>The network you already have. Everyone runs one command and appears in about a second.</p><code>intraweb up</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="7" width="22" height="18" rx="2" fill="#2f8a3a" stroke="#1b5e27"/><rect x="9" y="11" width="8" height="8" fill="#c0c4cc"/><path d="M20 11h4M20 15h4M20 19h4" stroke="#d4af37" stroke-width="2"/></svg><div><b>A hub on a Pi</b><p>Leave a Raspberry Pi on as the meeting place. People open intranet.local instead of an address.</p><code>intraweb up --hub --hub-name oak</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="8" width="18" height="12" rx="1" fill="#2a5bd7" stroke="#1d3f99"/><path d="M4 22h24l-2 3H6z" fill="#c0c4cc" stroke="#7a8296"/><path d="M12 13a6 6 0 0 1 8 0M14 15.5a3 3 0 0 1 4 0" stroke="#fff" fill="none" stroke-width="1.5"/></svg><div><b>One laptop, no router</b><p>A Linux laptop makes the Wi-Fi itself. Everyone else joins it.</p><code>nmcli device wifi hotspot ssid intraweb</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="12" width="9" height="8" rx="1" fill="#c0c4cc" stroke="#7a8296"/><rect x="21" y="12" width="9" height="8" rx="1" fill="#c0c4cc" stroke="#7a8296"/><path d="M11 16c4 0 5-5 10 0" stroke="#e8a020" stroke-width="2.5" fill="none"/></svg><div><b>Two laptops, one cable</b><p>Plug Ethernet straight between them. They give themselves addresses and find each other.</p><code>intraweb up   # on both</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#chipi"/></svg><div><b>A $5 ESP32</b><p>A pocket access point on a battery bank for up to 10 devices. Phones get a page saying what to run.</p><code>hardware/esp32-ap</code></div></div><div class="host"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="10" y="4" width="12" height="24" rx="2" fill="#333" stroke="#111"/><rect x="12" y="7" width="8" height="16" fill="#8fd0ff"/><path d="M13 12a4 4 0 0 1 6 0" stroke="#fff" fill="none"/></svg><div><b>A phone or an old router</b><p>A hotspot with mobile data off, or a router with nothing in the internet port.</p><code>intraweb doctor   # if nobody shows up</code></div></div></div>
+        <div class="btns" style="justify-content:flex-end;margin-top:12px"><a class="xpbtn" href="https://github.com/bnvac/intraweb/tree/main/hardware/esp32-ap" target="_blank" rel="noopener">ESP32 firmware…</a><a class="xpbtn def" href="#around">Next &gt;</a></div></div>
+      </section>
+
+      <section class="win" id="libraries" aria-labelledby="h-libs">
+        <div class="bar"><span class="t"><svg><use href="#folder"/></svg><span id="h-libs">Media libraries — bring your self-hosted apps</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
+        <div class="body">
+          <p style="margin:0 0 10px">Already running a media server or another self-hosted app? It shows up as a button on your card for everyone in range, and opens straight from your machine. Nothing streams through intraweb.</p>
+          <fieldset><legend>Recognized automatically</legend><div class="kinds"><span>&#9654; Jellyfin</span><span>&#9654; Plex</span><span>&#9834; Navidrome</span><span>&#8801; Audiobookshelf</span><span>&#8801; Calibre-Web</span><span>&#8801; Kavita</span><span>&#8801; Komga</span><span>&#9635; Immich</span><span>&#9635; PhotoPrism</span><span>&#8599; Kiwix</span><span>&#8599; Home Assistant</span><span>&#8599; Paperless-ngx</span><span>&#8599; Mealie</span><span>&#8599; Forgejo</span><span>&#8599; Gitea</span></div><small>Anything else works too: add it by its port.</small></fieldset>
+          <div class="steps3">
+            <div><b>1</b>Open your dashboard and find <i>Media libraries</i>.</div>
+            <div><b>2</b>Click <i>Find services on this computer</i>.</div>
+            <div><b>3</b>Click <i>Add</i>. Neighbors see the button right away.</div>
+          </div>
+          <img class="shotsm" src="img/iw-connect.jpg" alt="The Media libraries box on the dashboard: Jellyfin and Navidrome listed, Kiwix found with an Add button." width="1920" height="1200" loading="lazy">
+          <div class="cmd" style="display:block;line-height:1.7;margin-top:12px">C:\&gt; intraweb library detect --add<br>C:\&gt; intraweb library add Films 8096<br>C:\&gt; intraweb libraries bob</div>
+          <p class="note" style="margin-top:6px">The service must listen on your network and your firewall must allow its port. Only you can change your list or scan your own machine; a neighbor asking gets refused.</p>
+        </div>
+      </section>
+
+      <section class="win" id="how" aria-labelledby="h-how">
+        <div class="bar"><span class="t"><svg><use href="#key"/></svg><span id="h-how">How it works — Properties</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
+        <div class="body">
+          <div class="tabs" role="tablist" aria-label="How it works">
+            <button role="tab" aria-selected="true" aria-controls="tp-id" id="tb-id">Identity</button>
+            <button role="tab" aria-selected="false" aria-controls="tp-disc" id="tb-disc">Discovery</button>
+            <button role="tab" aria-selected="false" aria-controls="tp-mail" id="tb-mail">Mail &amp; files</button>
+            <button role="tab" aria-selected="false" aria-controls="tp-chan" id="tb-chan">Channels</button>
+            <button role="tab" aria-selected="false" aria-controls="tp-nets" id="tb-nets">Nets</button>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="tp-id" aria-labelledby="tb-id">
+            <h3>Two keys, never swapped</h3>
+            <p><b>Ed25519</b> in <code>identity.key</code> is who you are and signs everything. An <b>X25519</b> key derived from the same seed by HKDF is how a secret gets sealed to you. One file to back up, independent key material.</p>
+            <p>Nicknames are labels, keys are identity. There's no registry, so names can't be unique. A name that shows up on a new key is flagged in red, never quietly shown as a familiar face. Every key also draws its own picture, because people skim fingerprints and they notice a changed face.</p>
+            <fieldset><legend>Your vault</legend><code>identity.key</code> secret · <code>config.toml</code> private · <code>intraweb.db</code> private · <code>site/</code> public · <code>files/</code> public</fieldset>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="tp-disc" aria-labelledby="tb-disc" hidden>
+            <h3>Both paths, always</h3>
+            <p>mDNS alone fails on networks that filter multicast. A UDP broadcast beacon alone gives up <code>.local</code> names. intraweb runs both. mDNS presence is edge-triggered and the beacon is a heartbeat, so each has its own way of deciding someone left.</p>
+            <p>Every announcement is signed and checked before it touches the database. Your own broadcast comes back to you and verifies, so it's dropped first. <code>surf</code> only listens: looking around must not change what the neighbors see.</p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="tp-mail" aria-labelledby="tb-mail" hidden>
+            <h3>One port, one protocol</h3>
+            <p>Pages, mail and downloads all go over each node's own HTTP port, straight to the peer. Downloads resume for free because ranged requests already exist.</p>
+            <p>Mail is addressed by key. Type a nickname and it resolves, but if two keys answer to it the send stops and you choose. Mail to someone out of range waits in your outbox. An attachment is a signed reference to a file in your shared folder; the bytes stay with you until fetched.</p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="tp-chan" aria-labelledby="tb-chan" hidden>
+            <h3>Private means encrypted</h3>
+            <p>Anyone with the Wi-Fi password can listen, so delivering only to members would be a promise the wire doesn't keep. Inviting someone seals the channel key to the X25519 key they announce. Private channels carry no attachments, because the shared folder is public.</p>
+            <p>A guestbook is a public channel whose address is derived from its owner's key, so anyone can work out where to sign.</p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="tp-nets" aria-labelledby="tb-nets" hidden>
+            <h3>A net is its log</h3>
+            <p>A net is a group that governs itself: joins, motions and votes are signed posts in a channel, and the state is folded from them deterministically. Nothing else is stored, so no node can hold a version the log doesn't support.</p>
+            <p>Keys are free to mint, so a vote fixes its voters when it opens. Keys made afterwards count for nothing. The dashboard says plainly that keys made in advance still do.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="col">
+      <section class="win" id="roster" aria-labelledby="h-roster">
+        <div class="bar"><span class="t"><svg><use href="#globe"/></svg><span id="h-roster">Neighborhood — 4 online</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
+        <div class="body">
+          <div class="scroll"><table class="roster">
+            <thead><tr><th>Name</th><th>Fingerprint</th><th>Seen</th><th>Trust</th></tr></thead>
+            <tbody id="rosterbody"></tbody>
+          </table></div>
+          <p class="note">An example roster. The red row is a familiar name on a new key: it's called out, never merged. A <b>✓</b> means you compared fingerprints in person.</p>
+        </div>
+        <div class="status"><span>1 hub in range · intranet.local</span><span>mDNS + beacon</span></div>
+      </section>
+
+      <section class="win term" aria-labelledby="h-term">
+        <div class="bar"><span class="t"><svg><use href="#cmd"/></svg><span id="h-term">Command Prompt</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
+        <div class="body" id="term" aria-live="off"></div>
+      </section>
+
+    </div>
+
+    <section class="win viewer" id="shots" aria-labelledby="h-shots">
+      <div class="bar"><span class="t"><svg><use href="#globe"/></svg><span id="h-shots">Screenshots — Windows Picture Viewer</span></span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div>
+      <div class="body">
+        <figure class="stage"><img id="shot" src="img/iw-dashboard.jpg" alt="The intraweb dashboard: alice hosting, three neighbors in range" width="1920" height="1200"></figure>
+        <div class="cyc"><button type="button" class="xpbtn" id="prev" aria-label="Previous screenshot">&#9664; Previous</button><span id="count">1 / 7</span><button type="button" class="xpbtn" id="next" aria-label="Next screenshot">Next &#9654;</button></div>
+        <div class="strip" role="group" aria-label="Choose a screenshot"><button type="button" aria-pressed="true" data-src="img/iw-dashboard.jpg" data-alt="The intraweb dashboard: alice hosting, three neighbors in range"><img src="img/iw-dashboard.jpg" alt="The intraweb dashboard: alice hosting, three neighbors in range"></button><button type="button" aria-pressed="false" data-src="img/iw-libraries.jpg" data-alt="Neighbor cards with media library buttons: Films and Field recordings on bob, Cookbooks on carol"><img src="img/iw-libraries.jpg" alt="Media library buttons on neighbor cards"></button><button type="button" aria-pressed="false" data-src="img/iw-connect.jpg" data-alt="Media libraries box with Find services and Add buttons"><img src="img/iw-connect.jpg" alt="Media libraries box"></button><button type="button" aria-pressed="false" data-src="img/iw-chat.jpg" data-alt="The neighborhood channel"><img src="img/iw-chat.jpg" alt="The neighborhood channel"></button><button type="button" aria-pressed="false" data-src="img/iw-mail.jpg" data-alt="Signed mail between neighbors"><img src="img/iw-mail.jpg" alt="Signed mail between neighbors"></button><button type="button" aria-pressed="false" data-src="img/iw-guestbook.jpg" data-alt="Alice's guestbook"><img src="img/iw-guestbook.jpg" alt="Alice's guestbook"></button><button type="button" aria-pressed="false" data-src="img/iw-esp32.jpg" data-alt="The page a laptop or phone sees on the ESP32 network"><img src="img/iw-esp32.jpg" alt="The page a laptop or phone sees on the ESP32 network"></button></div>
+      </div>
+      <div class="status"><span>Four real nodes on one machine</span><span>7 pictures</span></div>
+    </section>
+    <section class="around" id="around" aria-labelledby="h-around">
+      <h2 id="h-around">Around the neighborhood</h2>
+      <p>Everyone's page is served from their own machine, straight to yours. These four were running on the nodes above.</p>
+      <div class="float"><div class="ie" style="--r:-2.2deg"><div class="bar"><span class="t"><svg><use href="#globe"/></svg>Basecamp Notice Board - Internet Explorer</span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div><div class="addr"><span>Address</span><code>http://192.0.2.2:8480/~alice/</code></div><img src="img/iw-site-alice.jpg" alt="Basecamp Notice Board, alice's page on intraweb" width="1920" height="1200" loading="lazy"></div><div class="ie" style="--r:1.6deg"><div class="bar"><span class="t"><svg><use href="#globe"/></svg>Bob's Radio Shack - Internet Explorer</span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div><div class="addr"><span>Address</span><code>http://192.0.2.2:8481/~bob/</code></div><img src="img/iw-site-bob.jpg" alt="Bob's Radio Shack, bob's page on intraweb" width="1920" height="1200" loading="lazy"></div><div class="ie" style="--r:1.2deg"><div class="bar"><span class="t"><svg><use href="#globe"/></svg>Carol's Kitchen - Internet Explorer</span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div><div class="addr"><span>Address</span><code>http://192.0.2.2:8482/~carol/</code></div><img src="img/iw-site-carol.jpg" alt="Carol's Kitchen, carol's page on intraweb" width="1920" height="1200" loading="lazy"></div><div class="ie" style="--r:-1.4deg"><div class="bar"><span class="t"><svg><use href="#globe"/></svg>Ridge Photo Log - Internet Explorer</span><button class="ctl" type="button" aria-label="Minimize" data-min><svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg></button><button class="ctl x" type="button" aria-label="Close" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg></button></div><div class="addr"><span>Address</span><code>http://192.0.2.2:8483/~dana/</code></div><img src="img/iw-site-dana.jpg" alt="Ridge Photo Log, dana's page on intraweb" width="1920" height="1200" loading="lazy"></div></div>
+    </section>
+  </main>
+</div>
+
+<div class="balloon off" id="balloon" role="status"><button type="button" aria-label="Dismiss" id="bx">×</button><b><svg width="16" height="16"><use href="#globe"/></svg>New neighbor</b>dana joined the neighborhood. Compare fingerprints in person before marking them verified.</div>
+
+<footer class="taskbar">
+  <a class="start" href="https://github.com/bnvac/intraweb" target="_blank" rel="noopener"><svg><use href="#flag"/></svg>start</a>
+  <div class="tasks">
+    <a href="#main"><svg width="14" height="14"><use href="#globe"/></svg>intraweb</a>
+    <a href="#roster"><svg width="14" height="14"><use href="#globe"/></svg>Neighborhood</a>
+    <a href="#radio"><svg width="14" height="14"><use href="#chipi"/></svg>Ways to host</a><a href="#around"><svg width="14" height="14"><use href="#note"/></svg>Sites</a>
+    <a href="#shots"><svg width="14" height="14"><use href="#globe"/></svg>Screenshots</a>
+  </div>
+  <div class="tray"><svg width="16" height="16" aria-hidden="true"><use href="#globe"/></svg><span id="clock">12:00 PM</span></div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+/* identicons: a 5x5 mirrored grid from a hash of the fingerprint */
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function ident(fp){var c=document.createElement("canvas");c.width=5;c.height=5;var x=c.getContext("2d"),h=hash(fp);
+  x.fillStyle="#fff";x.fillRect(0,0,5,5);x.fillStyle="hsl("+(h%360)+",62%,46%)";
+  for(var i=0;i<15;i++){if((h>>i)&1){var col=Math.floor(i/5),row=i%5;x.fillRect(col,row,1,1);x.fillRect(4-col,row,1,1)}}
+  c.setAttribute("aria-hidden","true");return c}
+var peers=[["alice","7abc-41d0-bd44-f2c2","1s","hub"],["bob","b1f1-13ab-865f-f337","2s","verified"],["carol","844c-8e7b-9dfd-5d0a","1s",""],["bob","09fc-d332-71ae-4b10","4s","conflict"]];
+var tb=document.getElementById("rosterbody");
+peers.forEach(function(p){
+  var tr=document.createElement("tr");if(p[3]==="conflict")tr.className="warn";
+  var n=document.createElement("td");n.className="n";n.appendChild(ident(p[1]));var nm=document.createElement("span");nm.textContent=(p[3]==="verified"?"✓ ":"")+p[0];n.appendChild(nm);
+  if(p[3]==="hub"){var b=document.createElement("span");b.className="badge";b.textContent="hub";n.appendChild(b)}
+  tr.appendChild(n);
+  var f=document.createElement("td");f.className="fp";f.textContent=p[1];tr.appendChild(f);
+  var s=document.createElement("td");s.textContent=p[2]+" ago";tr.appendChild(s);
+  var t=document.createElement("td");if(p[3]==="conflict"){var r=document.createElement("span");r.className="badge r";r.textContent="name on a new key";t.appendChild(r)}else t.textContent=p[3]==="verified"?"verified":"seen";
+  tr.appendChild(t);tb.appendChild(tr);
+});
+
+/* terminal session */
+var lines=[
+  ["$ ","intraweb up --nickname ben"],
+  ["","ok","  vault       ~/.intraweb  (key 3e9a-0c71-55d2-a8f0)"],
+  ["","ok","  dashboard   http://localhost:8420"],
+  ["","dim","  listening   mDNS + beacon on udp/8421"],
+  ["","y","  4 neighbors, 1 hub (intranet.local)"],
+  ["$ ","intraweb surf"],
+  ["","","*  1  alice   Basecamp Notice Board"],
+  ["","","   2  bob     A corner of the neighborhood web"],
+  ["","","   3  carol   carol's recipes"],
+  ["$ ","intraweb mail send carol -m \"lasagna at 6?\""],
+  ["","ok","  signed and delivered to 844c-8e7b"],
+  ["$ ","intraweb get alice maps/ridge.pdf"],
+  ["","dim","  12.4 MB  resumed at 7.9 MB  ··········  done"]
+];
+var term=document.getElementById("term"), reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function span(cls,t){var s=document.createElement("span");if(cls)s.className=cls;s.textContent=t;return s}
+function render(n,partial){
+  term.textContent="";
+  for(var i=0;i<n;i++){var l=lines[i];if(l[0]){term.appendChild(span("ok",l[0]));term.appendChild(document.createTextNode(i===n-1&&partial!=null?l[1].slice(0,partial):l[1]))}else term.appendChild(span(l[1],l[2]));term.appendChild(document.createTextNode("\n"))}
+  var c=span("caret","");term.appendChild(c);
+}
+if(reduce){render(lines.length)}else{
+  var i=0,ch=0;render(0);
+  (function step(){
+    if(i>=lines.length){setTimeout(function(){i=0;ch=0;render(0);step()},6000);return}
+    var l=lines[i];
+    if(l[0]){
+      if(ch<=l[1].length){render(i+1,ch);ch++;setTimeout(step,ch===1?450:35);return}
+      i++;ch=0;setTimeout(step,300);return
+    }
+    i++;render(i);setTimeout(step,170);
+  })();
+}
+
+/* picture viewer */
+var shotsB=[].slice.call(document.querySelectorAll(".strip button")),cur=0;
+function showShot(i){cur=(i+shotsB.length)%shotsB.length;shotsB[cur].click()}
+document.getElementById("prev").addEventListener("click",function(){showShot(cur-1)});
+document.getElementById("next").addEventListener("click",function(){showShot(cur+1)});
+document.querySelector(".viewer").addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){showShot(cur-1)}if(e.key==="ArrowRight"){showShot(cur+1)}});
+document.querySelectorAll(".strip button").forEach(function(b){b.addEventListener("click",function(){cur=shotsB.indexOf(b);document.getElementById("count").textContent=(cur+1)+" / "+shotsB.length;var im=document.getElementById("shot");im.src=b.dataset.src;im.alt=b.dataset.alt;document.querySelectorAll(".strip button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))})})});
+/* minimize toggles */
+document.querySelectorAll("[data-min]").forEach(function(b){b.addEventListener("click",function(){var w=b.closest(".win");w.classList.toggle("min");b.setAttribute("aria-label",w.classList.contains("min")?"Restore":"Minimize")})});
+/* property-sheet tabs */
+var tabs=document.querySelectorAll('[role=tab]');
+tabs.forEach(function(t){t.addEventListener("click",function(){tabs.forEach(function(x){var on=x===t;x.setAttribute("aria-selected",String(on));document.getElementById(x.getAttribute("aria-controls")).hidden=!on})})});
+/* clock + balloon */
+function tick(){var d=new Date(),h=d.getHours(),m=d.getMinutes();document.getElementById("clock").textContent=((h%12)||12)+":"+(m<10?"0":"")+m+" "+(h<12?"AM":"PM")}
+tick();setInterval(tick,15000);
+var bl=document.getElementById("balloon");
+setTimeout(function(){bl.classList.remove("off")},2500);
+setTimeout(function(){bl.classList.add("off")},11000);
+document.getElementById("bx").addEventListener("click",function(){bl.classList.add("off")});
+})();
+</script>
+</body>
+</html>

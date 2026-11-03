@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hearth Linux</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<style>
+/* Layout: one full-screen pixel scene (night blue lit orange by a campfire). Pixel buttons along the top open framed panels over it. */
+:root{
+  --night:#070b24; --blue:#1d2a66; --blue2:#2c3f8f; --ice:#9fd0ff;
+  --fire:#ff8a2a; --fire2:#ffd25a; --ember:#e8461f; --ink:#1a0b06; --paper:#f4e6c8;
+  --pixel:"Press Start 2P", ui-monospace, monospace; --body:"VT323", ui-monospace, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--night)}
+body{color:var(--paper);font-family:var(--body);font-size:22px;line-height:1.25}
+canvas#scene{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;display:block}
+.bar{position:fixed;left:0;right:0;top:0;z-index:3;display:flex;justify-content:center;flex-wrap:wrap;gap:10px;
+  padding:calc(14px + env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) 0 max(14px,env(safe-area-inset-left,0px))}
+.pbtn{font-family:var(--pixel);font-size:11px;letter-spacing:.04em;color:#fff;background:var(--blue2);border:0;padding:10px 12px 9px;cursor:pointer;position:relative;
+  box-shadow:inset -3px -3px 0 #16205a,inset 3px 3px 0 #5d79d6,0 0 0 3px var(--ink),0 6px 0 3px var(--ink);text-shadow:2px 2px 0 #0b1238;transition:transform .05s}
+.pbtn:hover{background:#3a54b8}
+.pbtn:active{transform:translateY(3px);box-shadow:inset -3px -3px 0 #16205a,inset 3px 3px 0 #5d79d6,0 0 0 3px var(--ink),0 3px 0 3px var(--ink)}
+.pbtn.hot{background:var(--fire);box-shadow:inset -3px -3px 0 #b8501a,inset 3px 3px 0 #ffc07a,0 0 0 3px var(--ink),0 6px 0 3px var(--ink);text-shadow:2px 2px 0 #7a2a0a}
+.pbtn.hot:hover{background:#ff9d48}
+.pbtn:focus-visible{outline:3px solid var(--fire2);outline-offset:5px}
+.tag{position:fixed;left:0;right:0;z-index:2;text-align:center;font-family:var(--pixel);font-size:clamp(9px,1.4vw,15px);color:var(--fire2);text-shadow:3px 3px 0 var(--ink);letter-spacing:.08em;padding:0 16px;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:16px}
+.tag .cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.tag .term{display:flex;align-items:center;gap:0;width:min(620px,100%);background:rgba(5,8,28,.82);box-shadow:0 0 0 3px var(--ink),inset 0 0 0 2px #26337a}
+.tag .term code{font-family:var(--body);font-size:clamp(15px,1.6vw,20px);color:#e9ecff;padding:6px 12px;text-shadow:none;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1;text-align:left}
+.tag .term code::before{content:"$ ";color:var(--fire)}
+.tag .term button{font-family:var(--pixel);font-size:9px;border:0;background:var(--fire);color:var(--ink);padding:10px 10px;cursor:pointer;align-self:stretch}
+.tag .term button:focus-visible{outline:3px solid var(--fire2)}
+.hint{position:fixed;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:2;text-align:center;font-family:var(--pixel);font-size:10px;color:#fff;text-shadow:2px 2px 0 var(--ink);animation:blink 1.2s steps(1) infinite;pointer-events:none}
+@keyframes blink{50%{opacity:0}}
+
+.veil{position:fixed;inset:0;z-index:5;background:rgba(5,8,28,.55);display:grid;place-items:center;
+  padding:calc(70px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.panel{width:min(880px,100%);max-height:100%;overflow:auto;background:#0e1430;color:#e8ebf7;position:relative;font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.5;
+  border:2px solid #2c3878;box-shadow:0 0 0 4px var(--ink),0 20px 60px rgba(0,0,0,.5);padding:26px clamp(18px,4vw,34px) 28px}
+.panel h2{font-family:var(--pixel);font-weight:400;font-size:clamp(14px,2vw,18px);line-height:1.4;color:var(--fire2);margin:0 0 10px;padding-right:44px}
+.panel .lede{font-size:16.5px;margin:0 0 20px;color:#c9cee6;max-width:60ch}
+.panel p{margin:0}
+.x{position:absolute;top:16px;right:16px;font-family:var(--pixel);font-size:11px;width:32px;height:32px;padding:0;background:#1d2552;color:#fff;border:2px solid #2c3878;cursor:pointer}
+.x:hover{background:var(--ember)}
+.x:focus-visible{outline:3px solid var(--fire2);outline-offset:3px}
+.fl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 26px}
+.f{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:start}
+.ic{width:40px;height:40px;display:grid;place-items:center;background:#1a2252;border:1px solid #2c3878;color:var(--fire)}
+.ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.f b,.m b{display:block;font-weight:600;font-size:15px;color:#fff;margin-bottom:2px}
+.f p,.m p{color:#aab1d0;font-size:14px}
+.ml{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 22px}
+.m{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:6px 0;border-bottom:1px solid #1d2552}
+.m .st{font-family:var(--pixel);font-size:9px;color:#7ee08a}
+.m.off .st{color:#7d86c8}.m.off .ic{color:#7d86c8}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.92em;color:var(--fire2)}
+.cmd{display:block;background:#060a1f;padding:12px 14px;margin:18px 0 0;white-space:pre-wrap;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:14px;color:#e9ecff;border:1px solid #2c3878;overflow-x:auto}
+.cmd .c{color:#7d86c8}
+.plain{margin-top:14px!important;color:#c9cee6}
+.keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 26px}
+.keys div{display:flex;align-items:center;gap:5px;padding:8px 0;border-bottom:1px solid #1d2552;flex-wrap:wrap}
+.keys kbd{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#fff;background:#1a2252;border:1px solid #3a4690;border-bottom-width:3px;padding:2px 7px}
+.keys span{margin-left:8px;color:#aab1d0;font-size:14px}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.links a{font-weight:600;color:var(--fire2);text-decoration:none;padding:8px 12px;border:1px solid #2c3878}
+.links a:hover{background:#1a2252}
+@media (max-width:640px){.fl,.ml,.keys{grid-template-columns:1fr}.pbtn{font-size:9px;padding:8px 9px 7px}.bar{gap:8px}}
+@media (prefers-reduced-motion:reduce){.hint{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="scene" role="img" aria-label="Pixel art: a man in a red beanie and blue hoodie sits on a log by a campfire at night with a glowing laptop; the giant word HEARTH glows orange above him."></canvas>
+
+<nav class="bar" aria-label="Hearth">
+  <button class="pbtn hot" type="button" data-p="ai">AI</button>
+  <button class="pbtn" type="button" data-p="battery">BATTERY</button>
+  <button class="pbtn" type="button" data-p="eng">TOOLS</button>
+  <button class="pbtn" type="button" data-p="privacy">PRIVACY</button>
+  <button class="pbtn" type="button" data-p="mods">MODULES</button>
+  <button class="pbtn" type="button" data-p="keys">KEYS</button>
+  <button class="pbtn hot" type="button" data-p="get">INSTALL</button>
+</nav>
+<div class="tag" id="tag"><div>A PRIVATE LINUX FOR ENGINEERS</div>
+  <div class="cta"><button class="pbtn hot" type="button" data-p="get">INSTALL</button><button class="pbtn" type="button" data-p="keys">KEYBINDS</button></div>
+  <div class="term"><code id="one">sudo git clone https://github.com/bnvac/nixosconfig /etc/nixos</code><button type="button" id="copy" aria-label="Copy install command">COPY</button></div></div>
+
+
+<div class="veil" id="veil" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="ph" tabindex="-1" id="panel">
+    <button class="x" type="button" id="close" aria-label="Close">X</button>
+    <div id="pbody"></div>
+  </div>
+</div>
+
+<template id="t-ai">
+  <h2 id="ph">Private AI</h2>
+  <p class="lede">AI models and a voice assistant that run on your own computer.</p>
+  <div class="fl"><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="1"/><circle cx="9" cy="12" r="2.5"/><circle cx="16" cy="12" r="2.5"/><path d="M5 17v3M2 20h6"/></svg></span><div><b>Runs on your GPU</b><p>Models run locally through Ollama. Nothing you type or say leaves the machine.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg></span><div><b>Works on AMD cards</b><p>Uses Vulkan with the standard Mesa driver, so AMD cards like the RX 6750 XT run at full speed.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><div><b>Pick any open model</b><p>Download models from the modtui menu, with a progress bar. It only lists models that fit your card.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></span><div><b>Offline voice assistant</b><p>Neb uses whisper.cpp to listen and Piper to speak, both on-device. Press Super+Alt+N to talk.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><div><b>Asks before acting</b><p>Neb can control the desktop, but asks before typing, pressing keys or closing windows.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></span><div><b>Chat in the browser</b><p>Open-WebUI gives you a full chat page on localhost.</p></div></div></div>
+  <div class="cmd">mod on assistant</div>
+</template>
+
+<template id="t-battery">
+  <h2 id="ph">Battery life</h2>
+  <p class="lede">The laptop switches power settings on its own when you unplug it.</p>
+  <div class="fl"><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2v6M15 2v6M6 8h12v3a6 6 0 0 1-12 0zM12 17v5"/></svg></span><div><b>Automatic power modes</b><p>Full performance on the charger. Power-saving CPU settings on battery. Handled by TLP.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v14M8 6l4-4 4 4M7 11v3l5 3M17 9v3l-5 3"/><circle cx="12" cy="19" r="2"/></svg></span><div><b>USB autosuspend</b><p>Idle USB devices are powered down. Keyboards and mice are left alone.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"/></svg></span><div><b>Thermal control</b><p>thermald keeps the CPU cool so it doesn't throttle or spin fans up.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/></svg></span><div><b>Less running in the background</b><p>Background tasks get lower priority, logs are capped, and old system versions are removed after 14 days. <code>debloat</code> shows what takes space and cleans it, including unused Flatpak runtimes.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M6 17V9M11 17V5M16 17v-6M21 17v-3"/></svg></span><div><b>See what uses power</b><p>powertop shows what's drawing power. tlp-stat -b shows battery health.</p></div></div></div>
+  <div class="cmd">mod on power</div>
+</template>
+
+<template id="t-eng">
+  <h2 id="ph">Tools for engineers</h2>
+  <p class="lede">Electronics, 3D printing and development tools, installed and set up.</p>
+  <div class="fl"><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/></svg></span><div><b>Flatpak and Flathub</b><p>The Flathub app store is set up system-wide. <code>debloat remove</code> uninstalls a Flatpak and the runtimes only it used.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h4v4H7zM13 13h4v4h-4zM11 9h4v4M7 15h2"/></svg></span><div><b>KiCad and FreeCAD</b><p>Circuit boards and mechanical parts, with EDA tools included.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span><div><b>3D printing</b><p>OrcaSlicer with Elegoo profiles. Klipper printers are found on the network and notify you when a print finishes or fails.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/></svg></span><div><b>Parts inventory</b><p>Backoffice tracks your parts and matches a BOM against what's in your drawers.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 4-6 3-10 5"/></svg></span><div><b>Apps from any git repo</b><p>Name a repo and a language. It builds it and keeps it on the newest commit that builds.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M3 21v-5h5"/></svg></span><div><b>Two computers in sync</b><p>Files sync with Syncthing. Send your open browser tabs to the other machine with one command.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="12" rx="1"/><rect x="7" y="7" width="10" height="4"/><path d="M8 21h8M12 15v6"/></svg></span><div><b>Containers and VMs</b><p>Docker, Distrobox, AppImage and QEMU/KVM.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 9l4 3-4 3M12 15h6"/></svg></span><div><b>Claude Code</b><p>Installed in the terminal.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"/></svg></span><div><b>Local network sharing</b><p>intraweb shares pages, mail and files with people on the same Wi-Fi, without internet.</p></div></div></div>
+</template>
+
+<template id="t-privacy">
+  <h2 id="ph">Privacy</h2>
+  <p class="lede">Private by default, without breaking everyday apps.</p>
+  <div class="fl"><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2"/></svg></span><div><b>Tor mode</b><p>tormode on sends all traffic through Tor. Anything that can't use Tor is blocked instead of leaking.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><div><b>Firewall on, SSH off</b><p>sudo needs a password. Kernel hardening is set so Steam and VMs still work.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M16 7l3 3M14 9l2 2"/></svg></span><div><b>Encrypted secrets</b><p>Passwords and keys are stored encrypted in git with sops-nix.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h12l4 4v12H4z"/><path d="M8 4v5h8V4M8 20v-6h8v6"/></svg></span><div><b>Local backups</b><p>Daily restic snapshots to your own drive.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="13" width="20" height="8" rx="2"/><path d="M5 13l3-9h8l3 9M17 17h.01"/></svg></span><div><b>No auto-mounting</b><p>Drives only mount when you choose to, including encrypted ones.</p></div></div><div class="f"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><div><b>Password manager</b><p>Bitwarden in every browser. Imported browser passwords are deleted after import.</p></div></div></div>
+</template>
+
+<template id="t-mods">
+  <h2 id="ph">Modules</h2>
+  <p class="lede">Each feature is a module. Turn one on with <code>mod on name</code> and off with <code>mod off name</code>. Turned-off modules stay in the config.</p>
+  <div class="ml"><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="1"/><path d="M8 21h8M12 17v4M2 9h20M9 3v6"/></svg></span><div><b>Desktop</b><p>dwm tiling desktop, lock screen, file manager</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span><div><b>Apps</b><p>Office, browsers, chat, media, e-books</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></span><div><b>Assistant</b><p>Neb, Ollama on the GPU, Open-WebUI</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 9l4 3-4 3M12 15h6"/></svg></span><div><b>AI</b><p>Claude Code</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M3 21v-5h5"/></svg></span><div><b>Sync</b><p>Syncthing and tab hand-off between machines</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h4v4H7zM13 13h4v4h-4zM11 9h4v4M7 15h2"/></svg></span><div><b>EE</b><p>KiCad, FreeCAD, OrcaSlicer</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span><div><b>Printing</b><p>Klipper printers on the network</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3M15 12h.01M18 13h.01"/></svg></span><div><b>Gaming</b><p>Steam with Proton-GE, Prism Launcher</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2"/></svg></span><div><b>Privacy</b><p>Tor, Proton VPN, I2P</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="12" rx="1"/><rect x="7" y="7" width="10" height="4"/><path d="M8 21h8M12 15v6"/></svg></span><div><b>Virt</b><p>QEMU/KVM virtual machines</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/></svg></span><div><b>Backoffice</b><p>Parts inventory, synced</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"/></svg></span><div><b>Intraweb</b><p>Local neighborhood web</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 4-6 3-10 5"/></svg></span><div><b>Platform</b><p>Docker, Flatpak and Flathub, apps from git</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h12l4 4v12H4z"/><path d="M8 4v5h8V4M8 20v-6h8v6"/></svg></span><div><b>Backups</b><p>Daily restic snapshots</p></div><span class="st">On</span></div><div class="m"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M22 11v2M6 10v4M10 10v4"/></svg></span><div><b>Power</b><p>Laptop battery tuning</p></div><span class="st">On</span></div><div class="m off"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M16 7l3 3M14 9l2 2"/></svg></span><div><b>Secrets</b><p>Encrypted secrets with sops-nix</p></div><span class="st">Off</span></div><div class="m off"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg></span><div><b>OSINT</b><p>Security and OSINT tools</p></div><span class="st">Off</span></div></div>
+</template>
+
+<template id="t-keys">
+  <h2 id="ph">Keyboard shortcuts</h2>
+  <p class="lede">Default shortcuts are unchanged. Hearth adds its own under Super+Alt. Run <code>mykeys</code> to see this list on screen.</p>
+  <div class="keys">
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>Space</kbd><span>Every action on the system</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>N</kbd><span>Talk to Neb</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>A</kbd><span>All apps by category</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>V</kbd><span>Audio device and volume</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>M</kbd><span>Mount and unlock drives</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>D</kbd><span>Your self-hosted apps</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>E</kbd><span>File manager</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>L</kbd><span>Lock the screen</span></div>
+    <div><kbd>Super</kbd><kbd>Alt</kbd><kbd>F1</kbd><span>This cheat sheet</span></div>
+    <div><kbd>Super</kbd><kbd>Enter</kbd><span>Terminal</span></div>
+  </div>
+</template>
+
+<template id="t-get">
+  <h2 id="ph">Install</h2>
+  <p class="lede">Hearth installs on top of NixOS. Keep your hardware config and replace the rest.</p>
+  <div class="cmd"><span class="c"># 1. keep your hardware config</span>
+sudo nixos-generate-config
+sudo mv /etc/nixos /etc/nixos.orig
+<span class="c"># 2. get Hearth</span>
+sudo git clone https://github.com/bnvac/nixosconfig /etc/nixos
+sudo cp /etc/nixos.orig/hardware-configuration.nix /etc/nixos/
+<span class="c"># 3. build it</span>
+sudo nixos-rebuild switch
+<span class="c"># 4. choose desktop or laptop, modules and an AI model</span>
+modtui</div>
+  <p class="plain">Update later with <code>nixup</code>. To customize it, fork the repo and clone your fork instead.</p>
+  <div class="links"><a href="https://github.com/bnvac/nixosconfig" target="_blank" rel="noopener">Source on GitHub ↗</a></div>
+</template>
+
+<script>
+(function(){
+"use strict";
+var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+var cv=document.getElementById("scene"),ctx=cv.getContext("2d");
+var W=0,H=120,S=1,bg=null,t=0,FX=0,FY=0,GX=0,GY=0,logo=null;
+
+/* ---------- palette + sprites ---------- */
+var P={c:"#b02a2a",C:"#ff5a3a",o:"#14081a",m:"#7d89a6",M:"#f0c89a",d:"#3e4766",v:"#0a0612",t:"#1e3a8a",T:"#d0703a",g:"#d8a020",k:"#b02a2a",K:"#ff6a3a",s:"#e9a77e",S:"#ffc79a",e:"#14081a",h:"#26408a",H:"#e88a52",j:"#1a2c66",
+p:"#3d3670",q:"#d0784a",b:"#2a1a14",B:"#6a3a22",l:"#7d86a0",L:"#3a4058",g:"#9fe8ff",G:"#4fb6e8",r:"#d8a020",w:"#5a3018",W:"#c0703a",d:"#2a160c"};
+// facing right, toward the fire; right-hand pixels are firelit (capital letters)
+var GUY=[
+".......cC.........",
+"......cCC.........",
+".....ccCC.........",
+"....occCCo........",
+"...odmmmmMo.......",
+"..odmmmmmMMo......",
+"..odmmmmmMMMo.....",
+"..odmmvvvvvvo.....",
+"..odmmmmmMMMo.....",
+"..odmmmmmMMo......",
+"...oggggggo.......",
+".oddmmmmmmMMo.....",
+"odmmtttttTMMMo....",
+"odmmtttttTTMMo....",
+"odmmttgttTTmMoLo..",
+"odmmtttttTkKMoLso.",
+"odmmtttttTTmMoLso.",
+".odmtttttTToooLLo.",
+".odmmmmmmmmmmmmMo.",
+".odmmmmmmmmmmmMMo.",
+".oooooooooooodmMo.",
+"............odmMo.",
+"............odmMo.",
+"............odmMo.",
+"...........obbbBBo",
+"...........obbbbBBo"];
+var FONT={H:["XX..XX","XX..XX","XX..XX","XXXXXX","XX..XX","XX..XX","XX..XX"],E:["XXXXXX","XX....","XX....","XXXXX.","XX....","XX....","XXXXXX"],
+A:[".XXXX.","XX..XX","XX..XX","XXXXXX","XX..XX","XX..XX","XX..XX"],R:["XXXXX.","XX..XX","XX..XX","XXXXX.","XX.XX.","XX..XX","XX..XX"],T:["XXXXXX","..XX..","..XX..","..XX..","..XX..","..XX..","..XX.."]};
+function blit(rows,x,y,flip){for(var r=0;r<rows.length;r++)for(var c=0;c<rows[r].length;c++){var ch=rows[r][c];if(ch!=="."&&P[ch]){ctx.fillStyle=P[ch];ctx.fillRect(x+c,y+r,1,1)}}}
+var BAY=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+function hex(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+
+/* ---------- static background, dithered ---------- */
+function buildBg(){
+  var c=document.createElement("canvas");c.width=W;c.height=H;var x=c.getContext("2d"),img=x.createImageData(W,H),d=img.data;
+  var sky=["#060a22","#0a1130","#0f1a44","#16245a","#1f2f6e","#2c3a7a","#4a3a78","#7a3f6a","#b8524e","#e0703a"].map(hex);
+  var hz=GY-14;
+  function put(px,py,col){var i=(py*W+px)*4;d[i]=col[0];d[i+1]=col[1];d[i+2]=col[2];d[i+3]=255}
+  for(var y=0;y<H;y++)for(var X=0;X<W;X++){
+    var th=(BAY[y&3][X&3]+.5)/16-.5;
+    if(y<hz){
+      // the sky warms toward the horizon and toward the fire
+      var warm=Math.max(0,1-Math.abs(X-FX)/(W*1.1));
+      var tt=Math.pow(y/hz,1.35)*(sky.length-1)*(.62+.38*warm)+th*.9;
+      put(X,y,sky[Math.max(0,Math.min(sky.length-1,Math.round(tt)))]);
+    } else {
+      var gd=Math.hypot((X-FX)*0.55,(y-FY)*1.6), g=["#3a2030","#2a1a34","#1c1838","#141634","#0e112a"].map(hex);
+      var gi=Math.max(0,Math.min(g.length-1,Math.round(gd/12+th*1.2)));put(X,y,g[gi]);
+    }
+  }
+  x.putImageData(img,0,0);
+  // mountains
+  function ridge(base,amp,f,ph,col){x.fillStyle=col;for(var X=0;X<W;X++){var yy=Math.round(base-amp*Math.abs(Math.sin(X*f+ph))-amp*.35*Math.sin(X*f*2.3+ph));x.fillRect(X,yy,1,hz-yy+1)}}
+  ridge(hz-4,14,.035,1.1,"#1a1f52");ridge(hz,9,.06,.2,"#141842");
+  // pines, rim-lit on the side facing the fire
+  function pine(px,py,h){for(var r=0;r<h;r++){var w=Math.floor(r*.42)+1;x.fillStyle=r%5===0?"#18205a":"#0b0f2e";x.fillRect(px-w,py-h+r,w*2+1,1);
+      var dd=Math.abs(px-FX)/W;if(dd<.5){x.fillStyle=dd<.22?"#ff8a3a":dd<.36?"#b8523a":"#5a3a5a";x.fillRect(px<FX?px+w:px-w,py-h+r,1,1)}}
+    x.fillStyle="#0b0f2e";x.fillRect(px,py,1,3)}
+  for(var X=4;X<W;X+=9){var dist=Math.abs(X-FX);if(dist>40&&X%18<9)pine(X+(X*7)%4,hz+2+(X%3),10+(X*5)%9)}
+  pine(Math.round(FX-W*.42),GY+6,26);pine(Math.round(FX+W*.4),GY+8,30);pine(Math.round(FX-W*.33),GY+10,18);
+  // stones and grass flecks
+  for(var i=0;i<60;i++){var gx=(i*37)%W,gy=GY+((i*13)%(H-GY));x.fillStyle=i%3?"#24204a":"#3a2a3a";x.fillRect(gx,gy,1,1)}
+  return c;
+}
+var stars=[];
+function layout(){
+  var vw=innerWidth,vh=innerHeight;
+  S=Math.max(2,Math.min(vh/100,vw/104));
+  W=Math.ceil(vw/S);var Hh=Math.ceil(vh/S);H=Math.max(110,Hh);
+  cv.width=W;cv.height=H;
+  GY=Math.round(H*.80);FX=Math.round(W/2+16);FY=GY+4;GX=Math.round(W/2-22);
+  stars=[];for(var i=0;i<Math.round(W*H/90);i++)stars.push([Math.floor(Math.random()*W),Math.floor(Math.random()*(GY-30)),Math.random()]);
+  bg=buildBg();
+  // logo: 6 letters, bold 6x7 font, unit sized to ~55% of width
+  var word="HEARTH",gw=word.length*6+(word.length-1)*1;
+  var u=Math.max(1,Math.floor(Math.min(W*.6/gw,(GY*.30)/7)));
+  logo={u:u,x:Math.round((W-gw*u)/2),y:Math.round(H*.17),w:gw*u,h:7*u,word:word};
+  var tag=document.getElementById("tag");tag.style.top=((logo.y+logo.h+u*2+4)*S)+"px";
+  ctx.imageSmoothingEnabled=false;
+}
+function drawLogo(){
+  var L=logo,u=L.u,cells=[];
+  for(var i=0;i<L.word.length;i++){var g=FONT[L.word[i]];for(var r=0;r<7;r++)for(var c=0;c<6;c++)if(g[r][c]==="X")cells.push([L.x+(i*7+c)*u,L.y+r*u,r])}
+  var o=Math.max(1,Math.round(u/2)), dep=Math.max(2,u);
+  // extrusion (down-right), then outline, then gradient face with a highlight row
+  ctx.fillStyle="#3a1206";for(var k=dep;k>0;k--)cells.forEach(function(p){ctx.fillRect(p[0]+k,p[1]+k,u,u)});
+  ctx.fillStyle="#14081a";cells.forEach(function(p){ctx.fillRect(p[0]-o,p[1]-o,u+o*2,u+o*2)});
+  var face=["#fff3a8","#ffe066","#ffcc33","#ffb020","#ff9418","#ff7a12","#f05a10"];
+  cells.forEach(function(p){ctx.fillStyle=face[p[2]];ctx.fillRect(p[0],p[1],u,u)});
+  ctx.fillStyle="rgba(255,255,255,.55)";cells.forEach(function(p){if(p[2]===0)ctx.fillRect(p[0],p[1],u,Math.max(1,Math.floor(u/3)))});
+}
+var flames=[],embers=[];
+function R(a,b){return a+Math.random()*(b-a)}
+function frame(){
+  t++;
+  ctx.drawImage(bg,0,0);
+  stars.forEach(function(s){ctx.fillStyle=Math.sin(t*.04+s[2]*30)>.55?"#ffffff":"#5a64a8";ctx.fillRect(s[0],s[1],1,1)});
+  // firelight: stepped rings, flickering
+  var rad=Math.min(W,H)*.55;
+  var g=ctx.createRadialGradient(FX,FY-4,1,FX,FY-4,rad);
+  [[0,"rgba(255,170,70,.55)"],[.18,"rgba(255,170,70,.55)"],[.18,"rgba(255,130,50,.32)"],[.38,"rgba(255,130,50,.32)"],[.38,"rgba(255,100,40,.16)"],[.62,"rgba(255,100,40,.16)"],[.62,"rgba(255,90,40,.06)"],[1,"rgba(255,90,40,0)"]].forEach(function(s){g.addColorStop(s[0],s[1])});
+  ctx.globalCompositeOperation="lighter";ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation="source-over";
+  // log seat
+  var lx=GX-4,ly=GY+1;
+  ctx.fillStyle="#2a160c";ctx.fillRect(lx,ly+1,26,6);ctx.fillStyle="#5a3018";ctx.fillRect(lx,ly,26,5);ctx.fillStyle="#c0703a";ctx.fillRect(lx+1,ly,25,1);ctx.fillStyle="#e8a060";ctx.fillRect(lx+25,ly,1,5);
+  ctx.fillStyle="#3a1e10";for(var i=2;i<24;i+=5)ctx.fillRect(lx+i,ly+2,2,1);
+  // guy
+  // sword planted in the ground beside him, shield leaning on the log
+  var sx=GX-7;ctx.fillStyle="#c8d0e0";ctx.fillRect(sx,GY-20,2,22);ctx.fillStyle="#ffffff";ctx.fillRect(sx,GY-20,1,22);ctx.fillStyle="#d8a020";ctx.fillRect(sx-2,GY-16,6,1);ctx.fillStyle="#6a3a22";ctx.fillRect(sx,GY-21,2,4);ctx.fillStyle="#d8a020";ctx.fillRect(sx,GY-23,2,2);
+  ctx.fillStyle="#14081a";ctx.fillRect(GX-14,GY-6,9,11);ctx.fillStyle="#8e1f1f";ctx.fillRect(GX-13,GY-5,7,9);ctx.fillStyle="#d8a020";ctx.fillRect(GX-10,GY-5,1,9);ctx.fillRect(GX-13,GY-1,7,1);ctx.fillStyle="#14081a";ctx.fillRect(GX-12,GY+4,5,1);
+  blit(GUY,GX,GY-23);
+  // laptop glow on his face
+  ctx.globalCompositeOperation="lighter";var lg=ctx.createRadialGradient(GX+16,GY-7,0,GX+16,GY-7,8);lg.addColorStop(0,"rgba(120,210,255,.35)");lg.addColorStop(1,"rgba(120,210,255,0)");ctx.fillStyle=lg;ctx.fillRect(GX+6,GY-18,24,20);ctx.globalCompositeOperation="source-over";
+  
+  // fire pit
+  ["#5a5a7a","#3a3a5a","#6a6a8a","#3a3a5a","#5a5a7a","#3a3a5a","#6a6a8a"].forEach(function(c,i){ctx.fillStyle=c;ctx.fillRect(FX-10+i*3,FY+1,3,2)});
+  ctx.fillStyle="#5a3018";ctx.fillRect(FX-8,FY-1,16,2);ctx.fillStyle="#c0703a";ctx.fillRect(FX-8,FY-1,16,1);
+  ctx.fillStyle="#3a1e10";ctx.fillRect(FX-5,FY-3,4,2);ctx.fillRect(FX+2,FY-3,4,2);
+  if(t%2===0)for(var k=0;k<4;k++)flames.push({x:FX+R(-5,5)*(.6+.4*Math.random()),y:FY-2,vx:R(-.03,.03),vy:R(-.26,-.16),life:0,max:R(22,40),s:Math.random()<.5?2:1});
+  if(Math.random()<.05)embers.push({x:FX+R(-3,3),y:FY-10,vx:R(-.1,.1),vy:R(-.3,-.15),life:0,max:R(60,120)});
+  flames=flames.filter(function(f){f.life++;f.x+=f.vx+(FX-f.x)*.012+Math.sin((t+f.y)*.08)*.03;f.y+=f.vy;var p=f.life/f.max;
+    ctx.fillStyle=p<.18?"#fff6c8":p<.4?"#ffd25a":p<.65?"#ff9a2b":p<.88?"#e8461f":"#5a1f1a";ctx.fillRect(Math.round(f.x),Math.round(f.y),f.s,f.s);return f.life<f.max});
+  embers=embers.filter(function(s){s.life++;s.x+=s.vx+Math.sin(s.life*.05)*.05;s.y+=s.vy;if(true){ctx.fillStyle=s.life<40?"#ffd25a":"#ff7a2a";ctx.fillRect(Math.round(s.x),Math.round(s.y),1,1)}return s.life<s.max&&s.y>0});
+  drawLogo();
+}
+function loop(){frame();if(!reduce)requestAnimationFrame(loop)}
+layout();
+if(reduce){for(var i=0;i<50;i++)frame()}else loop();
+var rt;addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){layout();if(reduce)frame()},120)});
+
+/* ---------- panels ---------- */
+var veil=document.getElementById("veil"),body=document.getElementById("pbody"),panel=document.getElementById("panel"),opener=null;
+var MODS=[["desktop",1,"A fast tiling desktop (dwm), lock screen, file manager and the live snow wallpaper."],["apps",1,"Office, browsers with a password vault, chat, media, e-books, Onshape."],["assistant",1,"Neb with local speech in and out, Ollama on the GPU through Vulkan, and Open-WebUI."],["ai",1,"Claude Code in the terminal."],["sync",1,"Syncthing between your machines, tab and screen hand-off, bookmark merge."],["ee",1,"KiCad, EDA tools, OrcaSlicer with Elegoo profiles, FreeCAD."],["printing",1,"Klipper printers found over mDNS, with finish and failure notifications."],["gaming",1,"Steam with Proton-GE, Prism Launcher."],["privacy",1,"Tor per app or system-wide without leaks, Proton VPN, I2P, encrypted chat."],["virt",1,"QEMU/KVM virtual machines."],["backoffice",1,"The workshop inventory app, synced between machines."],["intraweb",1,"The local neighborhood web on your Wi-Fi, no server, no internet."],["platform",1,"Docker, Flatpak, AppImage, Distrobox, and apps from any git repo."],["backups",1,"Daily restic snapshots of home and config to your own drive."],["power",1,"Battery and thermal tuning on the laptop: frugal unplugged, fast on AC."],["secrets",0,"Encrypted passwords and keys in git with sops-nix."],["osint",0,"A security and open-source intelligence toolkit."]];
+function open(id,btn){
+  opener=btn||null;body.textContent="";body.appendChild(document.getElementById("t-"+id).content.cloneNode(true));
+
+  veil.hidden=false;panel.scrollTop=0;panel.focus();
+}
+function close(){veil.hidden=true;if(opener)opener.focus()}
+document.querySelectorAll(".pbtn").forEach(function(b){b.addEventListener("click",function(){open(b.dataset.p,b)})});
+document.getElementById("copy").addEventListener("click",function(){var b=this,txt=document.getElementById("one").textContent;function done(m){b.textContent=m;setTimeout(function(){b.textContent="COPY"},1600)}try{navigator.clipboard.writeText(txt).then(function(){done("COPIED")},function(){done("SELECT")})}catch(e){done("SELECT")}});
+document.getElementById("close").addEventListener("click",close);
+veil.addEventListener("click",function(e){if(e.target===veil)close()});
+addEventListener("keydown",function(e){if(e.key==="Escape"&&!veil.hidden)close()});
+})();
+</script>
+</body>
+</html>
