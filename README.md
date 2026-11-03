@@ -8,16 +8,17 @@ no build step: what is in `site/` is exactly what gets uploaded.
 ```
 site/                  everything that goes on Neocities
   index.html           front page (v1, live)
-  v2/index.html        front page v2: cyberpunk city, name centred, scroll
+  v2/                  cyberpunk copies of the main pages (generated, see below)
   assets/
     css/main.css       site styles (template + our overrides at the end)
     js/                theme toggle, lightbox, carousel
-    v2/                v2 only: city.js (the animated city) and v2.css
-    fonts/             Barlow Condensed (OFL); drop Kabisat here
+    v2/                v2 only: v2.css, city.js, logo.js, signs.js
+    fonts/             Barlow Condensed (OFL); drop Cyber Horizon here
   images/              cards, field photos, logos, certificates
   education/ experience/ publications/ software/ awards/ certifications/ contact/
   intraweb/ backoffice/ hearth/ smart-shelf/ alphafold/   project pages
     */demo/            saved, clickable demos of the real apps
+tools/build_v2.py      regenerates site/v2/ from the v1 pages
 ```
 
 ## Upload to Neocities
@@ -56,23 +57,34 @@ To go back:
 cp site/v1.html site/index.html
 ```
 
-## The Kabisat font
+## v2 is generated from v1
 
-v2 uses **Kabisat Demo Italic Tall** for the name and section headings. It is
-a demo font with a personal-use licence, so it is not in the repo. Put your
-copy at:
+v1 is the source of truth. After editing any v1 page, rebuild the v2 copies:
 
-```
-site/assets/fonts/kabisat-demo-italic-tall.otf
+```bash
+python3 tools/build_v2.py
 ```
 
-(`.woff2` or `.ttf` with the same name also work.) Until it is there, v2 uses
-Barlow Condensed 800 italic, which is self-hosted under the SIL Open Font
-License (`site/assets/fonts/OFL-BarlowCondensed.txt`).
+It writes `site/v2/` from the v1 pages: same content, with the cyberpunk
+stylesheet (`site/assets/v2/v2.css`), the city background (`city.js`), the
+pixel logo on the front page (`logo.js`) and the neon-sign colours
+(`signs.js`). Links between pages stay inside `/v2/`. Project pages keep
+their own designs. Don't hand-edit `site/v2/`; it is overwritten.
 
-Don't add the Kabisat file to `.gitignore` to keep it out of git: the
-Neocities CLI skips anything listed there, so it would not upload either.
-Just leave it uncommitted.
+## Fonts
+
+v2 headings use **Cyber Horizon** (PutraCetol / Shanaf Studio, personal use
+only). It is not in the repo. Copy it from the zip:
+
+```bash
+cp CyberHorizon-ARAvL.ttf site/assets/fonts/CyberHorizon.ttf
+```
+
+Until it is there, v2 uses Barlow Condensed 800 italic, which is
+self-hosted under the SIL Open Font License
+(`site/assets/fonts/OFL-BarlowCondensed.txt`). Don't list the font in
+`.gitignore` to keep it out of git: the Neocities CLI skips anything listed
+there, so it would not upload either. Leave it uncommitted.
 
 ## v2 wallpaper
 

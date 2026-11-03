@@ -1,36 +1,139 @@
+/* ==========================================================================
+   v2 — cyberpunk theme, layered over main.css.
+   Display type is Cyber Horizon (personal-use font, see README); signs and
+   labels fall back to Barlow Condensed, body text stays readable sans.
+   ========================================================================== */
+@font-face{font-family:"Cyber Horizon";src:url("/assets/fonts/CyberHorizon.ttf") format("truetype");font-display:swap}
 @font-face{font-family:"Barlow Condensed";font-style:italic;font-weight:800;src:url("/assets/fonts/barlow-condensed-800-italic.ttf") format("truetype");font-display:swap}
-/* v2: the city behind everything, the name on top, the page scrolling up over it.
-   Drop the Kabisat file at /assets/fonts/ (see README); until then Barlow
-   Condensed, a tall italic face, stands in. */
-@font-face{font-family:"Kabisat";src:url("/assets/fonts/kabisat-demo-italic-tall.woff2") format("woff2"),url("/assets/fonts/kabisat-demo-italic-tall.otf") format("opentype"),url("/assets/fonts/kabisat-demo-italic-tall.ttf") format("truetype");font-display:swap}
-:root{--v2-display:"Kabisat","Barlow Condensed",Impact,sans-serif;--v2-pink:#ff2bd6;--v2-cyan:#22e3ff}
-html,body{background:#05040b!important}
-#city{position:fixed;inset:0;z-index:0;display:block;pointer-events:none}
-.masthead{background:rgba(6,4,14,.55)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom-color:rgba(255,255,255,.08)!important;position:fixed!important;top:0;left:0;right:0;z-index:20}
-.masthead__menu-item{background:transparent!important}
-.greedy-nav{background:transparent!important}
-.city-hero{position:relative;z-index:1;height:100svh;min-height:560px;display:grid;place-items:center;text-align:center;padding:0 16px}
-.city-hero__name{margin:0;font-family:var(--v2-display);font-style:italic;font-weight:800;font-size:clamp(6rem,24vw,20rem);line-height:.82;letter-spacing:.005em;color:#fff;
-  text-shadow:0 0 18px rgba(255,43,214,.75),0 0 46px rgba(255,43,214,.45),0 0 90px rgba(34,227,255,.35),3px 3px 0 rgba(34,227,255,.55)}
-.city-hero__say{margin:.9em auto 0;max-width:36em;font-size:clamp(.95rem,1.8vw,1.2rem);color:rgba(235,230,255,.85);text-shadow:0 2px 12px rgba(0,0,0,.6)}
-.city-hero__cue{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(235,230,255,.7);text-decoration:none}
-.city-hero__cue::after{content:"";display:block;width:1px;height:38px;margin:10px auto 0;background:linear-gradient(var(--v2-cyan),transparent);animation:cue 1.8s ease-in-out infinite}
-@keyframes cue{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
-@media (prefers-reduced-motion:reduce){.city-hero__cue::after{animation:none}}
-#main{position:relative;z-index:2;background:rgba(8,6,18,.86)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.07);border-radius:22px 22px 0 0;padding-top:2.6em!important;box-shadow:0 -30px 80px -20px rgba(255,43,214,.25)}
-.page__footer{position:relative!important;z-index:2;background:rgba(6,4,14,.92)!important}
-.v2 .hero--yc .hero__name{display:none}
-.v2 .hero__say b,.v2 .nowbar__k{color:#fff}
-.v2 .nowbar__k i{background:var(--v2-pink);box-shadow:0 0 0 3px rgba(255,43,214,.25)}
-.v2 h2.sec{font-family:var(--v2-display);font-style:italic;letter-spacing:.06em}
+:root{
+  --v2-display:"Cyber Horizon","Barlow Condensed",Impact,sans-serif;
+  --v2-label:"Barlow Condensed","Arial Narrow",sans-serif;
+  --pink:#ff2bd6;--cyan:#22e3ff;--yellow:#ffd23f;--violet:#b16cff;
+  --ink:#e9e6ff;--ink-dim:#9a95c2;--glass:rgba(8,6,20,.72);--edge:rgba(150,120,255,.22);
+}
+html,body{background:#05040b!important;color:var(--ink)}
 body.v2{padding-top:0!important}
+html[data-theme="dark"]{--global-text-color:#e9e6ff;--global-text-color-light:#9a95c2;--global-border-color:rgba(150,120,255,.18);--global-dark-border-color:rgba(150,120,255,.3);--global-bg-color:#05040b;--global-link-color:#7fe9ff}
+#city{position:fixed;inset:0;z-index:0;display:block;pointer-events:none}
+::selection{background:var(--pink);color:#05040b}
+
+/* ---- masthead: dark glass bar, neon underline ---------------------------- */
+.masthead{background:rgba(5,4,14,.62)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--edge)!important;position:fixed!important;top:0;left:0;right:0;z-index:20;box-shadow:0 1px 0 rgba(255,43,214,.25),0 10px 30px -20px rgba(255,43,214,.6)}
+.masthead__menu-item,.greedy-nav,.greedy-nav .hidden-links{background:transparent!important}
+.greedy-nav .hidden-links{background:rgba(8,6,20,.96)!important;border-color:var(--edge)!important}
+.greedy-nav a{font-family:var(--v2-label);font-weight:800;font-style:italic;text-transform:uppercase;letter-spacing:.12em;font-size:.8rem!important;color:var(--ink-dim)!important;transition:color .15s,text-shadow .15s}
+.greedy-nav a:hover{color:#fff!important;text-shadow:0 0 8px var(--cyan),0 0 18px var(--cyan)}
+.masthead__menu-item--lg a{font-family:var(--v2-display)!important;font-style:normal;letter-spacing:.04em;font-size:1rem!important;color:#fff!important;text-shadow:0 0 6px var(--pink),0 0 16px var(--pink)}
+.masthead__menu-item.selected a{color:#fff!important;border-bottom:2px solid var(--pink)!important;box-shadow:0 6px 12px -6px var(--pink);text-shadow:0 0 8px var(--pink)}
+#theme-toggle{display:none!important}
+.greedy-nav button{background:transparent!important;color:#fff}
+.greedy-nav .navicon,.greedy-nav .navicon::before,.greedy-nav .navicon::after{background:#fff!important}
+
+/* ---- home hero ------------------------------------------------------------ */
+.city-hero{position:relative;z-index:1;height:100svh;min-height:560px;display:grid;place-items:center;text-align:center;padding:0 16px;overflow:hidden}
 .city-hero>div{position:relative}
 .city-hero>div::before{content:"";position:absolute;inset:-18% -12%;z-index:-1;background:radial-gradient(ellipse at center,rgba(5,3,12,.55),transparent 68%);pointer-events:none}
-.city-hero{overflow:hidden}
-.city-hero__say{display:inline-block;padding:.5em 1em;border-radius:12px;background:rgba(6,4,14,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-
-/* pixel logo */
-.city-hero__name{font-size:0!important;line-height:0!important;text-shadow:none!important}
+.city-hero__name{margin:0;font-size:0!important;line-height:0!important}
 #logo{display:block;margin:0 auto;image-rendering:pixelated;filter:drop-shadow(0 0 18px rgba(255,43,214,.55)) drop-shadow(0 0 40px rgba(34,227,255,.3)) drop-shadow(4px 6px 0 #05020c)}
+.city-hero__say{display:inline-block;margin:1.6em auto 0;max-width:36em;padding:.55em 1.1em;border:1px solid var(--edge);border-radius:4px;background:rgba(6,4,14,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);font-size:clamp(.95rem,1.8vw,1.15rem);color:var(--ink)}
+.city-hero__cue{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-family:var(--v2-label);font-weight:800;font-style:italic;font-size:.75rem;letter-spacing:.35em;text-transform:uppercase;color:var(--cyan);text-decoration:none;text-shadow:0 0 8px var(--cyan)}
+.city-hero__cue::after{content:"";display:block;width:2px;height:38px;margin:10px auto 0;background:linear-gradient(var(--cyan),transparent);box-shadow:0 0 8px var(--cyan);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
 .sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.city-hero__say{margin-top:1.6em!important}
+
+/* ---- the page: a glass slab over the city -------------------------------- */
+#main{position:relative;z-index:2;background:var(--glass)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--edge);border-bottom:0;border-radius:6px 6px 0 0;box-shadow:0 -30px 80px -20px rgba(255,43,214,.3),inset 0 1px 0 rgba(255,255,255,.04)}
+.v2-home #main{padding-top:2.6em!important}
+.v2-inner #main{margin-top:120px!important;padding-top:2.2em!important;min-height:60vh}
+#main::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--pink),var(--cyan),transparent);box-shadow:0 0 14px var(--pink)}
+.page__footer{position:relative!important;z-index:2;background:rgba(5,4,12,.94)!important;border-top:1px solid var(--edge)!important;color:var(--ink-dim)!important}
+.page__content,.archive{color:var(--ink)}
+a{color:#7fe9ff}
+a:hover{color:#fff;text-shadow:0 0 8px var(--cyan)}
+
+/* ---- headings ---------------------------------------------------------- */
+.page__title,.v2 h2.sec{font-family:var(--v2-display)!important;font-weight:400!important;font-style:normal;letter-spacing:.06em;color:#fff!important}
+.page__title{font-size:clamp(2rem,5vw,3.2rem)!important;text-shadow:0 0 10px var(--pink),0 0 28px rgba(255,43,214,.6),2px 2px 0 rgba(34,227,255,.6);border-bottom:0!important}
+.v2 h2.sec{font-size:1.05rem!important;text-shadow:0 0 8px var(--cyan),0 0 22px rgba(34,227,255,.5);border-bottom:1px solid var(--edge)!important;padding-bottom:.5em}
+.v2 h2.sec a{font-family:var(--v2-label);font-style:italic;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem;color:var(--yellow)!important;text-shadow:0 0 8px rgba(255,210,63,.7)}
+.page__content h2:not(.sec),.role__body>h2{color:#fff}
+
+/* ---- hero inside the slab ------------------------------------------------ */
+.v2 .hero--yc{border-bottom:1px solid var(--edge)!important}
+.v2 .hero--yc .hero__name{display:none}
+.v2 .hero__say{color:var(--ink)}
+.v2 .hero__say b{color:#fff;text-shadow:0 0 10px rgba(255,43,214,.55)}
+.v2 .hero__meta{color:var(--ink-dim)}
+.v2 .hero__photo{border-radius:4px;border:2px solid var(--cyan);box-shadow:0 0 0 1px #05040b,0 0 18px var(--cyan),0 0 50px -10px var(--pink)}
+.v2 .nowbar__k{color:#fff;font-family:var(--v2-label);font-style:italic;letter-spacing:.18em}
+.v2 .nowbar__k i{background:var(--pink);box-shadow:0 0 8px var(--pink),0 0 0 3px rgba(255,43,214,.25);animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.v2 .nowbar__i{border:1px solid rgba(34,227,255,.45)!important;background:rgba(34,227,255,.06)!important;box-shadow:0 0 10px -4px var(--cyan),inset 0 0 10px -6px var(--cyan);color:var(--ink-dim);border-radius:3px}
+.v2 .nowbar__i b{color:#fff}
+
+/* ---- buttons: neon tubes ------------------------------------------------ */
+.v2 .hbtn,.v2 .proj-links a{font-family:var(--v2-label);font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.12em;border-radius:3px;border:1.5px solid var(--cyan);color:#fff!important;background:rgba(34,227,255,.06);box-shadow:0 0 10px -2px var(--cyan),inset 0 0 10px -4px var(--cyan);text-decoration:none!important;transition:box-shadow .15s,background .15s,transform .15s}
+.v2 .hbtn:hover,.v2 .proj-links a:hover{background:rgba(34,227,255,.16);box-shadow:0 0 18px var(--cyan),inset 0 0 14px -4px var(--cyan);transform:translateY(-1px);text-shadow:none}
+.v2 .hbtn--p{border-color:var(--pink);background:var(--pink)!important;color:#0a0414!important;box-shadow:0 0 16px var(--pink),0 0 40px -8px var(--pink)}
+.v2 .hbtn--p:hover{background:#ff5ce1!important;box-shadow:0 0 24px var(--pink),0 0 60px -6px var(--pink)}
+.v2 .proj-links a{display:inline-block;padding:.35em .8em;margin:0 .5em .5em 0;font-size:.75rem}
+
+/* ---- project cards: neon signs ------------------------------------------ */
+.v2 .work>li{--neon:var(--pink);position:relative;padding:12px 12px 14px;border:2px solid var(--neon);border-radius:6px;background:rgba(6,4,16,.75);
+  box-shadow:0 0 6px var(--neon),0 0 22px -4px var(--neon),inset 0 0 18px -8px var(--neon);animation:hum var(--flick,4s) var(--flick-delay,0s) infinite}
+.v2 .work>li::before,.v2 .work>li::after{content:"";position:absolute;top:-10px;width:2px;height:10px;background:linear-gradient(#555,#222)}
+.v2 .work>li::before{left:22%}.v2 .work>li::after{right:22%}
+.v2 .work__shot{border-radius:3px!important;position:relative;overflow:hidden;box-shadow:none!important}
+.v2 .work__shot::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);mix-blend-mode:multiply;pointer-events:none}
+.v2 .work__shot img{filter:saturate(1.15) contrast(1.05)}
+.v2 .work h3,.v2 .work h3 a{font-family:var(--v2-display)!important;font-weight:400!important;font-size:1.05rem!important;letter-spacing:.06em;color:#fff!important;text-decoration:none!important;
+  text-shadow:0 0 4px #fff,0 0 10px var(--neon),0 0 24px var(--neon)}
+.v2 .work h3{margin-top:.2em}
+.v2 .work p{color:var(--ink-dim)}
+.v2 .work__tags span{font-family:var(--v2-label);font-style:italic;font-weight:800;letter-spacing:.12em;color:var(--neon)!important;text-shadow:0 0 6px var(--neon)}
+.v2 .work__tags span+span::before{color:var(--ink-dim)}
+.v2 .work li:hover{transform:translateY(-3px) scale(1.01)!important;box-shadow:0 0 10px var(--neon),0 0 40px -2px var(--neon),inset 0 0 22px -8px var(--neon)}
+@keyframes hum{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.55}94%{opacity:1}96%{opacity:.7}97%{opacity:1}}
+.v2 .band__say p{color:var(--ink)}
+.v2 .band__say strong{color:#fff;text-shadow:0 0 8px rgba(34,227,255,.6)}
+
+/* field photos: billboards */
+.v2 .work--field>li{border-width:1.5px}
+.v2 .work--field .work__shot img{filter:saturate(1.1) contrast(1.05) brightness(.95)}
+.v2 .work--field h3{font-size:.9rem!important}
+
+/* ---- elsewhere and record: terminal panels ------------------------------- */
+.v2 .links a,.v2 .record a{background:rgba(6,4,16,.7)!important;border:1px solid var(--edge)!important;border-left:3px solid var(--neon,var(--cyan))!important;border-radius:4px!important;color:var(--ink)!important;box-shadow:inset 0 0 20px -12px var(--neon,var(--cyan))}
+.v2 .links a:hover,.v2 .record a:hover{border-color:var(--neon,var(--cyan))!important;box-shadow:0 0 18px -4px var(--neon,var(--cyan)),inset 0 0 20px -10px var(--neon,var(--cyan));text-shadow:none}
+.v2 .links b,.v2 .record b{font-family:var(--v2-label);font-style:italic;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.v2 .links i{color:var(--neon,var(--cyan))!important;text-shadow:0 0 8px var(--neon,var(--cyan))}
+.v2 .links span,.v2 .record span{color:var(--ink-dim)!important}
+.v2 .record b::after{color:var(--neon,var(--cyan))!important}
+
+/* ---- inner pages: roles as glowing panels -------------------------------- */
+.v2 .role{--neon:var(--cyan);margin:0 0 14px!important;padding:18px 18px!important;border:1px solid var(--edge)!important;border-left:3px solid var(--neon)!important;border-radius:4px;background:rgba(6,4,16,.66);box-shadow:inset 0 0 24px -14px var(--neon)}
+.v2 .role:hover{box-shadow:0 0 18px -6px var(--neon),inset 0 0 24px -12px var(--neon)}
+.v2 .role__logo{background:#fff;border-radius:4px;box-shadow:0 0 10px -2px var(--neon)}
+.v2 .role__logo--none{background:rgba(255,255,255,.06);color:var(--neon)}
+.v2 .role-meta strong,.v2 .role-meta strong a{color:#fff}
+.v2 .role-meta em{color:var(--ink-dim)}
+.v2 .role__body p{color:var(--ink)}
+.v2 .proj-shot img{border:1.5px solid var(--neon,var(--pink));border-radius:3px;box-shadow:0 0 16px -4px var(--neon,var(--pink))}
+.v2 .page__content li,.v2 .archive li{color:var(--ink)}
+.v2 .page__content strong,.v2 .archive strong{color:#fff}
+.v2 .repo-list li{border-color:var(--edge)!important}
+.v2 .repo-list__lang{color:var(--yellow)!important}
+.v2 .archive img:not(.role__logo){border-radius:3px}
+
+@media (prefers-reduced-motion:reduce){.v2 .work>li,.v2 .nowbar__k i,.city-hero__cue::after{animation:none!important}}
+@media (max-width:40em){.v2-inner #main{margin-top:80px!important}}
+
+/* home: intro text above, signs three across, no empty column beside them */
+.v2 .band--work-left{grid-template-columns:minmax(0,1fr)!important}
+.v2 .band--work-left .band__say{order:-1!important;max-width:52em;columns:2;column-gap:2.4em}
+.v2 .band--work-left .band__say p:first-child{column-span:all}
+.v2 .band .work{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:30px 24px!important}
+@media (max-width:60em){.v2 .band .work{grid-template-columns:repeat(2,minmax(0,1fr))!important}.v2 .band--work-left .band__say{columns:1}}
+@media (max-width:40em){.v2 .band .work{grid-template-columns:minmax(0,1fr)!important}}
+.greedy-nav a{letter-spacing:.07em!important;font-size:.76rem!important;margin:0 .6rem!important}
+.v2 .proj-links a+a::before{content:none!important}
