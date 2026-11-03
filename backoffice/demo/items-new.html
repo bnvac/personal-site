@@ -1,0 +1,442 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>New item · Backoffice</title>
+
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/icon.svg" type="image/svg+xml">
+</head>
+<body><div class="demo-banner" style="position:sticky;top:0;z-index:99;background:#e5b52a;color:#111;font:600 13px system-ui;padding:7px 14px;text-align:center">Saved demo of the real Backoffice interface with an example workshop. Click around; changes are not saved.</div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="index.html">Backoffice</a>
+  
+  
+  <nav aria-label="Sections">
+    <a href="items.html" class="btn ghost on"
+       aria-current="page">Items</a>
+    <a href="projects.html" class="btn ghost"
+       >Projects</a>
+    <a href="ideas.html" class="btn ghost"
+       >Ideas</a>
+    <a href="orders.html" class="btn ghost"
+       >Orders</a>
+    <a href="scan.html" class="btn ghost"
+       >Scan</a>
+
+    <details class="menu">
+      <summary class="btn ghost">More</summary>
+      <div class="menu-panel">
+        <a href="workshop.html">Workshop</a>
+        <a href="printing.html">Printing</a>
+        <a href="prints.html">Prints</a>
+        <a href="firmware.html">Firmware</a>
+        <a href="machines.html">Machines</a>
+        <a href="manufacturers.html">Manufacturers</a>
+        <a href="tags.html">Tags</a>
+        <a href="tools.html">Calculators</a>
+        <a href="#" data-demo-missing="1">Print labels</a>
+        <a href="#" data-demo-missing="1">Export CSV</a>
+        <hr>
+        <a href="#" data-demo-missing="1">Health &amp; backup</a>
+        <a href="#" data-demo-missing="1">Activity</a>
+      </div>
+    </details>
+
+    <a href="items-new.html" class="btn primary">
+      <span aria-hidden="true">+</span> Add<span class="sr-only"> an item</span>
+    </a>
+
+    
+    <details class="menu account">
+      <summary class="btn ghost avatar-btn" aria-label="Account and appearance">
+        <span class="avatar" style="--hue: 144" aria-hidden="true">BE</span>
+        <span class="avatar-name">Ben</span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel wide">
+        <div class="menu-head">
+          <span class="avatar big" style="--hue: 144" aria-hidden="true">BE</span>
+          <div>
+            <b>Ben</b>
+            <span class="muted small">no sign-in set up</span>
+          </div>
+        </div>
+
+        <a href="#" data-demo-missing="1">Your profile</a>
+        <a href="workshop.html">Your workshop</a>
+        <a href="#" data-demo-missing="1">Model</a>
+
+        <hr>
+        <fieldset class="theme-picker">
+          <legend>Appearance</legend>
+          <button type="button" data-theme-set="light">Light</button>
+          <button type="button" data-theme-set="dark">Dark</button>
+          <button type="button" data-theme-set="system">System</button>
+        </fieldset>
+
+        
+
+        <a href="#" data-demo-missing="1">Manage accounts</a>
+        
+      </div>
+    </details>
+  </nav>
+  
+</header>
+
+
+<main id="main" tabindex="-1">
+
+
+
+<p class="crumb"><a href="items.html">← Cancel</a></p>
+
+<form class="form" method="post" enctype="multipart/form-data" id="item-form"
+      action="items.html">
+  <h1>Add item</h1>
+
+  
+  <div class="import" id="import">
+    <label class="field wide">
+      <span>Search for a part <em>looks it up for you — no link needed</em></span>
+      <div class="import-row">
+        <input type="search" id="search-q" placeholder="esp32 feather, ds18b20, 10k resistor…" autocomplete="off">
+        <button class="btn" type="button" id="search-go">Search</button>
+      </div>
+    </label>
+    <p class="import-status" id="search-status" hidden></p>
+    <div class="results" id="search-results" hidden></div>
+    <div class="external" id="search-external" hidden></div>
+
+    <hr class="import-sep">
+
+    <label class="field wide">
+      <span>…or import from a link <em>fills the fields below</em></span>
+      <div class="import-row">
+        <input type="url" id="import-url" placeholder="https://shop.example.com/esp32-devkit" autocomplete="off">
+        <button class="btn" type="button" id="import-go">Fetch</button>
+      </div>
+    </label>
+    <p class="import-status" id="import-status" hidden></p>
+    <div class="import-preview" id="import-preview" hidden>
+      <img id="import-thumb" alt="">
+      <div>
+        <strong id="import-title"></strong>
+        <span class="muted" id="import-site"></span>
+      </div>
+    </div>
+  </div>
+
+  <label class="field wide">
+    <span>Name</span>
+    <input name="name" id="f-name" value="" required autofocus placeholder="ESP32-WROOM-32 devkit">
+  </label>
+
+  <div class="row">
+    <label class="field">
+      <span>Quantity</span>
+      <input name="quantity" type="number" min="0" step="1" value="1">
+    </label>
+    <label class="field">
+      <span>Reorder at <em>how few is “running low” for this part</em></span>
+      <input name="low_stock" type="number" min="0" step="1" value="0">
+    </label>
+    <label class="field">
+      <span>Folder</span>
+      <select name="folder_id">
+        <option value="">— none —</option>
+        
+          <option value="5">Bin E · Motion</option>
+        
+          <option value="1">Drawer A · Boards</option>
+        
+          <option value="2">Drawer B · Sensors</option>
+        
+          <option value="3">Drawer C · Displays</option>
+        
+          <option value="4">Drawer D · Power</option>
+        
+      </select>
+    </label>
+  </div>
+
+  <div class="row">
+    <label class="field">
+      <span>Location <em>physical spot</em></span>
+      <input name="location" value="" list="locations" placeholder="Shelf B / drawer 3" autocomplete="off">
+      <datalist id="locations"><option value="A1"><option value="A2"><option value="A3"><option value="A4"><option value="B1"><option value="B2"><option value="B3"><option value="B4"><option value="B5"><option value="C1"><option value="C2"><option value="C3"><option value="D1"><option value="D2"><option value="D5"><option value="E1"><option value="E2"><option value="E3"></datalist>
+    </label>
+    <label class="field">
+      <span>Type</span>
+      <input name="category" value="" list="categories" placeholder="SBC, MCU, passive…" autocomplete="off">
+      <datalist id="categories"><option value="Actuator"><option value="Display"><option value="IC"><option value="Microcontroller"><option value="Power"><option value="SBC"><option value="Sensor"></datalist>
+    </label>
+  </div>
+
+  <div class="row">
+    <label class="field">
+      <span>Price <em>optional</em></span>
+      <div class="import-row">
+        <input name="price" id="f-price" inputmode="decimal" placeholder="19.95">
+        <input name="price_source" id="f-price_source" placeholder="Adafruit" aria-label="Price source">
+      </div>
+    </label>
+  </div>
+
+  <div class="row">
+    <label class="field">
+      <span>Value / rating <em>electrical, not money</em></span>
+      <input name="value" id="f-value" value="" placeholder="10kΩ 1% 0805">
+    </label>
+    <label class="field">
+      <span>Part number</span>
+      <input name="part_number" id="f-part_number" value="" placeholder="ESP32-WROOM-32E">
+    </label>
+    <label class="field">
+      <span>Manufacturer <em>who made it</em></span>
+      <input name="manufacturer" value="" list="makers"
+             placeholder="Espressif" autocomplete="off" spellcheck="false">
+      <datalist id="makers"><option value="Analog Devices"><option value="Arduino"><option value="Bosch"><option value="DFRobot"><option value="Espressif"><option value="Microchip"><option value="Raspberry Pi"><option value="Samsung"><option value="Solomon Systech"><option value="Songle"><option value="STMicroelectronics"><option value="TDK InvenSense"><option value="TowerPro"><option value="UUGear"><option value="Waveshare"><option value="Worldsemi"></datalist>
+    </label>
+  </div>
+
+  <div class="field wide">
+    <span>Tags <em>comma separated</em></span>
+    <input name="tags" id="f-tags" value="" placeholder="wifi, 3v3, smd" autocomplete="off">
+    
+    <div class="tag-suggest" id="tag-suggest">
+      <button class="chip xs" type="button" data-tag="analog">analog</button><button class="chip xs" type="button" data-tag="battery">battery</button><button class="chip xs" type="button" data-tag="display">display</button><button class="chip xs" type="button" data-tag="environment">environment</button><button class="chip xs" type="button" data-tag="wifi">wifi</button><button class="chip xs" type="button" data-tag="adc">adc</button><button class="chip xs" type="button" data-tag="ble">ble</button><button class="chip xs" type="button" data-tag="distance">distance</button><button class="chip xs" type="button" data-tag="light">light</button><button class="chip xs" type="button" data-tag="linux">linux</button><button class="chip xs" type="button" data-tag="motion">motion</button><button class="chip xs" type="button" data-tag="relay">relay</button><button class="chip xs" type="button" data-tag="servo">servo</button><button class="chip xs" type="button" data-tag="stepper">stepper</button>
+    </div>
+    
+  </div>
+
+  <fieldset class="field wide io-picker">
+    <legend>IO &amp; interfaces <em>what it speaks and needs</em></legend>
+    
+    <div class="io-group">
+      <span class="filter-label">Bus</span>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="I2C">
+        <span><span class="ti">🔗</span>I2C</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="SPI">
+        <span><span class="ti">🔗</span>SPI</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="UART">
+        <span><span class="ti">🔗</span>UART</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="1-Wire">
+        <span><span class="ti">🧵</span>1-Wire</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="CAN">
+        <span><span class="ti">🚌</span>CAN</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="I2S">
+        <span><span class="ti">🎵</span>I2S</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="Qwiic / STEMMA QT">
+        <span><span class="ti">🔗</span>Qwiic / STEMMA QT</span>
+      </label>
+      
+    </div>
+    
+    <div class="io-group">
+      <span class="filter-label">Signal</span>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="PWM">
+        <span><span class="ti">〰</span>PWM</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="ADC">
+        <span><span class="ti">📈</span>ADC</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="DAC">
+        <span><span class="ti">📉</span>DAC</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="GPIO">
+        <span><span class="ti">📌</span>GPIO</span>
+      </label>
+      
+    </div>
+    
+    <div class="io-group">
+      <span class="filter-label">Power / host</span>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="USB-C">
+        <span><span class="ti">🔌</span>USB-C</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="Micro-USB">
+        <span><span class="ti">🔌</span>Micro-USB</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="USB-A">
+        <span><span class="ti">🔌</span>USB-A</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="Barrel jack">
+        <span><span class="ti">🔌</span>Barrel jack</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="JST-PH">
+        <span><span class="ti">🔋</span>JST-PH</span>
+      </label>
+      
+    </div>
+    
+    <div class="io-group">
+      <span class="filter-label">Level</span>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="3V3 logic">
+        <span><span class="ti">⚡</span>3V3 logic</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="5V logic">
+        <span><span class="ti">⚡</span>5V logic</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="12V">
+        <span><span class="ti">⚡</span>12V</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="Mains">
+        <span><span class="ti">⚠</span>Mains</span>
+      </label>
+      
+    </div>
+    
+    <div class="io-group">
+      <span class="filter-label">Wireless</span>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="WiFi">
+        <span><span class="ti">📶</span>WiFi</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="Bluetooth / BLE">
+        <span><span class="ti">🔵</span>Bluetooth / BLE</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="LoRa">
+        <span><span class="ti">🛰</span>LoRa</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="Zigbee">
+        <span><span class="ti">🐝</span>Zigbee</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="Ethernet">
+        <span><span class="ti">🌐</span>Ethernet</span>
+      </label>
+      
+    </div>
+    
+    <div class="io-group">
+      <span class="filter-label">Display</span>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="HDMI">
+        <span><span class="ti">🖵</span>HDMI</span>
+      </label>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="MIPI / DSI">
+        <span><span class="ti">🖵</span>MIPI / DSI</span>
+      </label>
+      
+    </div>
+    
+    <div class="io-group">
+      <span class="filter-label">Storage</span>
+      
+      <label class="io-opt">
+        <input type="checkbox" name="interface" value="microSD">
+        <span><span class="ti">💾</span>microSD</span>
+      </label>
+      
+    </div>
+    
+  </fieldset>
+
+  <label class="field wide">
+    <span>Specifications <em>one per line, "name: value"</em></span>
+    <textarea name="specs" rows="4" placeholder="Logic level: 3.3V&#10;Flash: 8MB&#10;Dimensions: 51 x 23 mm"></textarea>
+  </label>
+
+  <label class="field wide">
+    <span>Link <em>datasheet or product page</em></span>
+    <input name="link" id="f-link" type="url" value="" placeholder="https://…">
+  </label>
+
+  <label class="field wide">
+    <span>Notes</span>
+    <textarea name="notes" id="f-notes" rows="4" placeholder="Pinout quirks, which project it came from, anything you'll forget."></textarea>
+  </label>
+
+  <label class="field wide">
+    <span>Photos</span>
+    <input type="file" name="photos" accept="image/*" multiple capture="environment">
+  </label>
+
+  <label class="field wide">
+    <span>Photo from a URL <em>optional</em></span>
+    <input type="url" name="image_url" id="f-image_url" placeholder="https://…/board.jpg">
+  </label>
+
+  <div class="actions">
+    <button class="btn primary" type="submit">Add item</button>
+    <a class="btn ghost" href="items.html">Cancel</a>
+  </div>
+</form>
+
+
+</main>
+<script src="static/app.js" defer></script>
+<script>
+document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();demoNote('This is a saved demo, so nothing was changed.')},true);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-demo-missing]');if(a){e.preventDefault();demoNote('That page is not part of the demo.')}},true);
+function demoNote(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2200)}
+document.documentElement.setAttribute('data-theme','dark');
+</script></body>
+</html>
+

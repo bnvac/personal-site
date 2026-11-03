@@ -1,0 +1,668 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Printing · Backoffice</title>
+
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/icon.svg" type="image/svg+xml">
+</head>
+<body><div class="demo-banner" style="position:sticky;top:0;z-index:99;background:#e5b52a;color:#111;font:600 13px system-ui;padding:7px 14px;text-align:center">Saved demo of the real Backoffice interface with an example workshop. Click around; changes are not saved.</div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="index.html">Backoffice</a>
+  
+  
+  <nav aria-label="Sections">
+    <a href="items.html" class="btn ghost"
+       >Items</a>
+    <a href="projects.html" class="btn ghost"
+       >Projects</a>
+    <a href="ideas.html" class="btn ghost"
+       >Ideas</a>
+    <a href="orders.html" class="btn ghost"
+       >Orders</a>
+    <a href="scan.html" class="btn ghost"
+       >Scan</a>
+
+    <details class="menu">
+      <summary class="btn ghost">More</summary>
+      <div class="menu-panel">
+        <a href="workshop.html">Workshop</a>
+        <a href="printing.html">Printing</a>
+        <a href="prints.html">Prints</a>
+        <a href="firmware.html">Firmware</a>
+        <a href="machines.html">Machines</a>
+        <a href="manufacturers.html">Manufacturers</a>
+        <a href="tags.html">Tags</a>
+        <a href="tools.html">Calculators</a>
+        <a href="#" data-demo-missing="1">Print labels</a>
+        <a href="#" data-demo-missing="1">Export CSV</a>
+        <hr>
+        <a href="#" data-demo-missing="1">Health &amp; backup</a>
+        <a href="#" data-demo-missing="1">Activity</a>
+      </div>
+    </details>
+
+    <a href="items-new.html" class="btn primary">
+      <span aria-hidden="true">+</span> Add<span class="sr-only"> an item</span>
+    </a>
+
+    
+    <details class="menu account">
+      <summary class="btn ghost avatar-btn" aria-label="Account and appearance">
+        <span class="avatar" style="--hue: 144" aria-hidden="true">BE</span>
+        <span class="avatar-name">Ben</span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel wide">
+        <div class="menu-head">
+          <span class="avatar big" style="--hue: 144" aria-hidden="true">BE</span>
+          <div>
+            <b>Ben</b>
+            <span class="muted small">no sign-in set up</span>
+          </div>
+        </div>
+
+        <a href="#" data-demo-missing="1">Your profile</a>
+        <a href="workshop.html">Your workshop</a>
+        <a href="#" data-demo-missing="1">Model</a>
+
+        <hr>
+        <fieldset class="theme-picker">
+          <legend>Appearance</legend>
+          <button type="button" data-theme-set="light">Light</button>
+          <button type="button" data-theme-set="dark">Dark</button>
+          <button type="button" data-theme-set="system">System</button>
+        </fieldset>
+
+        
+
+        <a href="#" data-demo-missing="1">Manage accounts</a>
+        
+      </div>
+    </details>
+  </nav>
+  
+</header>
+
+
+<main id="main" tabindex="-1">
+
+
+
+<nav class="crumb"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="here">Printing</span></nav>
+
+<div class="folder-head">
+  <h1>Printing</h1>
+  <div class="folder-actions">
+    <a class="chip sm" href="workshop.html">Workshop</a>
+    <a class="chip sm" href="prints.html">Find a model ↗</a>
+  </div>
+</div>
+
+<p class="lede">What the machines will actually take. Whether a filament runs is a question
+about the hotend, the bed, the box around it, the nozzle and the spool all at once — so the
+printer gets recorded properly and the answer gets worked out.</p>
+
+
+
+<h2>Your printers</h2>
+
+
+<ul class="printers">
+  
+  
+  <li class="printer">
+    <div class="printer-head">
+      <b class="printer-name">Elegoo Neptune 4 Pro</b>
+      <div class="actions">
+        <a class="btn tiny" href="#" data-demo-missing="1">Edit</a>
+        <form method="post" action="#"
+              data-confirm="Remove Elegoo Neptune 4 Pro? Its print history goes with it.">
+          <button class="btn tiny danger" type="submit">Remove</button>
+        </form>
+      </div>
+    </div>
+
+    
+    <p class="muted small">, but no address yet —
+      <a href="#" data-demo-missing="1">add it</a> to send prints and see what it is doing.</p>
+    
+
+    <div class="spec">
+      <span class="fact"><i>Bed</i>225 × 225 × 265 mm</span>
+      <span class="fact"><i>Nozzle</i>0.4 mm brass</span>
+      <span class="fact"><i>Hotend</i>300 °C</span>
+      <span class="fact"><i>Bed max</i>110 °C</span>
+      <span class="fact"><i>Feed</i>direct drive</span>
+      <span class="fact"><i>Chamber</i>open</span>
+      <span class="fact"><i>Drying</i>no</span>
+    </div>
+    
+
+    
+  </li>
+  
+  
+  <li class="printer">
+    <div class="printer-head">
+      <b class="printer-name">Ender 3 (stock)</b>
+      <div class="actions">
+        <a class="btn tiny" href="#" data-demo-missing="1">Edit</a>
+        <form method="post" action="#"
+              data-confirm="Remove Ender 3 (stock)? Its print history goes with it.">
+          <button class="btn tiny danger" type="submit">Remove</button>
+        </form>
+      </div>
+    </div>
+
+    
+
+    <div class="spec">
+      <span class="fact"><i>Bed</i>220 × 220 × 250 mm</span>
+      <span class="fact"><i>Nozzle</i>0.4 mm brass</span>
+      <span class="fact"><i>Hotend</i>240 °C</span>
+      <span class="fact"><i>Bed max</i>100 °C</span>
+      <span class="fact"><i>Feed</i>bowden</span>
+      <span class="fact"><i>Chamber</i>open</span>
+      <span class="fact"><i>Drying</i>no</span>
+    </div>
+    
+
+    
+  </li>
+  
+  
+  <li class="printer">
+    <div class="printer-head">
+      <b class="printer-name">Prusa MK4</b>
+      <div class="actions">
+        <a class="btn tiny" href="#" data-demo-missing="1">Edit</a>
+        <form method="post" action="#"
+              data-confirm="Remove Prusa MK4? Its print history goes with it.">
+          <button class="btn tiny danger" type="submit">Remove</button>
+        </form>
+      </div>
+    </div>
+
+    
+
+    <div class="spec">
+      <span class="fact"><i>Bed</i>250 × 210 × 220 mm</span>
+      <span class="fact"><i>Nozzle</i>0.4 mm brass</span>
+      <span class="fact"><i>Hotend</i>290 °C</span>
+      <span class="fact"><i>Bed max</i>120 °C</span>
+      <span class="fact"><i>Feed</i>direct drive</span>
+      <span class="fact"><i>Chamber</i>open</span>
+      <span class="fact"><i>Drying</i>no</span>
+    </div>
+    
+
+    
+  </li>
+  
+</ul>
+
+
+
+
+
+
+<details class="panel" id="edit" >
+  <summary class="btn">Add a printer</summary>
+
+  
+  <div class="filter-row presets">
+    <span class="filter-label">Preset</span>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Prusa MK4S">
+      <button class="chip sm preset" type="submit">Prusa MK4S</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Prusa MK3S&#43;">
+      <button class="chip sm preset" type="submit">Prusa MK3S&#43;</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Prusa MINI&#43;">
+      <button class="chip sm preset" type="submit">Prusa MINI&#43;</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Bambu Lab A1">
+      <button class="chip sm preset" type="submit">Bambu Lab A1</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Bambu Lab A1 mini">
+      <button class="chip sm preset" type="submit">Bambu Lab A1 mini</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Bambu Lab P1S">
+      <button class="chip sm preset" type="submit">Bambu Lab P1S</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Bambu Lab X1C">
+      <button class="chip sm preset" type="submit">Bambu Lab X1C</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Ender 3 V2">
+      <button class="chip sm preset" type="submit">Ender 3 V2</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Ender 3 S1 Pro">
+      <button class="chip sm preset" type="submit">Ender 3 S1 Pro</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Creality K1">
+      <button class="chip sm preset" type="submit">Creality K1</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Elegoo Neptune 4">
+      <button class="chip sm preset" type="submit">Elegoo Neptune 4</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Elegoo Neptune 4 Pro">
+      <button class="chip sm preset" type="submit">Elegoo Neptune 4 Pro</button>
+    </form>
+    
+    <form method="post" action="#" class="inline">
+      <input type="hidden" name="preset" value="Voron 2.4 (350)">
+      <button class="chip sm preset" type="submit">Voron 2.4 (350)</button>
+    </form>
+    
+  </div>
+  <p class="muted small">Starting points from the published specifications. Nozzles get
+  swapped and hotends get upgraded, so check the result against the machine in front of
+  you — the numbers are what the answers are built on.</p>
+  
+
+  <form method="post" class="stack"
+        action="#">
+    <input type="hidden" name="edited" value="1">
+
+    <label>Name
+      <input name="name" required autocomplete="off" placeholder="Prusa MK4S"
+             value="">
+    </label>
+
+    <fieldset class="spec-group">
+      <legend>Bed, in millimetres</legend>
+      <div class="field-row">
+        <label>Width <input name="bed_x" type="number" step="any" min="0" placeholder="250"
+               value=""></label>
+        <label>Depth <input name="bed_y" type="number" step="any" min="0" placeholder="210"
+               value=""></label>
+        <label>Height <input name="bed_z" type="number" step="any" min="0" placeholder="220"
+               value=""></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="spec-group">
+      <legend>Hot end <em>— leave a box empty if you do not know; empty means unknown, not zero</em></legend>
+      <div class="field-row">
+        <label>Nozzle, mm
+          <input name="nozzle" type="number" step="any" min="0" placeholder="0.4"
+                 value="">
+        </label>
+        <label>Nozzle material
+          <select name="nozzle_kind">
+            
+            <option value="brass"
+              >Brass</option>
+            
+            <option value="hardened"
+              >Hardened steel</option>
+            
+            <option value="ruby"
+              >Ruby</option>
+            
+            <option value="tungsten"
+              >Tungsten carbide</option>
+            
+          </select>
+        </label>
+        <label>Max nozzle °C
+          <input name="max_hotend" type="number" min="0" placeholder="290"
+                 value="">
+        </label>
+        <label>Max bed °C
+          <input name="max_bed" type="number" min="0" placeholder="120"
+                 value="">
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="spec-group">
+      <legend>The rest of it</legend>
+      <label class="inline-check">
+        <input type="checkbox" name="enclosed" >
+        Enclosed — a chamber, a cover, or a box over the top
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" name="direct_drive" >
+        Direct drive rather than bowden
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" name="dryer" >
+        I can dry filament — a dryer, or a dehydrator with the trays out
+      </label>
+    </fieldset>
+
+    <fieldset class="spec-group">
+      <legend>On the network <em>— to send prints and see what it is doing</em></legend>
+      <div class="field-row">
+        <label>Talks
+          <select name="link_kind">
+            
+            <option value="" >Not connected</option>
+            
+            <option value="moonraker" >Moonraker (Klipper)</option>
+            
+            <option value="octoprint" >OctoPrint</option>
+            
+          </select>
+        </label>
+        <label>Address
+          <input name="link_url" autocomplete="off" inputmode="url"
+                 placeholder="http://192.168.1.50:7125"
+                 value="">
+        </label>
+        <label>API key <span class="muted">— optional</span>
+          <input name="link_key" type="password" autocomplete="off"
+                 placeholder="none">
+        </label>
+      </div>
+      
+      <p class="muted small">A Neptune 4 answers at its IP address on port 7125, or on the same
+        address you open Fluidd at. Stock firmware does not use a key. OctoPrint's key is under
+        Settings → API.</p>
+    </fieldset>
+
+    <label>Notes
+      <input name="notes" autocomplete="off" placeholder="bed is warped at the back left"
+             value="">
+    </label>
+
+    <div class="actions">
+      <button class="btn primary" type="submit">Add it</button>
+      
+    </div>
+  </form>
+</details>
+
+
+
+
+<h2>What you can load</h2>
+<p class="muted page-sub">Across every machine you own. Press one for the long answer.</p>
+
+<ul class="mats">
+  
+  
+  <li class="mat v-yes">
+    <a class="mat-head" href="printing-material-pla.html">
+      <span class="mat-name">PLA</span>
+      
+      <span class="mat-verdict">Load it</span>
+    </a>
+
+    <p class="mat-note">Stiff, dimensionally honest, and it creeps and softens in a hot car. Fine for anything living indoors.</p>
+
+    
+      <p class="mat-why">On your <b>Elegoo Neptune 4 Pro</b>.
+      </p>
+    
+  </li>
+  
+  
+  <li class="mat v-maybe">
+    <a class="mat-head" href="printing-material-petg.html">
+      <span class="mat-name">PETG</span>
+      
+      <span class="mat-verdict">With care</span>
+    </a>
+
+    <p class="mat-note">Tougher than PLA and survives a sunny windowsill. It sticks to smooth PEI hard enough to take the sheet with it, so use a release agent or a textured plate.</p>
+
+    
+      <p class="mat-why">On your <b>Elegoo Neptune 4 Pro</b>.
+      <span class="caution">prints better dry — stringing and a rough surface usually mean a damp spool</span></p>
+    
+  </li>
+  
+  
+  <li class="mat v-maybe">
+    <a class="mat-head" href="printing-material-tpu.html">
+      <span class="mat-name">TPU 95A</span>
+      <span class="mat-also">flexible</span>
+      <span class="mat-verdict">With care</span>
+    </a>
+
+    <p class="mat-note">Slow it right down. Softer shores than 95A are a direct-drive-only proposition.</p>
+
+    
+      <p class="mat-why">On your <b>Elegoo Neptune 4 Pro</b>.
+      <span class="caution">prints better dry — stringing and a rough surface usually mean a damp spool</span></p>
+    
+  </li>
+  
+  
+  <li class="mat v-no">
+    <a class="mat-head" href="printing-material-abs.html">
+      <span class="mat-name">ABS</span>
+      
+      <span class="mat-verdict">Not as it stands</span>
+    </a>
+
+    <p class="mat-note">Lifts off the bed and splits between layers in a draught. Small parts can get away with it; a tall one will not.</p>
+
+    
+      <p class="mat-why">Closest is your <b>Elegoo Neptune 4 Pro</b>, but
+      it warps off an open bed — it needs still, warm air around it.</p>
+      
+      <ul class="upgrades">
+        <li><b>an enclosure</b> <span class="rough">£0–150</span><span class="why">a cardboard box or a grow tent over the printer does most of the job; the point is no draught</span></li>
+      </ul>
+      
+    
+  </li>
+  
+  
+  <li class="mat v-no">
+    <a class="mat-head" href="printing-material-asa.html">
+      <span class="mat-name">ASA</span>
+      
+      <span class="mat-verdict">Not as it stands</span>
+    </a>
+
+    <p class="mat-note">ABS that does not go chalky in sunlight. The one to use for anything living outdoors.</p>
+
+    
+      <p class="mat-why">Closest is your <b>Elegoo Neptune 4 Pro</b>, but
+      it warps off an open bed — it needs still, warm air around it.</p>
+      
+      <ul class="upgrades">
+        <li><b>an enclosure</b> <span class="rough">£0–150</span><span class="why">a cardboard box or a grow tent over the printer does most of the job; the point is no draught</span></li>
+      </ul>
+      
+    
+  </li>
+  
+  
+  <li class="mat v-no">
+    <a class="mat-head" href="printing-material-pp.html">
+      <span class="mat-name">Polypropylene</span>
+      <span class="mat-also">PP</span>
+      <span class="mat-verdict">Not as it stands</span>
+    </a>
+
+    <p class="mat-note">Almost nothing sticks to it, including your bed. Printed on packing tape of the same plastic.</p>
+
+    
+      <p class="mat-why">Closest is your <b>Elegoo Neptune 4 Pro</b>, but
+      it warps off an open bed — it needs still, warm air around it.</p>
+      
+      <ul class="upgrades">
+        <li><b>an enclosure</b> <span class="rough">£0–150</span><span class="why">a cardboard box or a grow tent over the printer does most of the job; the point is no draught</span></li>
+      </ul>
+      
+    
+  </li>
+  
+  
+  <li class="mat v-no">
+    <a class="mat-head" href="printing-material-pa.html">
+      <span class="mat-name">Nylon</span>
+      <span class="mat-also">PA6, PA12</span>
+      <span class="mat-verdict">Not as it stands</span>
+    </a>
+
+    <p class="mat-note">Drinks water out of the air in hours. Wet nylon spits, foams and comes out weak — drying is not optional, it is the whole job.</p>
+
+    
+      <p class="mat-why">Closest is your <b>Elegoo Neptune 4 Pro</b>, but
+      it warps off an open bed — it needs still, warm air around it, and it has to go on dry, and it is wet within a day of opening the bag.</p>
+      
+      <ul class="upgrades">
+        <li><b>an enclosure</b> <span class="rough">£0–150</span><span class="why">a cardboard box or a grow tent over the printer does most of the job; the point is no draught</span></li><li><b>a 0.6 mm nozzle</b> <span class="rough">£5–15</span><span class="why">wider channel, fewer jams, and the extra width barely shows on a functional part</span></li><li><b>a filament dryer</b> <span class="rough">£30–90</span><span class="why">a food dehydrator with the trays out does the same job for less</span></li>
+      </ul>
+      
+    
+  </li>
+  
+  
+  <li class="mat v-no">
+    <a class="mat-head" href="printing-material-pa-cf.html">
+      <span class="mat-name">Nylon CF</span>
+      <span class="mat-also">PAHT-CF, PA-GF</span>
+      <span class="mat-verdict">Not as it stands</span>
+    </a>
+
+    <p class="mat-note">The chopped fibre is what makes it stiff and what destroys a brass nozzle. Short fibres also bridge a small nozzle and clog it, which is why 0.6 is the floor.</p>
+
+    
+      <p class="mat-why">Closest is your <b>Elegoo Neptune 4 Pro</b>, but
+      it warps off an open bed — it needs still, warm air around it, and it the fibre in it will eat a brass nozzle inside a spool, and it needs a 0.6 mm nozzle or bigger; this one is 0.4 mm, and it has to go on dry, and it is wet within a day of opening the bag.</p>
+      
+      <ul class="upgrades">
+        <li><b>an enclosure</b> <span class="rough">£0–150</span><span class="why">a cardboard box or a grow tent over the printer does most of the job; the point is no draught</span></li><li><b>a 0.6 mm hardened steel nozzle</b> <span class="rough">£8–20</span><span class="why">brass wears open as you print, so the holes creep wider and the part stops matching the model; and anything narrower bridges across the opening and blocks the melt zone</span></li><li><b>a filament dryer</b> <span class="rough">£30–90</span><span class="why">a food dehydrator with the trays out does the same job for less</span></li>
+      </ul>
+      
+    
+  </li>
+  
+  
+  <li class="mat v-no">
+    <a class="mat-head" href="printing-material-pc.html">
+      <span class="mat-name">Polycarbonate</span>
+      <span class="mat-also">PC</span>
+      <span class="mat-verdict">Not as it stands</span>
+    </a>
+
+    <p class="mat-note">Genuinely tough and stays stiff when hot. Warps harder than ABS and wants every degree you can give it.</p>
+
+    
+      <p class="mat-why">Closest is your <b>Elegoo Neptune 4 Pro</b>, but
+      it warps off an open bed — it needs still, warm air around it, and it has to go on dry, and it is wet within a day of opening the bag.</p>
+      
+      <ul class="upgrades">
+        <li><b>an enclosure</b> <span class="rough">£0–150</span><span class="why">a cardboard box or a grow tent over the printer does most of the job; the point is no draught</span></li><li><b>a filament dryer</b> <span class="rough">£30–90</span><span class="why">a food dehydrator with the trays out does the same job for less</span></li>
+      </ul>
+      
+    
+  </li>
+  
+  
+  <li class="mat v-no">
+    <a class="mat-head" href="printing-material-filled-pla.html">
+      <span class="mat-name">Filled PLA</span>
+      <span class="mat-also">wood, glow, metal</span>
+      <span class="mat-verdict">Not as it stands</span>
+    </a>
+
+    <p class="mat-note">Glow powder is the worst of them — it is effectively grit. Wood and metal fills also block a fine nozzle.</p>
+
+    
+      <p class="mat-why">Closest is your <b>Elegoo Neptune 4 Pro</b>, but
+      it the fibre in it will eat a brass nozzle inside a spool, and it needs a 0.5 mm nozzle or bigger; this one is 0.4 mm.</p>
+      
+      <ul class="upgrades">
+        <li><b>a 0.5 mm hardened steel nozzle</b> <span class="rough">£8–20</span><span class="why">brass wears open as you print, so the holes creep wider and the part stops matching the model; and anything narrower bridges across the opening and blocks the melt zone</span></li>
+      </ul>
+      
+    
+  </li>
+  
+  
+  <li class="mat v-no">
+    <a class="mat-head" href="printing-material-pva.html">
+      <span class="mat-name">PVA</span>
+      <span class="mat-also">dissolvable support</span>
+      <span class="mat-verdict">Not as it stands</span>
+    </a>
+
+    <p class="mat-note">Needs a second extruder to be worth anything, and it is even thirstier than nylon.</p>
+
+    
+      <p class="mat-why">Closest is your <b>Elegoo Neptune 4 Pro</b>, but
+      it has to go on dry, and it is wet within a day of opening the bag.</p>
+      
+      <ul class="upgrades">
+        <li><b>a filament dryer</b> <span class="rough">£30–90</span><span class="why">a food dehydrator with the trays out does the same job for less</span></li>
+      </ul>
+      
+    
+  </li>
+  
+  
+  <li class="mat v-no">
+    <a class="mat-head" href="printing-material-peek.html">
+      <span class="mat-name">PEEK</span>
+      <span class="mat-also">PEI, ULTEM</span>
+      <span class="mat-verdict">Not as it stands</span>
+    </a>
+
+    <p class="mat-note">Wants a 400 °C hotend and a chamber held near 120 °C. Listed so the answer is a clear no rather than a maybe.</p>
+
+    
+      <p class="mat-why">Closest is your <b>Elegoo Neptune 4 Pro</b>, but
+      it needs about 380 °C at the nozzle; this one stops at 300 °C, and it wants a 130 °C bed; this one stops at 110 °C, and it warps off an open bed — it needs still, warm air around it, and it has to go on dry, and it is wet within a day of opening the bag.</p>
+      
+      <ul class="upgrades">
+        <li><b>a high-temperature hotend rated past 380 °C</b> <span class="rough">£300&#43;</span><span class="why">this is industrial-machine territory rather than a part swap</span></li><li><b>a bed that reaches 130 °C</b> <span class="rough">£30–70</span><span class="why">usually a mains-voltage heater and an SSR rather than a new printer</span></li><li><b>an enclosure</b> <span class="rough">£0–150</span><span class="why">a cardboard box or a grow tent over the printer does most of the job; the point is no draught</span></li><li><b>a filament dryer</b> <span class="rough">£30–90</span><span class="why">a food dehydrator with the trays out does the same job for less</span></li>
+      </ul>
+      
+    
+  </li>
+  
+</ul>
+
+
+
+</main>
+<script src="static/app.js" defer></script>
+<script>
+document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();demoNote('This is a saved demo, so nothing was changed.')},true);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-demo-missing]');if(a){e.preventDefault();demoNote('That page is not part of the demo.')}},true);
+function demoNote(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2200)}
+document.documentElement.setAttribute('data-theme','dark');
+</script></body>
+</html>
+

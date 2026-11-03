@@ -1,0 +1,759 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Backoffice</title>
+
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/icon.svg" type="image/svg+xml">
+</head>
+<body><div class="demo-banner" style="position:sticky;top:0;z-index:99;background:#e5b52a;color:#111;font:600 13px system-ui;padding:7px 14px;text-align:center">Saved demo of the real Backoffice interface with an example workshop. Click around; changes are not saved.</div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="index.html">Backoffice</a>
+  
+  
+  <nav aria-label="Sections">
+    <a href="items.html" class="btn ghost"
+       >Items</a>
+    <a href="projects.html" class="btn ghost"
+       >Projects</a>
+    <a href="ideas.html" class="btn ghost"
+       >Ideas</a>
+    <a href="orders.html" class="btn ghost"
+       >Orders</a>
+    <a href="scan.html" class="btn ghost"
+       >Scan</a>
+
+    <details class="menu">
+      <summary class="btn ghost">More</summary>
+      <div class="menu-panel">
+        <a href="workshop.html">Workshop</a>
+        <a href="printing.html">Printing</a>
+        <a href="prints.html">Prints</a>
+        <a href="firmware.html">Firmware</a>
+        <a href="machines.html">Machines</a>
+        <a href="manufacturers.html">Manufacturers</a>
+        <a href="tags.html">Tags</a>
+        <a href="tools.html">Calculators</a>
+        <a href="#" data-demo-missing="1">Print labels</a>
+        <a href="#" data-demo-missing="1">Export CSV</a>
+        <hr>
+        <a href="#" data-demo-missing="1">Health &amp; backup</a>
+        <a href="#" data-demo-missing="1">Activity</a>
+      </div>
+    </details>
+
+    <a href="items-new.html" class="btn primary">
+      <span aria-hidden="true">+</span> Add<span class="sr-only"> an item</span>
+    </a>
+
+    
+    <details class="menu account">
+      <summary class="btn ghost avatar-btn" aria-label="Account and appearance">
+        <span class="avatar" style="--hue: 144" aria-hidden="true">BE</span>
+        <span class="avatar-name">Ben</span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel wide">
+        <div class="menu-head">
+          <span class="avatar big" style="--hue: 144" aria-hidden="true">BE</span>
+          <div>
+            <b>Ben</b>
+            <span class="muted small">no sign-in set up</span>
+          </div>
+        </div>
+
+        <a href="#" data-demo-missing="1">Your profile</a>
+        <a href="workshop.html">Your workshop</a>
+        <a href="#" data-demo-missing="1">Model</a>
+
+        <hr>
+        <fieldset class="theme-picker">
+          <legend>Appearance</legend>
+          <button type="button" data-theme-set="light">Light</button>
+          <button type="button" data-theme-set="dark">Dark</button>
+          <button type="button" data-theme-set="system">System</button>
+        </fieldset>
+
+        
+
+        <a href="#" data-demo-missing="1">Manage accounts</a>
+        
+      </div>
+    </details>
+  </nav>
+  
+</header>
+
+
+<main id="main" tabindex="-1">
+
+
+
+
+
+
+
+<form class="search live-search" method="get" action="items.html">
+  <input type="search" name="q" placeholder="Search everything — name, part number, tags, notes…"
+         autocomplete="off" data-live-search>
+  <button class="btn" type="submit">Search</button>
+</form>
+
+
+<form class="quick-add" method="post" action="#">
+  <label class="field">
+    <span>Quick add <em>paste a product link — photo, price and datasheets come with it</em></span>
+    <div class="import-row">
+      <input type="url" name="url" placeholder="https://shop.example.com/some-board" required>
+      <select name="folder_id" aria-label="Folder">
+        <option value="">No folder</option>
+        <option value="5">Bin E · Motion</option><option value="1">Drawer A · Boards</option><option value="2">Drawer B · Sensors</option><option value="3">Drawer C · Displays</option><option value="4">Drawer D · Power</option>
+      </select>
+      <button class="btn primary" type="submit">Add</button>
+    </div>
+  </label>
+</form>
+
+<div class="tiles">
+  <a class="tile" href="items.html"><b>18</b><span>items</span></a>
+  <div class="tile"><b>73</b><span>pieces</span></div>
+  <a class="tile" href="items_d1037512.html"><b>0</b><span>out of stock</span></a>
+  <div class="tile"><b>5</b><span>folders</span></div>
+  <a class="tile" href="tags.html"><b>14</b><span>tags</span></a>
+  <div class="tile"><b>$593.77</b><span>shelf value</span></div>
+</div>
+
+
+
+
+<section class="panel-block">
+  <div class="section-head"><h2>Recently updated</h2><a class="chip sm" href="items.html">All items</a></div>
+  <ul class="grid">
+    
+<li class="card" data-id="1">
+  <a class="thumb" href="items-1.html">
+    
+      <img src="media/thumb/1151dc8963d6f8be.jpg" alt="ESP32-S3 DevKitC-1" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$15.00</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-1.html">ESP32-S3 DevKitC-1</a>
+    
+    
+    <div class="where">
+      <span class="loc">A1</span>
+      <a class="fold" href="folders-1.html">Drawer A · Boards</a>
+    </div>
+    <div class="mk">Espressif</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_40e36539.html">ble</a><a class="chip xs" href="items_f0d2689f.html">wifi</a>
+    </div>
+    
+    <div class="qty" data-qty-for="1">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one ESP32-S3 DevKitC-1">−</button>
+      </form>
+      <output class="n">6</output>
+      <span class="reserved" title="1 piece committed across 1 project, you own 6">5 free</span>
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one ESP32-S3 DevKitC-1">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="2">
+  <a class="thumb" href="items-2.html">
+    
+      <img src="media/thumb/6a5f8029d2a20f90.jpg" alt="Raspberry Pi Pico 2 W" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$6.95</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-2.html">Raspberry Pi Pico 2 W</a>
+    
+    
+    <div class="where">
+      <span class="loc">A2</span>
+      <a class="fold" href="folders-1.html">Drawer A · Boards</a>
+    </div>
+    <div class="mk">Raspberry Pi</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_f0d2689f.html">wifi</a>
+    </div>
+    
+    <div class="qty" data-qty-for="2">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one Raspberry Pi Pico 2 W">−</button>
+      </form>
+      <output class="n">4</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one Raspberry Pi Pico 2 W">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="3">
+  <a class="thumb" href="items-3.html">
+    
+      <img src="media/thumb/2829a9a9f7d05b4f.jpg" alt="Raspberry Pi 5 4GB" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$60.00</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-3.html">Raspberry Pi 5 4GB</a>
+    
+    
+    <div class="where">
+      <span class="loc">A3</span>
+      <a class="fold" href="folders-1.html">Drawer A · Boards</a>
+    </div>
+    <div class="mk">Raspberry Pi</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_87c79974.html">linux</a>
+    </div>
+    
+    <div class="qty" data-qty-for="3">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one Raspberry Pi 5 4GB">−</button>
+      </form>
+      <output class="n">1</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one Raspberry Pi 5 4GB">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="4">
+  <a class="thumb" href="items-4.html">
+    
+      <img src="media/thumb/2405adf7b1c67913.jpg" alt="Arduino Uno R4 Minima" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$20.00</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-4.html">Arduino Uno R4 Minima</a>
+    
+    
+    <div class="where">
+      <span class="loc">A4</span>
+      <a class="fold" href="folders-1.html">Drawer A · Boards</a>
+    </div>
+    <div class="mk">Arduino</div>
+    
+    <div class="qty" data-qty-for="4">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one Arduino Uno R4 Minima">−</button>
+      </form>
+      <output class="n">2</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one Arduino Uno R4 Minima">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="5">
+  <a class="thumb" href="items-5.html">
+    
+      <img src="media/thumb/ca0e6127448f0f41.jpg" alt="BME280 temp / humidity / pressure" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$14.42</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-5.html">BME280 temp / humidity / pressure</a>
+    
+    
+    <div class="where">
+      <span class="loc">B1</span>
+      <a class="fold" href="folders-2.html">Drawer B · Sensors</a>
+    </div>
+    <div class="mk">Bosch</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_21b0c57c.html">environment</a>
+    </div>
+    
+    <div class="qty" data-qty-for="5">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one BME280 temp / humidity / pressure">−</button>
+      </form>
+      <output class="n">3</output>
+      <span class="reserved" title="1 piece committed across 1 project, you own 3">2 free</span>
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one BME280 temp / humidity / pressure">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="6">
+  <a class="thumb" href="items-6.html">
+    
+      <img src="media/thumb/da9f5a18f211ff23.jpg" alt="VL53L1X time-of-flight distance" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$13.65</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-6.html">VL53L1X time-of-flight distance</a>
+    <div class="val">4 m</div>
+    
+    <div class="where">
+      <span class="loc">B2</span>
+      <a class="fold" href="folders-2.html">Drawer B · Sensors</a>
+    </div>
+    <div class="mk">STMicroelectronics</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_1d02c3b9.html">distance</a>
+    </div>
+    
+    <div class="qty" data-qty-for="6">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one VL53L1X time-of-flight distance">−</button>
+      </form>
+      <output class="n">2</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one VL53L1X time-of-flight distance">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="7">
+  <a class="thumb" href="items-7.html">
+    
+      <img src="media/thumb/c3226b479158db53.jpg" alt="MPU-6050 6-axis IMU" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$12.95</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-7.html">MPU-6050 6-axis IMU</a>
+    
+    
+    <div class="where">
+      <span class="loc">B3</span>
+      <a class="fold" href="folders-2.html">Drawer B · Sensors</a>
+    </div>
+    <div class="mk">TDK InvenSense</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_c741986d.html">motion</a>
+    </div>
+    
+    <div class="qty" data-qty-for="7">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one MPU-6050 6-axis IMU">−</button>
+      </form>
+      <output class="n">4</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one MPU-6050 6-axis IMU">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="8">
+  <a class="thumb" href="items-8.html">
+    
+      <img src="media/thumb/14523a0ce67ad4f9.jpg" alt="Capacitive soil moisture sensor" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$6.00</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-8.html">Capacitive soil moisture sensor</a>
+    
+    
+    <div class="where">
+      <span class="loc">B4</span>
+      <a class="fold" href="folders-2.html">Drawer B · Sensors</a>
+    </div>
+    <div class="mk">DFRobot</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_e03cd03d.html">analog</a><a class="chip xs" href="items_21b0c57c.html">environment</a>
+    </div>
+    
+    <div class="qty" data-qty-for="8">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one Capacitive soil moisture sensor">−</button>
+      </form>
+      <output class="n">5</output>
+      <span class="reserved" title="2 pieces committed across 1 project, you own 5">3 free</span>
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one Capacitive soil moisture sensor">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="9">
+  <a class="thumb" href="items-9.html">
+    
+      <img src="media/thumb/d0b5eca0e5187f06.jpg" alt="DS18B20 waterproof temperature probe" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$1.44</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-9.html">DS18B20 waterproof temperature probe</a>
+    
+    
+    <div class="where">
+      <span class="loc">B5</span>
+      <a class="fold" href="folders-2.html">Drawer B · Sensors</a>
+    </div>
+    <div class="mk">Analog Devices</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_e03cd03d.html">analog</a>
+    </div>
+    
+    <div class="qty" data-qty-for="9">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one DS18B20 waterproof temperature probe">−</button>
+      </form>
+      <output class="n">10</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one DS18B20 waterproof temperature probe">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="10">
+  <a class="thumb" href="items-10.html">
+    
+      <img src="media/thumb/501eff8c5013bfa3.jpg" alt="0.96&#34; OLED, SSD1306" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$9.00</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-10.html">0.96&#34; OLED, SSD1306</a>
+    <div class="val">128x64</div>
+    
+    <div class="where">
+      <span class="loc">C1</span>
+      <a class="fold" href="folders-3.html">Drawer C · Displays</a>
+    </div>
+    <div class="mk">Solomon Systech</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_5b5df459.html">display</a>
+    </div>
+    
+    <div class="qty" data-qty-for="10">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one 0.96&#34; OLED, SSD1306">−</button>
+      </form>
+      <output class="n">3</output>
+      <span class="reserved" title="1 piece committed across 1 project, you own 3">2 free</span>
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one 0.96&#34; OLED, SSD1306">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="11">
+  <a class="thumb" href="items-11.html">
+    
+      <img src="media/thumb/02967443b1d4e903.jpg" alt="2.9&#34; e-paper, SSD1680" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$22.00</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-11.html">2.9&#34; e-paper, SSD1680</a>
+    <div class="val">296x128</div>
+    
+    <div class="where">
+      <span class="loc">C2</span>
+      <a class="fold" href="folders-3.html">Drawer C · Displays</a>
+    </div>
+    <div class="mk">Waveshare</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_5b5df459.html">display</a>
+    </div>
+    
+    <div class="qty" data-qty-for="11">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one 2.9&#34; e-paper, SSD1680">−</button>
+      </form>
+      <output class="n">1</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one 2.9&#34; e-paper, SSD1680">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="12">
+  <a class="thumb" href="items-12.html">
+    
+      <img src="media/thumb/e048e0ff5437d279.jpg" alt="WS2812B LED strip, 1 m" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$15.93</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-12.html">WS2812B LED strip, 1 m</a>
+    <div class="val">60/m</div>
+    
+    <div class="where">
+      <span class="loc">C3</span>
+      <a class="fold" href="folders-3.html">Drawer C · Displays</a>
+    </div>
+    <div class="mk">Worldsemi</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_2e6e4d5c.html">light</a>
+    </div>
+    
+    <div class="qty" data-qty-for="12">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one WS2812B LED strip, 1 m">−</button>
+      </form>
+      <output class="n">2</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one WS2812B LED strip, 1 m">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+  </ul>
+</section>
+
+
+<section class="panel-block">
+  <div class="section-head">
+    <h2>Projects</h2>
+    <a class="chip sm" href="projects.html">All projects</a>
+  </div>
+  
+  <ul class="folders">
+    
+    
+
+<li class="folder-card">
+  <a href="projects-1.html">
+    <div class="folder-icon">✅</div>
+    <div class="folder-body">
+      <b>Greenhouse logger</b>
+      <span class="muted">
+        6 parts
+        
+      </span>
+      <span class="muted sub">building · 5 days ago</span>
+      
+    </div>
+  </a>
+</li>
+
+    
+    
+
+<li class="folder-card">
+  <a href="projects-2.html">
+    <div class="folder-icon">✅</div>
+    <div class="folder-body">
+      <b>Desk robot arm</b>
+      <span class="muted">
+        3 parts
+        
+      </span>
+      <span class="muted sub">planning · 7 days ago</span>
+      
+    </div>
+  </a>
+</li>
+
+    
+  </ul>
+  
+</section>
+
+<section class="panel-block">
+  <div class="section-head">
+    <h2>Folders</h2>
+    <details class="inline-form">
+      <summary class="btn">+ New folder</summary>
+      <form method="post" action="#">
+        <input type="hidden" name="return" value="/">
+        <input name="name" placeholder="Folder name" required>
+        <select name="parent_id">
+          <option value="">Top level</option>
+          <option value="5">Bin E · Motion</option><option value="1">Drawer A · Boards</option><option value="2">Drawer B · Sensors</option><option value="3">Drawer C · Displays</option><option value="4">Drawer D · Power</option>
+        </select>
+        <button class="btn primary" type="submit">Create</button>
+      </form>
+    </details>
+  </div>
+
+  
+  <ul class="folders">
+    
+<li class="folder-card">
+  <a href="folders-5.html">
+    
+      <img class="folder-cover" src="media/thumb/f61c3143ffe052fa.jpg" alt="" loading="lazy">
+    
+    <div class="folder-body">
+      <b>Bin E · Motion</b>
+      <span class="muted">
+        3 items
+         · 13 pieces
+      </span>
+      
+    </div>
+  </a>
+</li>
+
+<li class="folder-card">
+  <a href="folders-1.html">
+    
+      <img class="folder-cover" src="media/thumb/1151dc8963d6f8be.jpg" alt="" loading="lazy">
+    
+    <div class="folder-body">
+      <b>Drawer A · Boards</b>
+      <span class="muted">
+        4 items
+         · 13 pieces
+      </span>
+      
+    </div>
+  </a>
+</li>
+
+<li class="folder-card">
+  <a href="folders-2.html">
+    
+      <img class="folder-cover" src="media/thumb/ca0e6127448f0f41.jpg" alt="" loading="lazy">
+    
+    <div class="folder-body">
+      <b>Drawer B · Sensors</b>
+      <span class="muted">
+        5 items
+         · 24 pieces
+      </span>
+      
+    </div>
+  </a>
+</li>
+
+<li class="folder-card">
+  <a href="folders-3.html">
+    
+      <img class="folder-cover" src="media/thumb/501eff8c5013bfa3.jpg" alt="" loading="lazy">
+    
+    <div class="folder-body">
+      <b>Drawer C · Displays</b>
+      <span class="muted">
+        3 items
+         · 6 pieces
+      </span>
+      
+    </div>
+  </a>
+</li>
+
+<li class="folder-card">
+  <a href="folders-4.html">
+    
+      <img class="folder-cover" src="media/thumb/f60843718a5390f7.jpg" alt="" loading="lazy">
+    
+    <div class="folder-body">
+      <b>Drawer D · Power</b>
+      <span class="muted">
+        3 items
+         · 17 pieces
+      </span>
+      
+    </div>
+  </a>
+</li>
+
+    
+  </ul>
+  
+</section>
+
+
+<section class="panel-block">
+  <div class="section-head"><h2>Tags</h2><a class="chip sm" href="tags.html">Manage icons</a></div>
+  <div class="filter-row">
+    <a class="chip" href="items_e03cd03d.html">analog <span class="n">2</span></a><a class="chip" href="items_3dbfdf8f.html">battery <span class="n">2</span></a><a class="chip" href="items_5b5df459.html">display <span class="n">2</span></a><a class="chip" href="items_21b0c57c.html">environment <span class="n">2</span></a><a class="chip" href="items_f0d2689f.html">wifi <span class="n">2</span></a><a class="chip" href="items_ac63a277.html">adc <span class="n">1</span></a><a class="chip" href="items_40e36539.html">ble <span class="n">1</span></a><a class="chip" href="items_1d02c3b9.html">distance <span class="n">1</span></a><a class="chip" href="items_2e6e4d5c.html">light <span class="n">1</span></a><a class="chip" href="items_87c79974.html">linux <span class="n">1</span></a><a class="chip" href="items_c741986d.html">motion <span class="n">1</span></a><a class="chip" href="items_a8251818.html">relay <span class="n">1</span></a><a class="chip" href="items_5a802456.html">servo <span class="n">1</span></a><a class="chip" href="items_438d4bdb.html">stepper <span class="n">1</span></a>
+  </div>
+</section>
+
+
+
+
+
+</main>
+<script src="static/app.js" defer></script>
+<script>
+document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();demoNote('This is a saved demo, so nothing was changed.')},true);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-demo-missing]');if(a){e.preventDefault();demoNote('That page is not part of the demo.')}},true);
+function demoNote(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2200)}
+document.documentElement.setAttribute('data-theme','dark');
+</script></body>
+</html>
+

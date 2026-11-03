@@ -71,6 +71,15 @@ code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.92em;color:va
 .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
 .links a{font-weight:600;color:var(--fire2);text-decoration:none;padding:8px 12px;border:1px solid #2c3878}
 .links a:hover{background:#1a2252}
+.sh{background:#060a1f;border:1px solid #2c3878;height:min(380px,48vh);overflow:auto;padding:12px 14px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13.5px;line-height:1.55;color:#e9ecff;white-space:pre-wrap}
+.sh .pr{color:#7ee08a}.sh .dim{color:#7d86c8}.sh .hi{color:var(--fire2)}
+.shin{display:flex;border:1px solid #2c3878;border-top:0;background:#060a1f}
+.shin label{font-family:"IBM Plex Mono",monospace;font-size:13.5px;color:#7ee08a;padding:9px 0 9px 14px}
+.shin input{flex:1;min-width:0;background:transparent;border:0;color:#fff;font:13.5px "IBM Plex Mono",monospace;padding:9px 10px;outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.chips button{font:13px "IBM Plex Mono",monospace;color:#fff;background:#1a2252;border:1px solid #3a4690;padding:6px 10px;cursor:pointer}
+.chips button:hover{background:var(--ember)}
+.sim{font-family:var(--pixel);font-size:9px;color:#7d86c8;margin:12px 0 0}
 @media (max-width:640px){.fl,.ml,.keys{grid-template-columns:1fr}.pbtn{font-size:9px;padding:8px 9px 7px}.bar{gap:8px}}
 @media (prefers-reduced-motion:reduce){.hint{animation:none}}
 </style>
@@ -85,10 +94,11 @@ code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.92em;color:va
   <button class="pbtn" type="button" data-p="privacy">PRIVACY</button>
   <button class="pbtn" type="button" data-p="mods">MODULES</button>
   <button class="pbtn" type="button" data-p="keys">KEYS</button>
+  <button class="pbtn" type="button" data-p="demo">DEMO</button>
   <button class="pbtn hot" type="button" data-p="get">INSTALL</button>
 </nav>
 <div class="tag" id="tag"><div>A PRIVATE LINUX FOR ENGINEERS</div>
-  <div class="cta"><button class="pbtn hot" type="button" data-p="get">INSTALL</button><button class="pbtn" type="button" data-p="keys">KEYBINDS</button></div>
+  <div class="cta"><button class="pbtn hot" type="button" data-p="get">INSTALL</button><button class="pbtn" type="button" data-p="demo">TRY IT</button></div>
   <div class="term"><code id="one">sudo git clone https://github.com/bnvac/nixosconfig /etc/nixos</code><button type="button" id="copy" aria-label="Copy install command">COPY</button></div></div>
 
 
@@ -98,6 +108,15 @@ code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.92em;color:va
     <div id="pbody"></div>
   </div>
 </div>
+
+<template id="t-demo">
+  <h2 id="ph">Try it</h2>
+  <p class="lede">A simulated Hearth terminal. The commands are the real ones; the output is an example laptop. Click a command or type one.</p>
+  <div class="chips" id="chips"><button type="button">mod list</button><button type="button">mod on gaming</button><button type="button">debloat</button><button type="button">tormode on</button><button type="button">neb "open the robot board in kicad"</button><button type="button">tlp-stat -b</button><button type="button">mykeys</button><button type="button">help</button></div>
+  <div class="sh" id="sh" aria-live="polite"></div>
+  <div class="shin"><label for="shi">ben@hearth $</label><input id="shi" autocomplete="off" spellcheck="false" aria-label="Type a command"></div>
+  <p class="sim">SIMULATED IN YOUR BROWSER. NOTHING RUNS.</p>
+</template>
 
 <template id="t-ai">
   <h2 id="ph">Private AI</h2>
@@ -314,6 +333,36 @@ function open(id,btn){
   opener=btn||null;body.textContent="";body.appendChild(document.getElementById("t-"+id).content.cloneNode(true));
 
   veil.hidden=false;panel.scrollTop=0;panel.focus();
+  if(id==="demo")demo();
+}
+
+function demo(){
+  var out=document.getElementById("sh"),inp=document.getElementById("shi"),busy=false;
+  function esc(t){return t.replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
+  function add(h){out.insertAdjacentHTML("beforeend",h+"\n");out.scrollTop=out.scrollHeight}
+  var on={};MODS.forEach(function(m){on[m[0]]=!!m[1]});on.gaming=false;
+  var R={
+    help:function(){return ["Try: <span class=hi>mod list</span>, <span class=hi>mod on|off &lt;name&gt;</span>, <span class=hi>debloat</span>, <span class=hi>debloat clean</span>,","     <span class=hi>tormode on|off|status</span>, <span class=hi>neb \"...\"</span>, <span class=hi>tlp-stat -b</span>, <span class=hi>mykeys</span>, <span class=hi>clear</span>"]},
+    "mod list":function(){return MODS.map(function(m){return on[m[0]]?"  <span class=pr>on </span>  "+m[0]:"  <span class=dim>off</span>  "+m[0]})},
+    debloat:function(){return ["── disk ─────────────────────────────────────────────","  this system with everything it needs: 14G","  system versions kept for rollback:    7   (clean keeps the last 5)","","── biggest things in this system ────────────────────","      2.1G  kicad","      1.4G  freecad","      980M  ollama-vulkan","      610M  libreoffice","","── caches &amp; logs ────────────────────────────────────","  ~/.cache           3.2G","  system journal     412M","","── flatpak ──────────────────────────────────────────","  4 apps, 9 runtimes and extensions","  2 runtimes are used by nothing (<span class=hi>debloat clean</span> removes them)","","Apps you can drop everywhere: `debloat list`, then `debloat remove &lt;name&gt;`."]},
+    "debloat clean":function(){return [":: old system versions (keeping the last 5) …",":: unused store paths …",":: caches (re-created on demand) …",":: logs older than a month / over 200 MB …",":: unused Flatpak runtimes and extensions …","<span class=pr>Freed 4.6G.</span>"]},
+    "tormode on":function(){return [":: waiting for Tor to bootstrap … 100%",":: all traffic now goes through Tor; anything that can't is blocked","<span class=pr>tormode: on</span>  (exit looks like 185.220.x.x)"]},
+    "tormode off":function(){return ["<span class=pr>tormode: off</span>  normal network restored"]},
+    "tormode status":function(){return ["tormode: off"]},
+    "tlp-stat -b":function(){return ["--- TLP 1.6 --------------------------------------------","+++ Battery Status: BAT0","/sys/class/power_supply/BAT0/energy_full_design   57000 [mWh]","/sys/class/power_supply/BAT0/energy_full          53100 [mWh]","/sys/class/power_supply/BAT0/status               Discharging","Charge                                          =  81.4 [%]","Capacity                                        =  93.2 [%]","","Mode: <span class=pr>battery</span>  (power-saving CPU, USB autosuspend on)"]},
+    mykeys:function(){return ["Super+Alt+Space  every action","Super+Alt+N      talk to Neb","Super+Alt+A      all apps","Super+Alt+V      audio","Super+Alt+M      mount and unlock drives","Super+Alt+D      self-hosted apps","Super+Alt+L      lock"]}
+  };
+  function run(cmd){cmd=cmd.trim();if(!cmd||busy)return;add('<span class=pr>ben@hearth $</span> '+esc(cmd));
+    var m;if(cmd==="clear"){out.textContent="";return}
+    var lines;
+    if((m=cmd.match(/^mod (on|off) ([a-z]+)$/))){if(!(m[2] in on))lines=["no module '"+esc(m[2])+"' (try: mod list)"];
+      else{on[m[2]]=m[1]==="on";lines=[":: "+(m[1]==="on"?"turning on ":"turning off ")+m[2]+" …",":: rebuilding …","   building the system configuration …",":: done — now on generation 143"]}}
+    else if((m=cmd.match(/^neb\s+(.+)/))){lines=["<span class=dim>neb · local model on the GPU, nothing leaves this machine</span>","I'll open ~/robot/drive-board.kicad_pro in KiCad.","<span class=hi>Neb wants to open an app. Allow? [y/N]</span>  (it always asks first)"]}
+    else if(R[cmd])lines=R[cmd]();else lines=[esc(cmd.split(" ")[0])+": not in this demo. Type <span class=hi>help</span>."];
+    busy=true;var i=0;(function step(){if(i<lines.length){add(lines[i++]);setTimeout(step,reduce?0:60)}else busy=false})()}
+  add('<span class=dim>Hearth · NixOS 26.05 · type help</span>');
+  document.getElementById("chips").addEventListener("click",function(e){var b=e.target.closest("button");if(b)run(b.textContent)});
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter"){run(inp.value);inp.value=""}});
 }
 function close(){veil.hidden=true;if(opener)opener.focus()}
 document.querySelectorAll(".pbtn").forEach(function(b){b.addEventListener("click",function(){open(b.dataset.p,b)})});
