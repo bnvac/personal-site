@@ -25,7 +25,7 @@ HEAD = """<link rel="stylesheet" href="/assets/v2/v2.css">
 
 HERO = """<header class="city-hero" aria-label="bnvac">
   <div>
-    <h1 class="city-hero__name"><canvas id="logo" data-word="BNVAC" aria-hidden="true"></canvas><span class="sr-only">bnvac</span></h1>
+    <h1 class="city-hero__name" data-text="bnvac">bnvac</h1>
     <p class="city-hero__say">I build sensing systems and research infrastructure. When the tool I need doesn&rsquo;t exist, I write it.</p>
   </div>
   <a class="city-hero__cue" href="#main">Scroll</a>
@@ -50,13 +50,13 @@ def build(rel):
     html = relink(html)
     html = html.replace('<link rel="stylesheet" href="/assets/css/main.css">',
                         '<link rel="stylesheet" href="/assets/css/main.css">\n' + HEAD, 1)
-    dim = "0" if home else "0.72"
+    dim = "0" if home else "0.55"
     html = html.replace("<body>", f'<body class="v2 {"v2-home" if home else "v2-inner"}">\n'
-                        f'<canvas id="city" data-wallpaper="/assets/v2/wallpaper.jpg" data-dim="{dim}" aria-hidden="true"></canvas>', 1)
+                        f'<canvas id="city" data-dim="{dim}" aria-hidden="true"></canvas>', 1)
     if home:
         i = html.index('<div id="main"')
         html = html[:i] + HERO + html[i:]
-    scripts = '<script src="/assets/v2/city.js"></script>' + ('\n    <script src="/assets/v2/logo.js"></script>' if home else "")
+    scripts = '<script src="/assets/v2/city.js"></script>'
     html = html.replace("</body>", "    " + scripts + "\n    <script src=\"/assets/v2/signs.js\"></script>\n  </body>", 1)
     title = re.search(r"<title>(.*?)</title>", html)
     if title and "v2" not in title.group(1):

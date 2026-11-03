@@ -137,3 +137,18 @@ a:hover{color:#fff;text-shadow:0 0 8px var(--cyan)}
 @media (max-width:40em){.v2 .band .work{grid-template-columns:minmax(0,1fr)!important}}
 .greedy-nav a{letter-spacing:.07em!important;font-size:.76rem!important;margin:0 .6rem!important}
 .v2 .proj-links a+a::before{content:none!important}
+
+/* ---- the name in the middle: Cyber Horizon as a neon sign ------------------ */
+.city-hero__name{position:relative;margin:0;font-family:var(--v2-display)!important;font-weight:400;font-style:normal;
+  font-size:clamp(4.5rem,17vw,15rem)!important;line-height:1!important;letter-spacing:.02em;color:#fff;
+  text-shadow:0 0 6px #fff,0 0 18px var(--pink),0 0 42px var(--pink),0 0 90px rgba(255,43,214,.6),0 0 140px rgba(34,227,255,.35)!important;
+  animation:sign-on 7s infinite}
+.city-hero__name::before,.city-hero__name::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;text-shadow:none}
+.city-hero__name::before{color:var(--cyan);transform:translate(-4px,2px);opacity:.55;animation:split 5s infinite}
+.city-hero__name::after{color:var(--pink);transform:translate(4px,-2px);opacity:.45;animation:split 5s -2.5s infinite}
+@keyframes sign-on{0%,100%{opacity:1}61%{opacity:1}62%{opacity:.4}63%{opacity:1}65%{opacity:.75}66%{opacity:1}}
+@keyframes split{0%,100%{clip-path:inset(0 0 0 0)}20%{clip-path:inset(12% 0 60% 0)}21%{clip-path:inset(0 0 0 0)}55%{clip-path:inset(55% 0 20% 0)}56%{clip-path:inset(0 0 0 0)}}
+@media (prefers-reduced-motion:reduce){.city-hero__name,.city-hero__name::before,.city-hero__name::after{animation:none!important}}
+/* let more of the city show around and through the content as you descend */
+#main{background:rgba(8,6,20,.62)!important;backdrop-filter:blur(8px) saturate(1.2);-webkit-backdrop-filter:blur(8px) saturate(1.2)}
+.v2 .work>li,.v2 .role,.v2 .links a,.v2 .record a{background:rgba(6,4,16,.8)!important}

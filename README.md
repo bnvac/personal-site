@@ -12,7 +12,7 @@ site/                  everything that goes on Neocities
   assets/
     css/main.css       site styles (template + our overrides at the end)
     js/                theme toggle, lightbox, carousel
-    v2/                v2 only: v2.css, city.js, logo.js, signs.js
+    v2/                v2 only: v2.css, city.js, signs.js
     fonts/             Barlow Condensed (OFL); drop Cyber Horizon here
   images/              cards, field photos, logos, certificates
   education/ experience/ publications/ software/ awards/ certifications/ contact/
@@ -66,9 +66,8 @@ python3 tools/build_v2.py
 ```
 
 It writes `site/v2/` from the v1 pages: same content, with the cyberpunk
-stylesheet (`site/assets/v2/v2.css`), the city background (`city.js`), the
-pixel logo on the front page (`logo.js`) and the neon-sign colours
-(`signs.js`). Links between pages stay inside `/v2/`. Project pages keep
+stylesheet (`site/assets/v2/v2.css`), the city background (`city.js`) and
+the neon-sign colours (`signs.js`). Links between pages stay inside `/v2/`. Project pages keep
 their own designs. Don't hand-edit `site/v2/`; it is overwritten.
 
 ## Fonts
@@ -86,13 +85,14 @@ self-hosted under the SIL Open Font License
 `.gitignore` to keep it out of git: the Neocities CLI skips anything listed
 there, so it would not upload either. Leave it uncommitted.
 
-## v2 wallpaper
+## v2 city
 
-v2 draws its own city. To use a photo instead, put it at
-`site/assets/v2/wallpaper.jpg`; if that file exists it is shown in place of
-the drawn city, with the rain, parallax and dimming kept. Delete the file (or
-the `data-wallpaper` attribute on `#city` in `site/v2/index.html`) to go back.
+The background is a city you descend through as you scroll: sky and tower
+tops at the top of the page, the street at the bottom. It is drawn in
+`site/assets/v2/city.js`; nothing to download.
 
-The placeholder used while designing is a game screenshot and is not
-committed. Swap in an image you have the rights to before v2 goes public.
-A wide image, 2560px or more, looks sharpest.
+A photo can replace it: add `data-wallpaper="/assets/v2/wallpaper.jpg"` to
+the `<canvas id="city">` line in `tools/build_v2.py`, put the image there and
+rebuild. A photo can't be descended through, so it only drifts. Use an image
+you have the rights to; the design placeholder is a game screenshot and is
+not committed.
