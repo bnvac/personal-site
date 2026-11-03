@@ -7,13 +7,13 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* Layout: product landing. Centred claim, then the real app as the hero image, then a tabbed tour of every area with real screenshots. Wire colours (bench convention) are the only accents. */
 :root{
   --bg:#0c0d10; --panel:#15171c; --panel2:#1c1f26; --fg:#eceef1; --muted:#9298a3; --line:#262a32;
   --vcc:#e0473c; --sda:#e5b52a; --scl:#3b86e0; --ok:#4f9a6a;
-  --serif:"Source Serif 4", Georgia, serif; --sans:"IBM Plex Sans", system-ui, sans-serif; --mono:"IBM Plex Mono", ui-monospace, monospace;
+  --serif:"Space Grotesk", "Inter", system-ui, sans-serif; --sans:"Inter", system-ui, sans-serif; --mono:"IBM Plex Mono", ui-monospace, monospace;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -25,7 +25,7 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--sda);outline-offset:2px}
 .in{max-width:1160px;margin:0 auto}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:16px;flex-wrap:wrap}
-.brand{font-family:var(--serif);font-weight:700;font-size:20px;display:flex;align-items:center;gap:10px}
+.brand{font-family:var(--serif);font-weight:700;font-size:20px;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
 .brand i{display:flex;flex-direction:column;gap:3px}
 .brand i b{display:block;width:16px;height:3px;border-radius:2px}
 .nav{display:flex;gap:18px;font-size:14px;color:var(--muted);flex-wrap:wrap;align-items:center}
@@ -44,7 +44,7 @@ a{color:inherit}
 .hero-in{position:relative;z-index:1;padding-inline:max(16px,env(safe-area-inset-left,0px));display:grid;justify-items:center;grid-template-columns:minmax(0,1fr)}
 .eyebrow{display:inline-flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:rgba(12,13,16,.7)}
 .eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
-h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.5rem,6.4vw,4.6rem);line-height:1.02;letter-spacing:-.02em;margin:18px auto 18px;max-width:15ch;text-wrap:balance}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.6rem,6.6vw,4.9rem);line-height:.98;letter-spacing:-.045em;margin:18px auto 18px;max-width:15ch;text-wrap:balance}
 h1 span{background:linear-gradient(90deg,var(--vcc),var(--sda) 50%,var(--scl));-webkit-background-clip:text;background-clip:text;color:transparent}
 .lede{color:#c3c8d1;font-size:clamp(17px,2vw,19px);max-width:58ch;margin:0 auto 24px}
 .term{display:flex;align-items:center;width:min(680px,100%);background:#0a0b0e;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:18px;text-align:left}
@@ -66,7 +66,7 @@ h1 span{background:linear-gradient(90deg,var(--vcc),var(--sda) 50%,var(--scl));-
 .car .prev{left:12px}.car .next{right:12px}
 .ctext .k{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .ctext .k i{width:14px;height:3px;border-radius:2px}
-.ctext h3{font-family:var(--serif);font-weight:700;font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.15;margin:10px 0 10px;text-wrap:balance}
+.ctext h3{font-family:var(--serif);font-weight:600;letter-spacing:-.02em;font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.15;margin:10px 0 10px;text-wrap:balance}
 .ctext p{margin:0 0 14px;color:var(--muted);font-size:16px}
 .ctext .n{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
 .dots{display:flex;gap:10px;margin-top:20px;overflow-x:auto;padding-bottom:6px}
@@ -76,7 +76,7 @@ h1 span{background:linear-gradient(90deg,var(--vcc),var(--sda) 50%,var(--scl));-
 .dot[aria-selected="true"]{border-color:var(--fg);color:var(--fg)}
 .dot[aria-selected="true"] img{opacity:1}
 .dot:focus-visible,.car .nav:focus-visible,.term button:focus-visible{outline:2px solid var(--sda);outline-offset:2px}
-h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.1;margin:0 0 10px;letter-spacing:-.01em;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.08;margin:0 0 10px;letter-spacing:-.03em;text-wrap:balance}
 .sec{padding-block:80px 10px}
 .sub{color:var(--muted);margin:0 0 28px;max-width:62ch;font-size:17px}
 .feats{display:grid;gap:64px}
@@ -84,7 +84,7 @@ h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.8rem,3.6vw,2.6rem)
 .feat.flip .ft{order:2}
 .feat .k{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .feat .k i{width:14px;height:3px;border-radius:2px}
-.feat h3{font-family:var(--serif);font-weight:700;font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.15;margin:10px 0 10px;text-wrap:balance}
+.feat h3{font-family:var(--serif);font-weight:600;letter-spacing:-.02em;font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.15;margin:10px 0 10px;text-wrap:balance}
 .feat p{margin:0;color:var(--muted);font-size:16px;max-width:44ch}
 .feat img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);box-shadow:0 30px 70px -40px rgba(0,0,0,.8)}
 .apps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
