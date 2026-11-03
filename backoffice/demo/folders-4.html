@@ -1,0 +1,304 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Drawer D · Power · Backoffice</title>
+
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/icon.svg" type="image/svg+xml">
+</head>
+<body><div class="demo-banner" style="position:sticky;top:0;z-index:99;background:#e5b52a;color:#111;font:600 13px system-ui;padding:7px 14px;text-align:center">Saved demo of the real Backoffice interface with an example workshop. Click around; changes are not saved.</div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="index.html">Backoffice</a>
+  
+  
+  <nav aria-label="Sections">
+    <a href="items.html" class="btn ghost"
+       >Items</a>
+    <a href="projects.html" class="btn ghost"
+       >Projects</a>
+    <a href="ideas.html" class="btn ghost"
+       >Ideas</a>
+    <a href="orders.html" class="btn ghost"
+       >Orders</a>
+    <a href="scan.html" class="btn ghost"
+       >Scan</a>
+
+    <details class="menu">
+      <summary class="btn ghost">More</summary>
+      <div class="menu-panel">
+        <a href="workshop.html">Workshop</a>
+        <a href="printing.html">Printing</a>
+        <a href="prints.html">Prints</a>
+        <a href="firmware.html">Firmware</a>
+        <a href="machines.html">Machines</a>
+        <a href="manufacturers.html">Manufacturers</a>
+        <a href="tags.html">Tags</a>
+        <a href="tools.html">Calculators</a>
+        <a href="#" data-demo-missing="1">Print labels</a>
+        <a href="#" data-demo-missing="1">Export CSV</a>
+        <hr>
+        <a href="#" data-demo-missing="1">Health &amp; backup</a>
+        <a href="#" data-demo-missing="1">Activity</a>
+      </div>
+    </details>
+
+    <a href="items-new.html" class="btn primary">
+      <span aria-hidden="true">+</span> Add<span class="sr-only"> an item</span>
+    </a>
+
+    
+    <details class="menu account">
+      <summary class="btn ghost avatar-btn" aria-label="Account and appearance">
+        <span class="avatar" style="--hue: 144" aria-hidden="true">BE</span>
+        <span class="avatar-name">Ben</span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel wide">
+        <div class="menu-head">
+          <span class="avatar big" style="--hue: 144" aria-hidden="true">BE</span>
+          <div>
+            <b>Ben</b>
+            <span class="muted small">no sign-in set up</span>
+          </div>
+        </div>
+
+        <a href="#" data-demo-missing="1">Your profile</a>
+        <a href="workshop.html">Your workshop</a>
+        <a href="#" data-demo-missing="1">Model</a>
+
+        <hr>
+        <fieldset class="theme-picker">
+          <legend>Appearance</legend>
+          <button type="button" data-theme-set="light">Light</button>
+          <button type="button" data-theme-set="dark">Dark</button>
+          <button type="button" data-theme-set="system">System</button>
+        </fieldset>
+
+        
+
+        <a href="#" data-demo-missing="1">Manage accounts</a>
+        
+      </div>
+    </details>
+  </nav>
+  
+</header>
+
+
+<main id="main" tabindex="-1">
+
+
+
+<nav class="crumb">
+  <a href="index.html">Dashboard</a>
+  
+    <span class="sep">/</span>
+    <span class="here">Drawer D · Power</span>
+  
+</nav>
+
+<div class="folder-head">
+  <h1>Drawer D · Power</h1>
+  <div class="folder-actions">
+    <a class="btn primary" href="#" data-demo-missing="1">+ Add item here</a>
+    <details class="inline-form">
+      <summary class="btn">Subfolder</summary>
+      <form method="post" action="#">
+        <input type="hidden" name="parent_id" value="4">
+        <input type="hidden" name="return" value="/folders/4">
+        <input name="name" placeholder="Subfolder name" required>
+        <button class="btn primary" type="submit">Create</button>
+      </form>
+    </details>
+    <details class="inline-form">
+      <summary class="btn">Settings</summary>
+      <form method="post" action="folders-4.html">
+        <input name="name" value="Drawer D · Power" required>
+        <select name="parent_id">
+          <option value="">Top level</option>
+          
+            
+            <option value="5">Bin E · Motion</option>
+            
+          
+            
+            <option value="1">Drawer A · Boards</option>
+            
+          
+            
+            <option value="2">Drawer B · Sensors</option>
+            
+          
+            
+            <option value="3">Drawer C · Displays</option>
+            
+          
+            
+          
+        </select>
+        <button class="btn" type="submit">Save</button>
+      </form>
+      <form method="post" action="#"
+            data-confirm="Delete the folder “Drawer D · Power” and any subfolders? Items are kept — they just become unfiled.">
+        <button class="btn danger" type="submit">Delete folder</button>
+      </form>
+    </details>
+  </div>
+</div>
+
+
+
+<form class="search live-search" method="get" action="folders-4.html">
+  <input type="search" name="q" value="" placeholder="Search in Drawer D · Power…" autocomplete="off" data-live-search>
+  
+  <button class="btn" type="submit">Search</button>
+</form>
+
+<div class="bar">
+  <span class="muted">
+    3 shown
+    
+  </span>
+  <span class="sorts">
+    <a class="chip sm on" href="#" data-demo-missing="1">Recent</a>
+    <a class="chip sm" href="#" data-demo-missing="1">A–Z</a>
+    <a class="chip sm" href="#" data-demo-missing="1">Low stock</a>
+  </span>
+</div>
+
+
+<ul class="grid in-folder">
+  
+<li class="card" data-id="13">
+  <a class="thumb" href="items-13.html">
+    
+      <img src="media/thumb/f60843718a5390f7.jpg" alt="MCP3008 8-channel ADC" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$3.66</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-13.html">MCP3008 8-channel ADC</a>
+    <div class="val">10-bit</div>
+    
+    <div class="where">
+      <span class="loc">D5</span>
+      <a class="fold" href="folders-4.html">Drawer D · Power</a>
+    </div>
+    <div class="mk">Microchip</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_ac63a277.html">adc</a>
+    </div>
+    
+    <div class="qty" data-qty-for="13">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one MCP3008 8-channel ADC">−</button>
+      </form>
+      <output class="n">3</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one MCP3008 8-channel ADC">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="14">
+  <a class="thumb" href="items-14.html">
+    
+      <img src="media/thumb/87d76249e2ad6ec8.jpg" alt="18650 Li-ion cell" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$6.50</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-14.html">18650 Li-ion cell</a>
+    <div class="val">3500 mAh</div>
+    
+    <div class="where">
+      <span class="loc">D1</span>
+      <a class="fold" href="folders-4.html">Drawer D · Power</a>
+    </div>
+    <div class="mk">Samsung</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_3dbfdf8f.html">battery</a>
+    </div>
+    
+    <div class="qty" data-qty-for="14">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one 18650 Li-ion cell">−</button>
+      </form>
+      <output class="n">8</output>
+      <span class="reserved" title="2 pieces committed across 1 project, you own 8">6 free</span>
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one 18650 Li-ion cell">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+<li class="card" data-id="15">
+  <a class="thumb" href="items-15.html">
+    
+      <img src="media/thumb/95a71572147495b3.jpg" alt="Witty Pi 4 L3V7 power manager" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$2.00</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-15.html">Witty Pi 4 L3V7 power manager</a>
+    <div class="val">1 A</div>
+    
+    <div class="where">
+      <span class="loc">D2</span>
+      <a class="fold" href="folders-4.html">Drawer D · Power</a>
+    </div>
+    <div class="mk">UUGear</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_3dbfdf8f.html">battery</a>
+    </div>
+    
+    <div class="qty" data-qty-for="15">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one Witty Pi 4 L3V7 power manager">−</button>
+      </form>
+      <output class="n">6</output>
+      <span class="reserved" title="1 piece committed across 1 project, you own 6">5 free</span>
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one Witty Pi 4 L3V7 power manager">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+</ul>
+
+
+
+</main>
+<script src="static/app.js" defer></script>
+<script>
+document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();demoNote('This is a saved demo, so nothing was changed.')},true);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-demo-missing]');if(a){e.preventDefault();demoNote('That page is not part of the demo.')}},true);
+function demoNote(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2200)}
+document.documentElement.setAttribute('data-theme','dark');
+</script></body>
+</html>
+

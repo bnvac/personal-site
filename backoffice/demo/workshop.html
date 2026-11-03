@@ -1,0 +1,638 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Workshop · Backoffice</title>
+
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/icon.svg" type="image/svg+xml">
+</head>
+<body><div class="demo-banner" style="position:sticky;top:0;z-index:99;background:#e5b52a;color:#111;font:600 13px system-ui;padding:7px 14px;text-align:center">Saved demo of the real Backoffice interface with an example workshop. Click around; changes are not saved.</div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="index.html">Backoffice</a>
+  
+  
+  <nav aria-label="Sections">
+    <a href="items.html" class="btn ghost"
+       >Items</a>
+    <a href="projects.html" class="btn ghost"
+       >Projects</a>
+    <a href="ideas.html" class="btn ghost"
+       >Ideas</a>
+    <a href="orders.html" class="btn ghost"
+       >Orders</a>
+    <a href="scan.html" class="btn ghost"
+       >Scan</a>
+
+    <details class="menu">
+      <summary class="btn ghost">More</summary>
+      <div class="menu-panel">
+        <a href="workshop.html">Workshop</a>
+        <a href="printing.html">Printing</a>
+        <a href="prints.html">Prints</a>
+        <a href="firmware.html">Firmware</a>
+        <a href="machines.html">Machines</a>
+        <a href="manufacturers.html">Manufacturers</a>
+        <a href="tags.html">Tags</a>
+        <a href="tools.html">Calculators</a>
+        <a href="#" data-demo-missing="1">Print labels</a>
+        <a href="#" data-demo-missing="1">Export CSV</a>
+        <hr>
+        <a href="#" data-demo-missing="1">Health &amp; backup</a>
+        <a href="#" data-demo-missing="1">Activity</a>
+      </div>
+    </details>
+
+    <a href="items-new.html" class="btn primary">
+      <span aria-hidden="true">+</span> Add<span class="sr-only"> an item</span>
+    </a>
+
+    
+    <details class="menu account">
+      <summary class="btn ghost avatar-btn" aria-label="Account and appearance">
+        <span class="avatar" style="--hue: 144" aria-hidden="true">BE</span>
+        <span class="avatar-name">Ben</span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel wide">
+        <div class="menu-head">
+          <span class="avatar big" style="--hue: 144" aria-hidden="true">BE</span>
+          <div>
+            <b>Ben</b>
+            <span class="muted small">no sign-in set up</span>
+          </div>
+        </div>
+
+        <a href="#" data-demo-missing="1">Your profile</a>
+        <a href="workshop.html">Your workshop</a>
+        <a href="#" data-demo-missing="1">Model</a>
+
+        <hr>
+        <fieldset class="theme-picker">
+          <legend>Appearance</legend>
+          <button type="button" data-theme-set="light">Light</button>
+          <button type="button" data-theme-set="dark">Dark</button>
+          <button type="button" data-theme-set="system">System</button>
+        </fieldset>
+
+        
+
+        <a href="#" data-demo-missing="1">Manage accounts</a>
+        
+      </div>
+    </details>
+  </nav>
+  
+</header>
+
+
+<main id="main" tabindex="-1">
+
+
+
+<nav class="crumb"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="here">Workshop</span></nav>
+
+<div class="folder-head">
+  <h1>Workshop</h1>
+  <div class="folder-actions">
+    <a class="chip sm" href="#" data-demo-missing="1">Profile</a>
+    <a class="chip sm" href="ideas.html">Idea board ↗</a>
+  </div>
+</div>
+
+<p class="lede">What you can build things <em>with</em>. The shelf says what you can build
+them <em>from</em>; this is the other half, and it is what decides whether a suggestion
+says “print a case” or “buy a box and drill it”.</p>
+
+
+<div class="capabilities">
+  <h3>So you can</h3>
+  <ul class="can">
+    <li class="yes">3D print parts up to 225 × 225 × 265 mm</li><li class="yes">solder through-hole parts</li><li class="yes">power a board from a bench supply</li>
+    <li class="no">no calipers — sizes have to come from datasheets</li>
+  </ul>
+</div>
+
+
+<details class="inline-form panel" >
+  <summary class="btn">Paste a list of tools</summary>
+  <form method="post" action="#" class="stack">
+    <p class="muted">However it is already written. One per line works best; a single
+    comma-separated line works too. You get to check the result before it saves.</p>
+    <textarea name="raw" rows="10" placeholder="Prusa MK4 (250x210x220)
+soldering iron — hakko fx888d
+digital calipers
+Rigol DS1054Z oscilloscope"></textarea>
+    <div class="actions"><button class="btn primary" type="submit">Read that</button></div>
+  </form>
+</details>
+
+
+<h2 class="tool-head">Soldering <span class="count">2</span></h2>
+<ul class="tools">
+  
+  <li class="tool">
+    <div class="tool-body">
+      <b>Hakko FX-888D soldering station</b>
+      
+      
+    </div>
+    <details class="inline-form">
+      <summary class="btn tiny">Edit</summary>
+      <form method="post" action="#" class="stack">
+        <label>Name <input name="name" value="Hakko FX-888D soldering station"></label>
+        <label>Kind
+          <select name="kind">
+            
+            
+            <option value="3d-printer">3D printing</option>
+            
+            <option value="laser">Laser</option>
+            
+            <option value="cnc">CNC and milling</option>
+            
+            <option value="smd">SMD and rework</option>
+            
+            <option value="soldering" selected>Soldering</option>
+            
+            <option value="test">Test and debug</option>
+            
+            <option value="measurement">Measuring</option>
+            
+            <option value="power">Power</option>
+            
+            <option value="programming">Programming and flashing</option>
+            
+            <option value="fabrication">Cutting and drilling</option>
+            
+            <option value="optics">Magnification</option>
+            
+            <option value="labelling">Labelling</option>
+            
+            <option value="hand">Hand tools</option>
+            
+            <option value="other">Other</option>
+            
+          </select>
+        </label>
+        <label>Detail <input name="detail" value="" placeholder="220 x 220 x 250 mm"></label>
+        <label>Notes <input name="notes" value=""></label>
+        <div class="actions"><button class="btn primary tiny" type="submit">Save</button></div>
+      </form>
+    </details>
+    <form method="post" action="#"
+          data-confirm="Remove Hakko FX-888D soldering station from the workshop?">
+      <button class="btn tiny danger" type="submit" aria-label="Remove Hakko FX-888D soldering station">
+        <span aria-hidden="true">×</span></button>
+    </form>
+  </li>
+  
+  <li class="tool">
+    <div class="tool-body">
+      <b>Hot air rework station</b>
+      <span class="muted">SMD</span>
+      
+    </div>
+    <details class="inline-form">
+      <summary class="btn tiny">Edit</summary>
+      <form method="post" action="#" class="stack">
+        <label>Name <input name="name" value="Hot air rework station"></label>
+        <label>Kind
+          <select name="kind">
+            
+            
+            <option value="3d-printer">3D printing</option>
+            
+            <option value="laser">Laser</option>
+            
+            <option value="cnc">CNC and milling</option>
+            
+            <option value="smd">SMD and rework</option>
+            
+            <option value="soldering" selected>Soldering</option>
+            
+            <option value="test">Test and debug</option>
+            
+            <option value="measurement">Measuring</option>
+            
+            <option value="power">Power</option>
+            
+            <option value="programming">Programming and flashing</option>
+            
+            <option value="fabrication">Cutting and drilling</option>
+            
+            <option value="optics">Magnification</option>
+            
+            <option value="labelling">Labelling</option>
+            
+            <option value="hand">Hand tools</option>
+            
+            <option value="other">Other</option>
+            
+          </select>
+        </label>
+        <label>Detail <input name="detail" value="SMD" placeholder="220 x 220 x 250 mm"></label>
+        <label>Notes <input name="notes" value=""></label>
+        <div class="actions"><button class="btn primary tiny" type="submit">Save</button></div>
+      </form>
+    </details>
+    <form method="post" action="#"
+          data-confirm="Remove Hot air rework station from the workshop?">
+      <button class="btn tiny danger" type="submit" aria-label="Remove Hot air rework station">
+        <span aria-hidden="true">×</span></button>
+    </form>
+  </li>
+  
+</ul>
+
+<h2 class="tool-head">Power <span class="count">1</span></h2>
+<ul class="tools">
+  
+  <li class="tool">
+    <div class="tool-body">
+      <b>Bench power supply</b>
+      <span class="muted">30 V 5 A</span>
+      
+    </div>
+    <details class="inline-form">
+      <summary class="btn tiny">Edit</summary>
+      <form method="post" action="#" class="stack">
+        <label>Name <input name="name" value="Bench power supply"></label>
+        <label>Kind
+          <select name="kind">
+            
+            
+            <option value="3d-printer">3D printing</option>
+            
+            <option value="laser">Laser</option>
+            
+            <option value="cnc">CNC and milling</option>
+            
+            <option value="smd">SMD and rework</option>
+            
+            <option value="soldering">Soldering</option>
+            
+            <option value="test">Test and debug</option>
+            
+            <option value="measurement">Measuring</option>
+            
+            <option value="power" selected>Power</option>
+            
+            <option value="programming">Programming and flashing</option>
+            
+            <option value="fabrication">Cutting and drilling</option>
+            
+            <option value="optics">Magnification</option>
+            
+            <option value="labelling">Labelling</option>
+            
+            <option value="hand">Hand tools</option>
+            
+            <option value="other">Other</option>
+            
+          </select>
+        </label>
+        <label>Detail <input name="detail" value="30 V 5 A" placeholder="220 x 220 x 250 mm"></label>
+        <label>Notes <input name="notes" value=""></label>
+        <div class="actions"><button class="btn primary tiny" type="submit">Save</button></div>
+      </form>
+    </details>
+    <form method="post" action="#"
+          data-confirm="Remove Bench power supply from the workshop?">
+      <button class="btn tiny danger" type="submit" aria-label="Remove Bench power supply">
+        <span aria-hidden="true">×</span></button>
+    </form>
+  </li>
+  
+</ul>
+
+<h2 class="tool-head">hand tool <span class="count">1</span></h2>
+<ul class="tools">
+  
+  <li class="tool">
+    <div class="tool-body">
+      <b>Wire strippers</b>
+      
+      
+    </div>
+    <details class="inline-form">
+      <summary class="btn tiny">Edit</summary>
+      <form method="post" action="#" class="stack">
+        <label>Name <input name="name" value="Wire strippers"></label>
+        <label>Kind
+          <select name="kind">
+            
+            
+            <option value="3d-printer">3D printing</option>
+            
+            <option value="laser">Laser</option>
+            
+            <option value="cnc">CNC and milling</option>
+            
+            <option value="smd">SMD and rework</option>
+            
+            <option value="soldering">Soldering</option>
+            
+            <option value="test">Test and debug</option>
+            
+            <option value="measurement">Measuring</option>
+            
+            <option value="power">Power</option>
+            
+            <option value="programming">Programming and flashing</option>
+            
+            <option value="fabrication">Cutting and drilling</option>
+            
+            <option value="optics">Magnification</option>
+            
+            <option value="labelling">Labelling</option>
+            
+            <option value="hand">Hand tools</option>
+            
+            <option value="other">Other</option>
+            
+          </select>
+        </label>
+        <label>Detail <input name="detail" value="" placeholder="220 x 220 x 250 mm"></label>
+        <label>Notes <input name="notes" value=""></label>
+        <div class="actions"><button class="btn primary tiny" type="submit">Save</button></div>
+      </form>
+    </details>
+    <form method="post" action="#"
+          data-confirm="Remove Wire strippers from the workshop?">
+      <button class="btn tiny danger" type="submit" aria-label="Remove Wire strippers">
+        <span aria-hidden="true">×</span></button>
+    </form>
+  </li>
+  
+</ul>
+
+<h2 class="tool-head">measuring <span class="count">2</span></h2>
+<ul class="tools">
+  
+  <li class="tool">
+    <div class="tool-body">
+      <b>Digital calipers</b>
+      <span class="muted">0.01 mm</span>
+      
+    </div>
+    <details class="inline-form">
+      <summary class="btn tiny">Edit</summary>
+      <form method="post" action="#" class="stack">
+        <label>Name <input name="name" value="Digital calipers"></label>
+        <label>Kind
+          <select name="kind">
+            
+            
+            <option value="3d-printer">3D printing</option>
+            
+            <option value="laser">Laser</option>
+            
+            <option value="cnc">CNC and milling</option>
+            
+            <option value="smd">SMD and rework</option>
+            
+            <option value="soldering">Soldering</option>
+            
+            <option value="test">Test and debug</option>
+            
+            <option value="measurement">Measuring</option>
+            
+            <option value="power">Power</option>
+            
+            <option value="programming">Programming and flashing</option>
+            
+            <option value="fabrication">Cutting and drilling</option>
+            
+            <option value="optics">Magnification</option>
+            
+            <option value="labelling">Labelling</option>
+            
+            <option value="hand">Hand tools</option>
+            
+            <option value="other">Other</option>
+            
+          </select>
+        </label>
+        <label>Detail <input name="detail" value="0.01 mm" placeholder="220 x 220 x 250 mm"></label>
+        <label>Notes <input name="notes" value=""></label>
+        <div class="actions"><button class="btn primary tiny" type="submit">Save</button></div>
+      </form>
+    </details>
+    <form method="post" action="#"
+          data-confirm="Remove Digital calipers from the workshop?">
+      <button class="btn tiny danger" type="submit" aria-label="Remove Digital calipers">
+        <span aria-hidden="true">×</span></button>
+    </form>
+  </li>
+  
+  <li class="tool">
+    <div class="tool-body">
+      <b>Rigol DS1054Z oscilloscope</b>
+      <span class="muted">50 MHz</span>
+      
+    </div>
+    <details class="inline-form">
+      <summary class="btn tiny">Edit</summary>
+      <form method="post" action="#" class="stack">
+        <label>Name <input name="name" value="Rigol DS1054Z oscilloscope"></label>
+        <label>Kind
+          <select name="kind">
+            
+            
+            <option value="3d-printer">3D printing</option>
+            
+            <option value="laser">Laser</option>
+            
+            <option value="cnc">CNC and milling</option>
+            
+            <option value="smd">SMD and rework</option>
+            
+            <option value="soldering">Soldering</option>
+            
+            <option value="test">Test and debug</option>
+            
+            <option value="measurement">Measuring</option>
+            
+            <option value="power">Power</option>
+            
+            <option value="programming">Programming and flashing</option>
+            
+            <option value="fabrication">Cutting and drilling</option>
+            
+            <option value="optics">Magnification</option>
+            
+            <option value="labelling">Labelling</option>
+            
+            <option value="hand">Hand tools</option>
+            
+            <option value="other">Other</option>
+            
+          </select>
+        </label>
+        <label>Detail <input name="detail" value="50 MHz" placeholder="220 x 220 x 250 mm"></label>
+        <label>Notes <input name="notes" value=""></label>
+        <div class="actions"><button class="btn primary tiny" type="submit">Save</button></div>
+      </form>
+    </details>
+    <form method="post" action="#"
+          data-confirm="Remove Rigol DS1054Z oscilloscope from the workshop?">
+      <button class="btn tiny danger" type="submit" aria-label="Remove Rigol DS1054Z oscilloscope">
+        <span aria-hidden="true">×</span></button>
+    </form>
+  </li>
+  
+</ul>
+
+<h2 class="tool-head">printer <span class="count">2</span></h2>
+<ul class="tools">
+  
+  <li class="tool">
+    <div class="tool-body">
+      <b>Elegoo Neptune 4 Pro</b>
+      <span class="muted">225 x 225 x 265 mm</span>
+      
+    </div>
+    <details class="inline-form">
+      <summary class="btn tiny">Edit</summary>
+      <form method="post" action="#" class="stack">
+        <label>Name <input name="name" value="Elegoo Neptune 4 Pro"></label>
+        <label>Kind
+          <select name="kind">
+            
+            
+            <option value="3d-printer">3D printing</option>
+            
+            <option value="laser">Laser</option>
+            
+            <option value="cnc">CNC and milling</option>
+            
+            <option value="smd">SMD and rework</option>
+            
+            <option value="soldering">Soldering</option>
+            
+            <option value="test">Test and debug</option>
+            
+            <option value="measurement">Measuring</option>
+            
+            <option value="power">Power</option>
+            
+            <option value="programming">Programming and flashing</option>
+            
+            <option value="fabrication">Cutting and drilling</option>
+            
+            <option value="optics">Magnification</option>
+            
+            <option value="labelling">Labelling</option>
+            
+            <option value="hand">Hand tools</option>
+            
+            <option value="other">Other</option>
+            
+          </select>
+        </label>
+        <label>Detail <input name="detail" value="225 x 225 x 265 mm" placeholder="220 x 220 x 250 mm"></label>
+        <label>Notes <input name="notes" value=""></label>
+        <div class="actions"><button class="btn primary tiny" type="submit">Save</button></div>
+      </form>
+    </details>
+    <form method="post" action="#"
+          data-confirm="Remove Elegoo Neptune 4 Pro from the workshop?">
+      <button class="btn tiny danger" type="submit" aria-label="Remove Elegoo Neptune 4 Pro">
+        <span aria-hidden="true">×</span></button>
+    </form>
+  </li>
+  
+  <li class="tool">
+    <div class="tool-body">
+      <b>Prusa MK4</b>
+      <span class="muted">250 x 210 x 220 mm</span>
+      
+    </div>
+    <details class="inline-form">
+      <summary class="btn tiny">Edit</summary>
+      <form method="post" action="#" class="stack">
+        <label>Name <input name="name" value="Prusa MK4"></label>
+        <label>Kind
+          <select name="kind">
+            
+            
+            <option value="3d-printer">3D printing</option>
+            
+            <option value="laser">Laser</option>
+            
+            <option value="cnc">CNC and milling</option>
+            
+            <option value="smd">SMD and rework</option>
+            
+            <option value="soldering">Soldering</option>
+            
+            <option value="test">Test and debug</option>
+            
+            <option value="measurement">Measuring</option>
+            
+            <option value="power">Power</option>
+            
+            <option value="programming">Programming and flashing</option>
+            
+            <option value="fabrication">Cutting and drilling</option>
+            
+            <option value="optics">Magnification</option>
+            
+            <option value="labelling">Labelling</option>
+            
+            <option value="hand">Hand tools</option>
+            
+            <option value="other">Other</option>
+            
+          </select>
+        </label>
+        <label>Detail <input name="detail" value="250 x 210 x 220 mm" placeholder="220 x 220 x 250 mm"></label>
+        <label>Notes <input name="notes" value=""></label>
+        <div class="actions"><button class="btn primary tiny" type="submit">Save</button></div>
+      </form>
+    </details>
+    <form method="post" action="#"
+          data-confirm="Remove Prusa MK4 from the workshop?">
+      <button class="btn tiny danger" type="submit" aria-label="Remove Prusa MK4">
+        <span aria-hidden="true">×</span></button>
+    </form>
+  </li>
+  
+</ul>
+
+
+<details class="inline-form panel">
+  <summary class="btn">Add one tool</summary>
+  <form method="post" action="#" class="stack">
+    <label>Name <input name="name" placeholder="Digital calipers" required></label>
+    <label>Kind
+      <select name="kind">
+        <option value="auto" selected>— work it out —</option>
+        <option value="3d-printer">3D printing</option><option value="laser">Laser</option><option value="cnc">CNC and milling</option><option value="smd">SMD and rework</option><option value="soldering">Soldering</option><option value="test">Test and debug</option><option value="measurement">Measuring</option><option value="power">Power</option><option value="programming">Programming and flashing</option><option value="fabrication">Cutting and drilling</option><option value="optics">Magnification</option><option value="labelling">Labelling</option><option value="hand">Hand tools</option><option value="other">Other</option>
+      </select>
+    </label>
+    <label>Detail <input name="detail" placeholder="0–150 mm"></label>
+    <label>Notes <input name="notes"></label>
+    <div class="actions"><button class="btn primary" type="submit">Add</button></div>
+  </form>
+</details>
+
+
+</main>
+<script src="static/app.js" defer></script>
+<script>
+document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();demoNote('This is a saved demo, so nothing was changed.')},true);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-demo-missing]');if(a){e.preventDefault();demoNote('That page is not part of the demo.')}},true);
+function demoNote(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2200)}
+document.documentElement.setAttribute('data-theme','dark');
+</script></body>
+</html>
+

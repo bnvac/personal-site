@@ -1,0 +1,456 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Calculators · Backoffice</title>
+
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/icon.svg" type="image/svg+xml">
+</head>
+<body><div class="demo-banner" style="position:sticky;top:0;z-index:99;background:#e5b52a;color:#111;font:600 13px system-ui;padding:7px 14px;text-align:center">Saved demo of the real Backoffice interface with an example workshop. Click around; changes are not saved.</div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="index.html">Backoffice</a>
+  
+  
+  <nav aria-label="Sections">
+    <a href="items.html" class="btn ghost"
+       >Items</a>
+    <a href="projects.html" class="btn ghost"
+       >Projects</a>
+    <a href="ideas.html" class="btn ghost"
+       >Ideas</a>
+    <a href="orders.html" class="btn ghost"
+       >Orders</a>
+    <a href="scan.html" class="btn ghost"
+       >Scan</a>
+
+    <details class="menu">
+      <summary class="btn ghost">More</summary>
+      <div class="menu-panel">
+        <a href="workshop.html">Workshop</a>
+        <a href="printing.html">Printing</a>
+        <a href="prints.html">Prints</a>
+        <a href="firmware.html">Firmware</a>
+        <a href="machines.html">Machines</a>
+        <a href="manufacturers.html">Manufacturers</a>
+        <a href="tags.html">Tags</a>
+        <a href="tools.html">Calculators</a>
+        <a href="#" data-demo-missing="1">Print labels</a>
+        <a href="#" data-demo-missing="1">Export CSV</a>
+        <hr>
+        <a href="#" data-demo-missing="1">Health &amp; backup</a>
+        <a href="#" data-demo-missing="1">Activity</a>
+      </div>
+    </details>
+
+    <a href="items-new.html" class="btn primary">
+      <span aria-hidden="true">+</span> Add<span class="sr-only"> an item</span>
+    </a>
+
+    
+    <details class="menu account">
+      <summary class="btn ghost avatar-btn" aria-label="Account and appearance">
+        <span class="avatar" style="--hue: 144" aria-hidden="true">BE</span>
+        <span class="avatar-name">Ben</span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel wide">
+        <div class="menu-head">
+          <span class="avatar big" style="--hue: 144" aria-hidden="true">BE</span>
+          <div>
+            <b>Ben</b>
+            <span class="muted small">no sign-in set up</span>
+          </div>
+        </div>
+
+        <a href="#" data-demo-missing="1">Your profile</a>
+        <a href="workshop.html">Your workshop</a>
+        <a href="#" data-demo-missing="1">Model</a>
+
+        <hr>
+        <fieldset class="theme-picker">
+          <legend>Appearance</legend>
+          <button type="button" data-theme-set="light">Light</button>
+          <button type="button" data-theme-set="dark">Dark</button>
+          <button type="button" data-theme-set="system">System</button>
+        </fieldset>
+
+        
+
+        <a href="#" data-demo-missing="1">Manage accounts</a>
+        
+      </div>
+    </details>
+  </nav>
+  
+</header>
+
+
+<main id="main" tabindex="-1">
+
+
+
+<nav class="crumb"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="here">Calculators</span></nav>
+
+<div class="folder-head">
+  <h1>Bench calculators</h1>
+</div>
+<p class="muted page-sub">The sums you would otherwise do on your phone. When the answer is a
+  component value, it is checked against what is already on your shelf.</p>
+
+<div class="calc-grid">
+  
+  <section class="calc" id="led">
+    <h2>LED series resistor</h2>
+    <p class="muted">The resistor that keeps an LED at the current it is rated for.</p>
+
+    <form method="get" action="tools.html">
+      <input type="hidden" name="calc" value="led">
+      <div class="calc-fields">
+        
+        <label class="field">
+          <span>Supply <em>V</em></span>
+          
+            <input name="vs" inputmode="decimal" autocomplete="off"
+                   placeholder="5"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>LED forward voltage <em>V</em></span>
+          
+            <input name="vf" inputmode="decimal" autocomplete="off"
+                   placeholder="2.0"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Current <em>mA</em></span>
+          
+            <input name="i" inputmode="decimal" autocomplete="off"
+                   placeholder="10"
+                   value="">
+          
+        </label>
+        
+      </div>
+      <button class="btn primary" type="submit">Work it out</button>
+    </form>
+
+    
+  </section>
+  
+  <section class="calc" id="divider">
+    <h2>Resistor divider</h2>
+    <p class="muted">Scale a voltage down, and check the current it wastes doing so.</p>
+
+    <form method="get" action="tools.html">
+      <input type="hidden" name="calc" value="divider">
+      <div class="calc-fields">
+        
+        <label class="field">
+          <span>Input <em>V</em></span>
+          
+            <input name="vin" inputmode="decimal" autocomplete="off"
+                   placeholder="12"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>R1 (top) <em>Ω</em></span>
+          
+            <input name="r1" inputmode="decimal" autocomplete="off"
+                   placeholder="10k"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>R2 (bottom) <em>Ω</em></span>
+          
+            <input name="r2" inputmode="decimal" autocomplete="off"
+                   placeholder="3k3"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>…or the output you want <em>V</em></span>
+          
+            <input name="vout" inputmode="decimal" autocomplete="off"
+                   placeholder="3.3"
+                   value="">
+          
+        </label>
+        
+      </div>
+      <button class="btn primary" type="submit">Work it out</button>
+    </form>
+
+    
+  </section>
+  
+  <section class="calc" id="rc">
+    <h2>RC filter</h2>
+    <p class="muted">Corner frequency of a resistor and capacitor, either way round.</p>
+
+    <form method="get" action="tools.html">
+      <input type="hidden" name="calc" value="rc">
+      <div class="calc-fields">
+        
+        <label class="field">
+          <span>Resistor <em>Ω</em></span>
+          
+            <input name="r" inputmode="decimal" autocomplete="off"
+                   placeholder="10k"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Capacitor <em>F</em></span>
+          
+            <input name="c" inputmode="decimal" autocomplete="off"
+                   placeholder="100n"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>…or the corner you want <em>Hz</em></span>
+          
+            <input name="f" inputmode="decimal" autocomplete="off"
+                   placeholder="1000"
+                   value="">
+          
+        </label>
+        
+      </div>
+      <button class="btn primary" type="submit">Work it out</button>
+    </form>
+
+    
+  </section>
+  
+  <section class="calc" id="trace">
+    <h2>PCB trace width</h2>
+    <p class="muted">How wide a track has to be to carry a current without cooking (IPC-2221).</p>
+
+    <form method="get" action="tools.html">
+      <input type="hidden" name="calc" value="trace">
+      <div class="calc-fields">
+        
+        <label class="field">
+          <span>Current <em>A</em></span>
+          
+            <input name="i" inputmode="decimal" autocomplete="off"
+                   placeholder="2"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Allowed temperature rise <em>°C</em></span>
+          
+            <input name="rise" inputmode="decimal" autocomplete="off"
+                   placeholder="10"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Copper weight <em>oz</em></span>
+          
+            <input name="copper" inputmode="decimal" autocomplete="off"
+                   placeholder="1"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Layer</span>
+          
+            <select name="layer">
+              
+              <option value="external">external</option>
+              
+              <option value="internal">internal</option>
+              
+            </select>
+          
+        </label>
+        
+      </div>
+      <button class="btn primary" type="submit">Work it out</button>
+    </form>
+
+    
+  </section>
+  
+  <section class="calc" id="ohm">
+    <h2>Ohm&#39;s law</h2>
+    <p class="muted">Any two of volts, amps, ohms and watts give the other two.</p>
+
+    <form method="get" action="tools.html">
+      <input type="hidden" name="calc" value="ohm">
+      <div class="calc-fields">
+        
+        <label class="field">
+          <span>Voltage <em>V</em></span>
+          
+            <input name="v" inputmode="decimal" autocomplete="off"
+                   placeholder=""
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Current <em>A</em></span>
+          
+            <input name="i" inputmode="decimal" autocomplete="off"
+                   placeholder=""
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Resistance <em>Ω</em></span>
+          
+            <input name="r" inputmode="decimal" autocomplete="off"
+                   placeholder=""
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Power <em>W</em></span>
+          
+            <input name="p" inputmode="decimal" autocomplete="off"
+                   placeholder=""
+                   value="">
+          
+        </label>
+        
+      </div>
+      <button class="btn primary" type="submit">Work it out</button>
+    </form>
+
+    
+  </section>
+  
+  <section class="calc" id="regulator">
+    <h2>Linear regulator heat</h2>
+    <p class="muted">What a linear regulator burns off, and whether it needs a heatsink.</p>
+
+    <form method="get" action="tools.html">
+      <input type="hidden" name="calc" value="regulator">
+      <div class="calc-fields">
+        
+        <label class="field">
+          <span>Input <em>V</em></span>
+          
+            <input name="vin" inputmode="decimal" autocomplete="off"
+                   placeholder="12"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Output <em>V</em></span>
+          
+            <input name="vout" inputmode="decimal" autocomplete="off"
+                   placeholder="5"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Load current <em>mA</em></span>
+          
+            <input name="i" inputmode="decimal" autocomplete="off"
+                   placeholder="500"
+                   value="">
+          
+        </label>
+        
+      </div>
+      <button class="btn primary" type="submit">Work it out</button>
+    </form>
+
+    
+  </section>
+  
+  <section class="calc" id="battery">
+    <h2>Battery life</h2>
+    <p class="muted">How long a pack lasts at a given draw, including a duty cycle.</p>
+
+    <form method="get" action="tools.html">
+      <input type="hidden" name="calc" value="battery">
+      <div class="calc-fields">
+        
+        <label class="field">
+          <span>Capacity <em>mAh</em></span>
+          
+            <input name="cap" inputmode="decimal" autocomplete="off"
+                   placeholder="2000"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Active draw <em>mA</em></span>
+          
+            <input name="active" inputmode="decimal" autocomplete="off"
+                   placeholder="80"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Sleep draw <em>mA</em></span>
+          
+            <input name="sleep" inputmode="decimal" autocomplete="off"
+                   placeholder="0.05"
+                   value="">
+          
+        </label>
+        
+        <label class="field">
+          <span>Awake <em>%</em></span>
+          
+            <input name="duty" inputmode="decimal" autocomplete="off"
+                   placeholder="5"
+                   value="">
+          
+        </label>
+        
+      </div>
+      <button class="btn primary" type="submit">Work it out</button>
+    </form>
+
+    
+  </section>
+  
+</div>
+
+
+</main>
+<script src="static/app.js" defer></script>
+<script>
+document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();demoNote('This is a saved demo, so nothing was changed.')},true);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-demo-missing]');if(a){e.preventDefault();demoNote('That page is not part of the demo.')}},true);
+function demoNote(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2200)}
+document.documentElement.setAttribute('data-theme','dark');
+</script></body>
+</html>
+

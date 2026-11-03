@@ -1,0 +1,509 @@
+/* intraweb dashboard.
+ *
+ * The personal-homepage era, with the clutter left out: a profile column, boxed
+ * modules with solid title bars, Verdana. No glitter, no autoplay, no tiled
+ * background, one accent colour instead of a rainbow.
+ *
+ * Every font here is a system font on purpose. The network this runs on has no
+ * internet, so a web font would simply never arrive -- and the era's own faces
+ * happen to be exactly the ones already installed.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --paper:    #e9e6df;   /* the page behind the modules */
+  --module:   #fffdf9;
+  --ink:      #1d1b18;
+  --muted:    #6d675d;
+  --rule:     #c3bdb1;
+
+  --accent:      #3a5a8c;  /* module title bars, links */
+  --accent-ink:  #f3f1ec;  /* text on the title bar */
+  --online:      #2f7d4f;
+  --alarm:       #9c2f1c;
+  --alarm-bg:    #f7e6e2;
+  --alarm-rule:  #d9a99e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:    #131317;
+    --module:   #1c1c22;
+    --ink:      #e7e3da;
+    --muted:    #948d82;
+    --rule:     #34333c;
+
+    --accent:      #33507d;
+    --accent-ink:  #e8ecf5;
+    --online:      #62b586;
+    --alarm:       #e8907c;
+    --alarm-bg:    #3a1f1a;
+    --alarm-rule:  #6b3a2e;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:    #131317;
+  --module:   #1c1c22;
+  --ink:      #e7e3da;
+  --muted:    #948d82;
+  --rule:     #34333c;
+  --accent:      #33507d;
+  --accent-ink:  #e8ecf5;
+  --online:      #62b586;
+  --alarm:       #e8907c;
+  --alarm-bg:    #3a1f1a;
+  --alarm-rule:  #6b3a2e;
+}
+
+* { box-sizing: border-box; }
+
+/* The dashboard is read on phones over a Pi's wifi; a sideways scroll there is
+   a bug, not a nuisance. */
+html, body { overflow-x: hidden; }
+
+body {
+  margin: 0;
+  padding: 0 1rem 3rem;
+  background: var(--paper);
+  color: var(--ink);
+  /* Verdana and Tahoma are the fonts of the era, and are already installed. */
+  font: 13px/1.5 Verdana, Tahoma, Geneva, "DejaVu Sans", sans-serif;
+  max-width: 62rem;
+  margin-inline: auto;
+}
+
+.mono { font-family: ui-monospace, "Courier New", Courier, monospace; }
+.wrap { word-break: break-all; }
+
+/* ------------------------------------------------------------- masthead --- */
+
+.masthead {
+  display: flex; flex-wrap: wrap; gap: .5rem 1rem;
+  align-items: baseline; justify-content: space-between;
+  padding: 1.5rem .25rem .85rem;
+}
+.logo {
+  font-weight: 700; font-size: 1.3rem; letter-spacing: -.02em;
+  color: var(--accent);
+}
+.slogan { color: var(--muted); font-size: .8rem; margin-left: .5rem; }
+
+.presence { font-size: .75rem; color: var(--muted); display: flex; align-items: center; gap: .4rem; }
+.presence .dot {
+  width: .5rem; height: .5rem; border-radius: 50%;
+  background: var(--muted); flex: none;
+}
+.presence.live .dot { background: var(--online); }
+
+/* -------------------------------------------------------------- layout ---- */
+
+.layout { display: grid; gap: 1rem; grid-template-columns: 17rem 1fr; align-items: start; }
+.column-side, .column-main { display: grid; gap: 1rem; align-content: start; }
+
+@media (max-width: 46rem) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------------------- modules ---- */
+
+.module { border: 1px solid var(--rule); background: var(--module); border-radius: 3px; }
+
+.module-head {
+  margin: 0; padding: .4rem .7rem;
+  background: var(--accent); color: var(--accent-ink);
+  font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .09em;
+  display: flex; justify-content: space-between; align-items: baseline; gap: .5rem;
+  border-radius: 2px 2px 0 0;
+}
+.module-meta { font-weight: 400; text-transform: none; letter-spacing: 0; opacity: .85; }
+.module-body { padding: .8rem .75rem; }
+
+.stack > * + * { margin-top: .5rem; }
+
+.aside-note { margin: .5rem 0 0; font-size: .75rem; color: var(--muted); line-height: 1.45; }
+.empty { margin: .25rem 0; font-size: .8rem; color: var(--muted); }
+
+/* ------------------------------------------------------------- profile ---- */
+
+.profile-name { font-size: 1.1rem; font-weight: 700; }
+.profile-role { font-size: .75rem; color: var(--muted); }
+.profile-tagline {
+  margin: .55rem 0 0; padding-left: .6rem;
+  border-left: 2px solid var(--rule);
+  font-size: .8rem; font-style: italic; color: var(--ink);
+}
+
+.facts { margin: .7rem 0 0; display: grid; grid-template-columns: 4.6rem minmax(0, 1fr); gap: .28rem .5rem; font-size: .75rem; }
+.facts dt { color: var(--muted); }
+/* Grid children default to min-width:auto, so a long unbreakable path would
+   push the whole column wider than a phone screen. */
+.facts dd { margin: 0; min-width: 0; }
+/* A vault path is long and rarely read in full; five wrapped lines of it
+   crowds out everything else in the column. */
+.facts dd.ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ----------------------------------------------------------- neighbors ---- */
+
+.neighbor {
+  display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); gap: .1rem .6rem;
+  border: 1px solid var(--rule); border-radius: 3px;
+  padding: .55rem .65rem;
+}
+.neighbor.is-hub { border-left: 3px solid var(--accent); }
+.neighbor.is-alarming { border-color: var(--alarm-rule); background: var(--alarm-bg); }
+
+/* Numbered like a friends list, which also makes them easy to talk about. */
+.neighbor .rank {
+  grid-row: span 3;
+  font-size: .95rem; font-weight: 700; color: var(--muted);
+  text-align: center; line-height: 1.2;
+}
+.neighbor-name { font-weight: 700; display: flex; flex-wrap: wrap; gap: .35rem; align-items: baseline; min-width: 0; }
+.neighbor .fp {
+  font-size: .7rem; color: var(--muted); min-width: 0;
+  font-family: ui-monospace, "Courier New", monospace; overflow-wrap: anywhere;
+}
+.neighbor .meta { font-size: .72rem; color: var(--muted); min-width: 0; overflow-wrap: anywhere; }
+.neighbor .actions { grid-column: 2; margin-top: .4rem; display: flex; gap: .45rem; flex-wrap: wrap; }
+.neighbor .libs { grid-column: 2; display: flex; gap: .4rem; flex-wrap: wrap; }
+.neighbor .libs:not(:empty) { margin-top: .45rem; }
+.neighbor .lib { white-space: nowrap; font-size: .8rem; padding: .15rem .6rem; border: 1px solid var(--rule); border-radius: 999px; text-decoration: none; color: var(--ink); }
+.neighbor .lib:hover { border-color: var(--accent); }
+
+.badge {
+  font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  padding: .08rem .35rem; border: 1px solid var(--rule); border-radius: 2px; color: var(--muted);
+}
+.badge.hub { color: var(--accent); border-color: var(--accent); }
+.badge.verified { color: var(--online); border-color: var(--online); }
+.badge.conflict { color: var(--alarm); border-color: var(--alarm-rule); }
+
+.alarm {
+  grid-column: 2; margin-top: .45rem; padding-top: .45rem;
+  border-top: 1px solid var(--alarm-rule);
+  font-size: .75rem; color: var(--alarm);
+}
+
+/* ---------------------------------------------------------------- mail ---- */
+
+#compose { display: grid; gap: .45rem; margin-bottom: .9rem; }
+.field-row { display: flex; gap: .45rem; flex-wrap: wrap; }
+.field-row.end { justify-content: flex-end; align-items: center; }
+.field-row.end .aside-note { margin: 0; flex: 1; }
+
+input, textarea {
+  font: inherit; font-size: .8rem; flex: 1; min-width: 7rem;
+  padding: .38rem .5rem; resize: vertical;
+  border: 1px solid var(--rule); border-radius: 2px;
+  background: var(--paper); color: var(--ink);
+}
+input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+.letter { border: 1px solid var(--rule); border-radius: 3px; padding: .55rem .65rem; }
+.letter.unread { border-left: 3px solid var(--accent); }
+.letter .subject { font-weight: 700; font-size: .85rem; }
+.letter .from {
+  font-size: .7rem; color: var(--muted); overflow-wrap: anywhere;
+  font-family: ui-monospace, "Courier New", monospace;
+}
+.letter .body { margin-top: .35rem; white-space: pre-wrap; font-size: .8rem; overflow-wrap: anywhere; }
+
+/* -------------------------------------------------------------- doctor ---- */
+
+.check { display: flex; gap: .45rem; font-size: .72rem; padding: .3rem 0; border-bottom: 1px solid var(--rule); }
+.check:last-of-type { border-bottom: 0; }
+.check .dot { flex: none; width: .45rem; height: .45rem; border-radius: 50%; margin-top: .4rem; }
+.check .dot.pass { background: var(--online); }
+.check .dot.warn { background: var(--accent); }
+.check .dot.fail { background: var(--alarm); }
+.check .label { font-weight: 700; }
+.check .remedy { color: var(--muted); }
+.verdict { margin-top: .6rem; padding-top: .55rem; border-top: 1px solid var(--rule); font-size: .75rem; }
+
+/* ------------------------------------------------------------- controls --- */
+
+button {
+  font: inherit; font-size: .75rem; font-weight: 700; cursor: pointer;
+  padding: .35rem .8rem; border-radius: 2px;
+  border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink);
+}
+button:hover { filter: brightness(1.12); }
+button[disabled] { opacity: .55; cursor: progress; }
+button.wide { width: 100%; margin-top: .6rem; }
+
+/* Per-neighbor actions are secondary; an outline keeps them from competing
+   with the one button on the page that sends something. */
+.neighbor .actions button {
+  background: transparent; color: var(--accent);
+  border-color: var(--rule); font-weight: 400;
+}
+.neighbor .actions button:hover { border-color: var(--accent); filter: none; }
+.neighbor .actions button.danger { color: var(--alarm); }
+.neighbor .actions button.danger:hover { border-color: var(--alarm-rule); }
+.neighbor .actions { align-items: center; font-size: .75rem; }
+
+a { color: var(--accent); }
+
+.colophon {
+  margin-top: 1.5rem; padding: .8rem .25rem 0;
+  border-top: 1px solid var(--rule);
+  font-size: .7rem; color: var(--muted); text-align: center;
+}
+
+/* ------------------------------------------------------- key pictures ----- */
+
+/* Drawn from the key itself: a changed shape means a changed key, which an
+   eye catches far more reliably than a changed hex group. */
+.identicon {
+  border: 1px solid var(--rule); border-radius: 3px;
+  background: var(--paper); flex: none; display: block;
+}
+.profile-head { display: flex; gap: .65rem; align-items: center; }
+.neighbor .identicon { width: 34px; height: 34px; }
+.neighbor { grid-template-columns: 1.3rem 34px minmax(0, 1fr); }
+.neighbor .rank { grid-row: span 4; }
+.neighbor .identicon { grid-row: span 4; }
+.neighbor .actions { grid-column: 3; }
+.neighbor .alarm { grid-column: 3; }
+.neighbor .libs { grid-column: 3; }
+
+/* ------------------------------------------------------- profile edit ----- */
+
+#edit-profile { display: grid; gap: .45rem; margin-top: .6rem; }
+/* An explicit display wins over the `hidden` attribute, so the form has to
+   opt back out of it or it is never actually hidden. */
+#edit-profile[hidden] { display: none; }
+#edit-profile label { display: grid; gap: .2rem; font-size: .72rem; color: var(--muted); }
+button.quiet {
+  background: transparent; color: var(--accent);
+  border-color: var(--rule); font-weight: 400;
+}
+button.quiet:hover { border-color: var(--accent); filter: none; }
+
+/* ---------------------------------------------------------- channels ------ */
+
+.channel-tabs { display: flex; flex-wrap: wrap; gap: .3rem; margin-bottom: .6rem; }
+.channel-tab {
+  font: inherit; font-size: .72rem; cursor: pointer;
+  padding: .25rem .55rem; border-radius: 2px;
+  border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+  font-weight: 400;
+}
+.channel-tab.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+.channel-tab.locked { opacity: .6; }
+
+.posts {
+  max-height: 17rem; overflow-y: auto;
+  border: 1px solid var(--rule); border-radius: 3px;
+  padding: .5rem .55rem; margin-bottom: .6rem; background: var(--paper);
+}
+.post { display: flex; gap: .45rem; padding: .2rem 0; font-size: .8rem; align-items: baseline; }
+.post .who {
+  font-family: ui-monospace, "Courier New", monospace; font-size: .68rem;
+  color: var(--muted); flex: none;
+}
+.post .said { min-width: 0; overflow-wrap: anywhere; }
+.post.sealed .said { color: var(--muted); font-style: italic; }
+
+.new-channel summary { font-size: .75rem; color: var(--accent); cursor: pointer; }
+.new-channel form { margin-top: .5rem; }
+
+.letter .actions { margin-top: .45rem; display: flex; gap: .4rem; }
+.letter .actions button {
+  background: transparent; border-color: var(--rule); font-weight: 400; font-size: .7rem;
+}
+.letter .actions button.danger { color: var(--alarm); }
+.letter .from .identicon { vertical-align: -.2rem; margin-right: .25rem; }
+
+.attachment { margin-top: .4rem; font-size: .75rem; }
+.attachment .aside-note { display: inline; margin: 0; }
+
+/* The page editor. Monospace, because it is markup, and tall enough to see a
+   whole small page without scrolling it. */
+textarea.editor {
+  width: 100%; min-height: 12rem; resize: vertical;
+  font-family: ui-monospace, "Courier New", monospace;
+  font-size: .76rem; line-height: 1.5; white-space: pre;
+}
+
+.site-file {
+  display: flex; align-items: center; gap: .45rem;
+  font-size: .76rem; border: 1px solid var(--rule);
+  padding: .3rem .45rem; background: var(--paper);
+}
+.site-file .name { flex: 1; overflow-wrap: anywhere; }
+.site-file .size { color: var(--muted); font-size: .7rem; white-space: nowrap; }
+
+/* A file input styled as one of the era's beige buttons, without hiding it --
+   a hidden input is a keyboard trap waiting to happen. */
+.file-pick {
+  display: block; margin-top: .6rem; font-size: .76rem; color: var(--muted);
+}
+.file-pick input { display: block; margin-top: .3rem; width: 100%; font-size: .72rem; }
+
+/* ---------------------------------------------------- where you are ---- */
+
+/* Sits on the slogan's line and reads as part of it: "your neighborhood web
+   · #neighborhood". A plain select, because it works with a keyboard and on
+   every phone without a line of script. */
+.whereabouts select {
+  font: inherit; font-size: .8rem; color: var(--accent);
+  background: transparent; border: none; border-bottom: 1px dotted var(--accent);
+  padding: 0 .1rem; margin-left: .35rem; cursor: pointer; max-width: 14rem;
+}
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* --------------------------------------------------- folding modules ---- */
+
+/* The heading is the control. A real button inside it carries the state for
+   screen readers; the chevron is decoration. */
+.module-head .fold {
+  all: unset; cursor: pointer; flex: 1; display: flex; align-items: baseline; gap: .45rem;
+}
+.module-head .fold:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.module-head .fold::before {
+  content: "\25BE"; font-size: .7rem; transition: transform .12s;
+}
+.module.folded .module-head .fold::before { transform: rotate(-90deg); }
+.module.folded .module-body { display: none; }
+.module.folded .module-head { border-radius: 2px; }
+
+/* --------------------------------------------------------- activity ---- */
+
+.toggle { display: flex; gap: .45rem; align-items: baseline; margin-top: .65rem; font-size: .78rem; cursor: pointer; }
+
+/* --------------------------------------------------------- contacts ---- */
+
+.contact {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .78rem; padding: .3rem .1rem; border-bottom: 1px dotted var(--rule);
+}
+.contact:last-child { border-bottom: none; }
+.contact .state {
+  width: .5rem; height: .5rem; border-radius: 50%; flex: none; background: var(--rule);
+}
+.contact.online .state { background: var(--online); }
+.contact .name { font-weight: 700; }
+.contact .fp { font-family: ui-monospace, "Courier New", monospace; font-size: .66rem; color: var(--muted); }
+.contact .seen { margin-left: auto; color: var(--muted); font-size: .7rem; white-space: nowrap; }
+.contact button { font-size: .7rem; padding: .15rem .45rem; }
+
+/* ------------------------------------------------------------ posts ---- */
+
+.post .when {
+  font-size: .66rem; color: var(--muted); flex: none;
+  font-variant-numeric: tabular-nums; min-width: 2.6rem;
+}
+.post .who { cursor: default; }
+.post .who.named { font-family: inherit; font-size: .74rem; font-weight: 700; color: var(--ink); }
+.post .attached { display: block; margin-top: .25rem; font-size: .72rem; }
+.post .attached img {
+  display: block; max-width: min(16rem, 100%); max-height: 12rem;
+  border: 1px solid var(--rule); margin-top: .2rem; background: var(--module);
+}
+
+/* ------------------------------------------------------ attachments ---- */
+
+.attach { margin-top: .45rem; }
+.attach summary { font-size: .75rem; color: var(--accent); cursor: pointer; }
+.attach .field-row { margin-top: .4rem; align-items: center; }
+.attach select { font: inherit; font-size: .76rem; max-width: 100%; }
+.file-pick.inline { margin-top: 0; }
+.file-pick.inline input { display: inline-block; width: auto; margin: 0 0 0 .3rem; }
+.cost-warning { color: var(--alarm); }
+
+/* --------------------------------------------------------- preview ---- */
+
+.site-preview {
+  width: 100%; height: 18rem; margin-top: .55rem;
+  border: 1px solid var(--rule); background: #fff;
+}
+
+.avatar-controls { margin-top: .6rem; }
+.fp-tag { font-family: ui-monospace, "Courier New", monospace; font-size: .62rem; font-weight: 400; color: var(--muted); }
+#say-form[hidden] { display: none; }
+/* The form rule makes every input full width; a checkbox is not a field. */
+.toggle input { width: auto; min-width: 0; flex: none; padding: 0; margin: 0; }
+
+/* ---------------------------------------------------------------- nets ---- */
+
+.net-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .6rem;
+  border: 1px solid var(--rule); border-radius: 3px; padding: .45rem .55rem;
+  font-size: .78rem;
+}
+.net-row.viewing { border-color: var(--accent); }
+.net-row .name { font-weight: 700; }
+.net-row .meta { color: var(--muted); font-size: .72rem; flex: 1; min-width: 10rem; }
+.net-row button { font-size: .72rem; padding: .2rem .5rem; }
+
+.net-detail { margin-top: .8rem; border-top: 1px dotted var(--rule); padding-top: .6rem; }
+.net-title { margin: 0; font-size: .95rem; }
+.net-leader { margin: .2rem 0 .5rem; font-size: .78rem; }
+.net-sub {
+  margin: .8rem 0 .35rem; font-size: .7rem; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--muted);
+}
+.net-tools { margin-top: .6rem; }
+.net-history summary { font-size: .75rem; color: var(--accent); cursor: pointer; margin-top: .6rem; }
+.net-history div { font-size: .74rem; color: var(--muted); margin-top: .3rem; }
+
+.badge-leader {
+  display: inline-block; font-size: .6rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 0 .3rem; margin-left: .3rem;
+  border: 1px solid var(--accent); color: var(--accent); border-radius: 2px;
+  vertical-align: .1em;
+}
+
+.announcement {
+  border-left: 3px solid var(--accent); padding: .35rem .55rem;
+  background: var(--paper); font-size: .8rem;
+}
+.announcement .by { display: block; margin-top: .2rem; font-size: .68rem; color: var(--muted); }
+
+.motion {
+  border: 1px solid var(--rule); border-radius: 3px; padding: .45rem .55rem; font-size: .78rem;
+}
+.motion.open { border-color: var(--alarm-rule); background: var(--alarm-bg); }
+.motion .tally { color: var(--muted); font-size: .72rem; }
+.motion .actions { display: flex; gap: .4rem; margin-top: .35rem; }
+.motion .actions button { font-size: .72rem; padding: .2rem .55rem; }
+
+.member { display: flex; align-items: center; gap: .45rem; font-size: .76rem; }
+.member .since { margin-left: auto; color: var(--muted); font-size: .68rem; white-space: nowrap; }
+.member button { font-size: .68rem; padding: .1rem .4rem; }
+
+.ping-banner {
+  display: flex; align-items: center; gap: .8rem; justify-content: space-between;
+  margin: 0 .25rem 1rem; padding: .6rem .8rem; border-radius: 3px;
+  background: var(--accent); color: var(--accent-ink); font-size: .85rem;
+}
+.ping-banner[hidden] { display: none; }
+.ping-banner button { color: var(--accent-ink); border-color: var(--accent-ink); background: transparent; }
+
+#footer-leader:not(:empty)::before { content: " \00b7 "; }
+#new-channel-net { font: inherit; font-size: .76rem; max-width: 12rem; }
+
+/* Your media libraries. */
+.lib-list { list-style: none; margin: .5rem 0; padding: 0; }
+.lib-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: .5rem; align-items: center; padding: .3rem 0; border-bottom: 1px solid var(--rule); font-size: .85rem; }
+.lib-list li small { display: block; color: var(--muted); font-size: .72rem; }
+.lib-list .mono { color: var(--muted); font-size: .75rem; }
+#detect-libraries { margin-top: .5rem; }
+.lib-manual { margin-top: .6rem; font-size: .85rem; }
+.lib-manual summary { cursor: pointer; color: var(--accent); }
+.lib-form { display: grid; grid-template-columns: minmax(0, 1fr) 5.5rem; gap: .4rem; margin-top: .5rem; }
+.lib-form select, .lib-form button { grid-column: span 1; }
+
+/* A visitor sees who is here and nothing that belongs to this node's owner. */
+body.visitor .module:not(.visitor-ok),
+body.visitor .column-side,
+body.visitor .neighbor .actions button { display: none; }
+body.visitor .column-main { grid-column: 1 / -1; }
+.visitor-banner { margin: 0 0 1rem; padding: .7rem .9rem; border: 1px solid var(--accent); border-radius: 3px; background: var(--module); font-size: .9rem; }

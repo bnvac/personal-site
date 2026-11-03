@@ -1,0 +1,385 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>18650 Li-ion cell · Backoffice</title>
+
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/icon.svg" type="image/svg+xml">
+</head>
+<body><div class="demo-banner" style="position:sticky;top:0;z-index:99;background:#e5b52a;color:#111;font:600 13px system-ui;padding:7px 14px;text-align:center">Saved demo of the real Backoffice interface with an example workshop. Click around; changes are not saved.</div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="index.html">Backoffice</a>
+  
+  
+  <nav aria-label="Sections">
+    <a href="items.html" class="btn ghost on"
+       aria-current="page">Items</a>
+    <a href="projects.html" class="btn ghost"
+       >Projects</a>
+    <a href="ideas.html" class="btn ghost"
+       >Ideas</a>
+    <a href="orders.html" class="btn ghost"
+       >Orders</a>
+    <a href="scan.html" class="btn ghost"
+       >Scan</a>
+
+    <details class="menu">
+      <summary class="btn ghost">More</summary>
+      <div class="menu-panel">
+        <a href="workshop.html">Workshop</a>
+        <a href="printing.html">Printing</a>
+        <a href="prints.html">Prints</a>
+        <a href="firmware.html">Firmware</a>
+        <a href="machines.html">Machines</a>
+        <a href="manufacturers.html">Manufacturers</a>
+        <a href="tags.html">Tags</a>
+        <a href="tools.html">Calculators</a>
+        <a href="#" data-demo-missing="1">Print labels</a>
+        <a href="#" data-demo-missing="1">Export CSV</a>
+        <hr>
+        <a href="#" data-demo-missing="1">Health &amp; backup</a>
+        <a href="#" data-demo-missing="1">Activity</a>
+      </div>
+    </details>
+
+    <a href="items-new.html" class="btn primary">
+      <span aria-hidden="true">+</span> Add<span class="sr-only"> an item</span>
+    </a>
+
+    
+    <details class="menu account">
+      <summary class="btn ghost avatar-btn" aria-label="Account and appearance">
+        <span class="avatar" style="--hue: 144" aria-hidden="true">BE</span>
+        <span class="avatar-name">Ben</span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel wide">
+        <div class="menu-head">
+          <span class="avatar big" style="--hue: 144" aria-hidden="true">BE</span>
+          <div>
+            <b>Ben</b>
+            <span class="muted small">no sign-in set up</span>
+          </div>
+        </div>
+
+        <a href="#" data-demo-missing="1">Your profile</a>
+        <a href="workshop.html">Your workshop</a>
+        <a href="#" data-demo-missing="1">Model</a>
+
+        <hr>
+        <fieldset class="theme-picker">
+          <legend>Appearance</legend>
+          <button type="button" data-theme-set="light">Light</button>
+          <button type="button" data-theme-set="dark">Dark</button>
+          <button type="button" data-theme-set="system">System</button>
+        </fieldset>
+
+        
+
+        <a href="#" data-demo-missing="1">Manage accounts</a>
+        
+      </div>
+    </details>
+  </nav>
+  
+</header>
+
+
+<main id="main" tabindex="-1">
+
+
+
+<p class="crumb"><a href="items.html">← All items</a></p>
+
+<article class="detail">
+  <div class="gallery">
+    
+      <div class="hero-wrap">
+        <img id="hero" src="media/87d76249e2ad6ec8.jpg" alt="18650 Li-ion cell">
+      </div>
+      <div class="strip">
+        
+        <div class="shot-wrap">
+          <button type="button" class="shot" data-full="/media/87d76249e2ad6ec8.jpg">
+            <img src="media/thumb/87d76249e2ad6ec8.jpg" alt="Photo 1 of 18650 Li-ion cell" loading="lazy">
+          </button>
+          <div class="shot-tools">
+            
+            <form method="post" action="#" data-confirm="Delete this photo?">
+              <button type="submit" class="x" title="Delete photo" aria-label="Delete photo 1">×</button>
+            </form>
+          </div>
+        </div>
+        
+      </div>
+    
+
+    <form class="dropzone" method="post" action="#" enctype="multipart/form-data">
+      <label class="drop-label">
+        <input type="file" name="photos" accept="image/*" multiple capture="environment" hidden>
+        <strong>Add photos</strong>
+        <span>drop them here, or click to pick / take one</span>
+      </label>
+      <button class="btn" type="submit">Upload</button>
+    </form>
+
+    <details class="tuck">
+      <summary>Pull a photo from the web</summary>
+      <form method="post" action="#">
+        <div class="import-row">
+          <input type="url" name="image_url" placeholder="Image or product page URL" required>
+          <button class="btn" type="submit">Fetch</button>
+        </div>
+      </form>
+    </details>
+  </div>
+
+  <div class="info">
+    <h1>18650 Li-ion cell</h1>
+
+    <div class="qtybox">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn" type="submit" aria-label="Remove one">−</button>
+      </form>
+      <span class="big-qty">8</span>
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn" type="submit" aria-label="Add one">+</button>
+      </form>
+      <span class="muted">in stock · 6 free</span>
+      
+    </div>
+
+    
+    <div class="toast inline claims">
+      <b>2 pieces committed across 1 project, you own 8.</b>
+      <ul class="claim-list">
+        <li><a href="projects-1.html">Greenhouse logger</a> — 2</li>
+      </ul>
+      
+    </div>
+    
+    
+
+    <dl class="facts">
+      <dt>Folder</dt><dd><a href="folders-4.html">Drawer D · Power</a></dd>
+      <dt>Location</dt><dd><a href="items_d8e816b4.html">D1</a></dd>
+      <dt>Type</dt><dd><a href="items_58510156.html">Power</a></dd>
+      <dt>Value / rating</dt><dd>3500 mAh</dd>
+      <dt>Reorder at</dt><dd>4</dd>
+      <dt>Part number</dt><dd><code>INR18650-35E</code></dd>
+      
+      <dt>Made by</dt>
+      <dd class="maker-line">
+        
+          <span class="maker-chip maker-mark" style="--hue: 210">SA</span>
+        
+        <a href="items_93741174.html">Samsung</a>
+        
+      </dd>
+      
+      
+      <dt>Updated</dt><dd>17 days ago</dd>
+    </dl>
+
+    
+
+    
+    <div class="tags">
+      <a class="chip sm" href="items_3dbfdf8f.html">battery</a>
+    </div>
+    
+
+    <section class="prices">
+      <h2>Prices</h2>
+      
+      <ul>
+        
+        <li>
+          <span class="src">The Pi Hut</span>
+          <span class="amt">$6.50</span>
+          <span class="lead">~2 days</span>
+          
+          <span class="muted when">9 days ago</span>
+          <form method="post" action="#">
+            <input type="hidden" name="source" value="The Pi Hut">
+            <button class="btn tiny danger" type="submit" aria-label="Remove The Pi Hut price">×</button>
+          </form>
+        </li>
+        
+        <li>
+          <span class="src">DigiKey</span>
+          <span class="amt">$7.19</span>
+          <span class="lead">~2 days</span>
+          
+          <span class="muted when">13 days ago</span>
+          <form method="post" action="#">
+            <input type="hidden" name="source" value="DigiKey">
+            <button class="btn tiny danger" type="submit" aria-label="Remove DigiKey price">×</button>
+          </form>
+        </li>
+        
+      </ul>
+      
+      <p class="muted line-value">8 in stock · $52.00 at the cheapest price</p>
+      
+      
+        
+      
+      
+
+      
+
+      <details class="tuck">
+      <summary>Add or update a price</summary>
+      <form class="price-add" method="post" action="#">
+        <input name="source" list="price-sources" placeholder="Shop" required>
+        <datalist id="price-sources">
+          <option value="Adafruit"><option value="Amazon"><option value="AliExpress">
+          <option value="Mouser"><option value="Digi-Key"><option value="LCSC"><option value="eBay">
+        </datalist>
+        <input name="amount" inputmode="decimal" placeholder="19.95" required>
+        <input name="lead_days" inputmode="numeric" placeholder="ship days" aria-label="Shipping days">
+        <input name="url" type="url" placeholder="link (optional)">
+        <button class="btn" type="submit">Save price</button>
+      </form>
+      <form method="post" action="#" class="refresh">
+        <button class="btn tiny ghost" type="submit">Check price now</button>
+        <span class="muted">searchable sources only</span>
+      </form>
+      
+      </details>
+    </section>
+
+    <section class="refs">
+      <div class="section-head"><h2>Datasheets &amp; pinouts</h2>
+        <form method="post" action="#">
+          <button class="btn tiny" type="submit">Find documentation</button>
+        </form>
+      </div>
+      <p class="muted small">Follows the product link and searches the shops it can reach for
+        datasheets, pinouts and manuals. Pinout images are downloaded so they show up here.</p>
+      
+
+      
+
+      <p class="muted">No datasheets or pinouts yet.</p>
+
+      <details class="tuck">
+      <summary>Add a datasheet, pinout or manual</summary>
+      <form class="price-add" method="post" action="#" enctype="multipart/form-data">
+        <select name="kind" aria-label="Reference type">
+          <option value="datasheet">datasheet</option><option value="pinout">pinout</option><option value="manual">manual</option><option value="guide">guide</option><option value="schematic">schematic</option><option value="reference">reference</option>
+        </select>
+        <input name="title" placeholder="Title">
+        <input name="url" type="url" placeholder="Link (a pinout image is downloaded)">
+        <input type="file" name="file" accept="image/*" aria-label="Upload a pinout image">
+        <button class="btn" type="submit">Add reference</button>
+      </form>
+      </details>
+    </section>
+
+    
+
+    <section class="land">
+      <div class="section-head"><h2>Footprint</h2></div>
+      
+        
+          <p class="muted">No land pattern recorded. Give it a KiCad footprint name and the pads
+            are drawn to scale, so you can see how big the part actually is and which way round
+            pin 1 goes. A BOM import fills this in on its own.</p>
+        
+      
+
+    <section class="models">
+      <div class="section-head"><h2>Cases &amp; 3D models</h2>
+        <a class="btn tiny" href="#" data-demo-missing="1">Find a case</a>
+      </div>
+
+      
+      <p class="muted">No cases kept yet. <a href="#" data-demo-missing="1">Look for one</a> —
+        give it the STL afterwards and the real geometry is measured and drawn, so you know
+        whether it fits before you print it.</p>
+      
+    </section>
+
+    
+
+    
+
+    
+
+      <details class="tuck">
+      <summary>Set the footprint</summary>
+      <form class="price-add" method="post" action="#" enctype="multipart/form-data">
+        <input name="footprint" value="" placeholder="Resistor_SMD:R_0805_2012Metric"
+               spellcheck="false" autocomplete="off">
+        <input type="file" name="file" accept=".kicad_mod" aria-label="Upload a .kicad_mod file">
+        <button class="btn" type="submit">Save</button>
+      </form>
+      <p class="muted small">Fetched once from KiCad's own library and then kept, so the drawing
+        works offline. Upload a <code>.kicad_mod</code> for anything not in that library.</p>
+      </details>
+    </section>
+
+    
+
+    <details class="tuck label-preview">
+      <summary>Label codes</summary>
+      <div class="label-pair">
+        <img src="items/14/qr.png" alt="QR code for 18650 Li-ion cell" width="110" height="110">
+        <img class="bc" src="items/14/barcode.png" alt="Barcode for 18650 Li-ion cell" width="180" height="52">
+      </div>
+      <p class="muted">Scan the QR with a phone to open this page. <a href="#" data-demo-missing="1">Print a sheet</a></p>
+    </details>
+
+    <div class="actions">
+      <a class="btn primary" href="#" data-demo-missing="1">Edit</a>
+      <details class="inline-form">
+        <summary class="btn">Move</summary>
+        <form method="post" action="#">
+          <select name="folder_id">
+            <option value="">— no folder —</option>
+            
+              <option value="5">Bin E · Motion</option>
+            
+              <option value="1">Drawer A · Boards</option>
+            
+              <option value="2">Drawer B · Sensors</option>
+            
+              <option value="3">Drawer C · Displays</option>
+            
+              <option value="4" selected>Drawer D · Power</option>
+            
+          </select>
+          <button class="btn" type="submit">Move</button>
+        </form>
+      </details>
+      <a class="btn ghost" href="#" data-demo-missing="1">Print label</a>
+      <form method="post" action="#" data-confirm="Delete “18650 Li-ion cell” and its photos?">
+        <button class="btn danger" type="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+</article>
+
+
+</main>
+<script src="static/app.js" defer></script>
+<script>
+document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();demoNote('This is a saved demo, so nothing was changed.')},true);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-demo-missing]');if(a){e.preventDefault();demoNote('That page is not part of the demo.')}},true);
+function demoNote(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2200)}
+document.documentElement.setAttribute('data-theme','dark');
+</script></body>
+</html>
+

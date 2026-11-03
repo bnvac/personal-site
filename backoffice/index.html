@@ -94,6 +94,15 @@ h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.8rem,3.6vw,2.6rem)
 .built p b{color:var(--fg);font-weight:500}
 pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-family:var(--mono);font-size:13.5px;line-height:1.65;overflow-x:auto;margin:0}
 code{font-family:var(--mono);font-size:.9em}
+.demo{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);box-shadow:0 40px 100px -40px rgba(229,181,42,.25)}
+.demo .chrome{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.demo .chrome i{width:11px;height:11px;border-radius:50%;background:var(--line);flex:none}
+.demo .chrome i:nth-child(1){background:var(--vcc)}.demo .chrome i:nth-child(2){background:var(--sda)}.demo .chrome i:nth-child(3){background:var(--ok)}
+.demo .url{flex:1;min-width:0;font-family:var(--mono);font-size:12.5px;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.demo .chrome a{font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--line);border-radius:6px;padding:4px 10px;white-space:nowrap}
+.demo iframe{display:block;width:100%;height:min(760px,80vh);border:0;background:#111}
+.demo-tips{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;padding:0;list-style:none;font-size:14px;color:var(--muted)}
+.demo-tips li::before{content:"→ ";color:var(--sda)}
 footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;margin-top:70px}
 @media (max-width:900px){.car{grid-template-columns:1fr;gap:18px}.apps{grid-template-columns:1fr 1fr}.built{grid-template-columns:1fr}.bg{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.apps{grid-template-columns:1fr}}
@@ -102,7 +111,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-s
 <body>
 <div class="in">
   <header class="top"><span class="brand"><i aria-hidden="true"><b style="background:var(--vcc)"></b><b style="background:var(--sda)"></b><b style="background:var(--scl)"></b></i>Backoffice</span>
-    <nav class="nav" aria-label="Page"><a href="#tour">Screens</a><a href="#who">Who it's for</a><a class="gh" href="https://github.com/bnvac/backoffice" target="_blank" rel="noopener">GitHub ↗</a></nav></header>
+    <nav class="nav" aria-label="Page"><a href="#tour">Screens</a><a href="#demo">Live demo</a><a href="#who">Who it's for</a><a class="gh" href="https://github.com/bnvac/backoffice" target="_blank" rel="noopener">GitHub ↗</a></nav></header>
 
   <section class="hero">
     <div class="bg" aria-hidden="true"><img src="img/bo-parts.jpg" alt="" loading="eager"><img src="img/bo-ideas.jpg" alt="" loading="eager"><img src="img/bo-project.jpg" alt="" loading="eager"><img src="img/bo-materials.jpg" alt="" loading="eager"><img src="img/bo-machines.jpg" alt="" loading="eager"><img src="img/bo-part.jpg" alt="" loading="eager"><img src="img/bo-wiring.jpg" alt="" loading="eager"><img src="img/bo-firmware.jpg" alt="" loading="eager"><img src="img/bo-workshop.jpg" alt="" loading="eager"></div>
@@ -130,10 +139,20 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-s
     <div class="dots" role="tablist" aria-label="Choose a screen"><button type="button" class="dot" role="tab" aria-selected="true" aria-label="Dashboard" data-i="0"><img src="img/bo-dashboard.jpg" alt=""><span>Dashboard</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Parts" data-i="1"><img src="img/bo-parts.jpg" alt=""><span>Parts</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="One part" data-i="2"><img src="img/bo-part.jpg" alt=""><span>One part</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Projects" data-i="3"><img src="img/bo-project.jpg" alt=""><span>Projects</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Wiring" data-i="4"><img src="img/bo-wiring.jpg" alt=""><span>Wiring</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Idea board" data-i="5"><img src="img/bo-ideas.jpg" alt=""><span>Idea board</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Printers" data-i="6"><img src="img/bo-materials.jpg" alt=""><span>Printers</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Firmware" data-i="7"><img src="img/bo-firmware.jpg" alt=""><span>Firmware</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Machines" data-i="8"><img src="img/bo-machines.jpg" alt=""><span>Machines</span></button><button type="button" class="dot" role="tab" aria-selected="false" aria-label="Workshop" data-i="9"><img src="img/bo-workshop.jpg" alt=""><span>Workshop</span></button></div>
   </section>
 
+  <section class="sec" id="demo">
+    <h2>Try it</h2>
+    <p class="sub">The real interface, saved with an example workshop. Every page is clickable; saving is turned off.</p>
+    <div class="demo">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">backoffice.local:8080</span><a href="demo/index.html" target="_blank" rel="noopener">Open full size ↗</a></div>
+      <iframe src="demo/index.html" title="Backoffice live demo" loading="lazy"></iframe>
+    </div>
+    <ul class="demo-tips"><li>Open a part to see its stock, footprint and where it lives</li><li>Check a project's BOM against the shelf</li><li>Look up what each printer can print</li></ul>
+  </section>
+
   <section class="sec" id="who">
     <h2>Built for anyone who shares a shelf</h2>
     <p class="sub">A group, a few machines, and nobody remembers which drawer the last one went in.</p>
-    <div class="apps"><article class="app"><img src="img/who-makerspace.jpg" alt="" loading="lazy" width="900" height="560"><div><b>School makerspaces</b><p>Named logins with an activity log, so you know who took the last servo. QR labels on every bin.</p></div></article><article class="app"><img src="img/who-robotics.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Robotics teams</b><p>Projects reserve their parts, so the build team sees what's actually free. BOMs import from KiCad and EasyEDA.</p></div></article><article class="app"><img src="img/who-community.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Community labs</b><p>One page that tells visitors what each printer can print before they try.</p></div></article><article class="app"><img src="img/who-repair.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Repair cafés</b><p>Firmware images and flash commands kept with each board, so someone else can repeat a fix.</p></div></article><article class="app"><img src="img/who-startup.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Hardware startups</b><p>Price history per shop and real delivery times for planning a build. Backups are one file.</p></div></article><article class="app"><img src="img/who-homelab.jpg" alt="" loading="lazy" width="900" height="560"><div><b>Home labs</b><p>Machines, install images, checksums and the power bill, next to the parts that built them.</p></div></article></div>
+    <div class="apps"><article class="app"><img src="img/who-makerspace.jpg" alt="" loading="lazy" width="1800" height="1120"><div><b>School makerspaces</b><p>Named logins with an activity log, so you know who took the last servo. QR labels on every bin.</p></div></article><article class="app"><img src="img/who-robotics.jpg" alt="" loading="lazy" width="1800" height="1120"><div><b>Robotics teams</b><p>Projects reserve their parts, so the build team sees what's actually free. BOMs import from KiCad and EasyEDA.</p></div></article><article class="app"><img src="img/who-community.jpg" alt="" loading="lazy" width="1800" height="1120"><div><b>Community labs</b><p>One page that tells visitors what each printer can print before they try.</p></div></article><article class="app"><img src="img/who-repair.jpg" alt="" loading="lazy" width="1800" height="1120"><div><b>Repair cafés</b><p>Firmware images and flash commands kept with each board, so someone else can repeat a fix.</p></div></article><article class="app"><img src="img/who-startup.jpg" alt="" loading="lazy" width="1800" height="1120"><div><b>Hardware startups</b><p>Price history per shop and real delivery times for planning a build. Backups are one file.</p></div></article><article class="app"><img src="img/who-homelab.jpg" alt="" loading="lazy" width="1800" height="1120"><div><b>Home labs</b><p>Machines, install images, checksums and the power bill, next to the parts that built them.</p></div></article></div>
     <p class="credit">Photos from Unsplash.</p>
   </section>
 

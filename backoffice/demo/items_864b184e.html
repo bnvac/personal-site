@@ -1,0 +1,421 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>All items · Backoffice</title>
+
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/icon.svg" type="image/svg+xml">
+</head>
+<body><div class="demo-banner" style="position:sticky;top:0;z-index:99;background:#e5b52a;color:#111;font:600 13px system-ui;padding:7px 14px;text-align:center">Saved demo of the real Backoffice interface with an example workshop. Click around; changes are not saved.</div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="index.html">Backoffice</a>
+  
+  
+  <nav aria-label="Sections">
+    <a href="items.html" class="btn ghost on"
+       aria-current="page">Items</a>
+    <a href="projects.html" class="btn ghost"
+       >Projects</a>
+    <a href="ideas.html" class="btn ghost"
+       >Ideas</a>
+    <a href="orders.html" class="btn ghost"
+       >Orders</a>
+    <a href="scan.html" class="btn ghost"
+       >Scan</a>
+
+    <details class="menu">
+      <summary class="btn ghost">More</summary>
+      <div class="menu-panel">
+        <a href="workshop.html">Workshop</a>
+        <a href="printing.html">Printing</a>
+        <a href="prints.html">Prints</a>
+        <a href="firmware.html">Firmware</a>
+        <a href="machines.html">Machines</a>
+        <a href="manufacturers.html">Manufacturers</a>
+        <a href="tags.html">Tags</a>
+        <a href="tools.html">Calculators</a>
+        <a href="#" data-demo-missing="1">Print labels</a>
+        <a href="#" data-demo-missing="1">Export CSV</a>
+        <hr>
+        <a href="#" data-demo-missing="1">Health &amp; backup</a>
+        <a href="#" data-demo-missing="1">Activity</a>
+      </div>
+    </details>
+
+    <a href="items-new.html" class="btn primary">
+      <span aria-hidden="true">+</span> Add<span class="sr-only"> an item</span>
+    </a>
+
+    
+    <details class="menu account">
+      <summary class="btn ghost avatar-btn" aria-label="Account and appearance">
+        <span class="avatar" style="--hue: 144" aria-hidden="true">BE</span>
+        <span class="avatar-name">Ben</span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel wide">
+        <div class="menu-head">
+          <span class="avatar big" style="--hue: 144" aria-hidden="true">BE</span>
+          <div>
+            <b>Ben</b>
+            <span class="muted small">no sign-in set up</span>
+          </div>
+        </div>
+
+        <a href="#" data-demo-missing="1">Your profile</a>
+        <a href="workshop.html">Your workshop</a>
+        <a href="#" data-demo-missing="1">Model</a>
+
+        <hr>
+        <fieldset class="theme-picker">
+          <legend>Appearance</legend>
+          <button type="button" data-theme-set="light">Light</button>
+          <button type="button" data-theme-set="dark">Dark</button>
+          <button type="button" data-theme-set="system">System</button>
+        </fieldset>
+
+        
+
+        <a href="#" data-demo-missing="1">Manage accounts</a>
+        
+      </div>
+    </details>
+  </nav>
+  
+</header>
+
+
+<main id="main" tabindex="-1">
+
+
+
+<p class="crumb"><a href="index.html">← Dashboard</a></p>
+
+<form class="search live-search" method="get" action="items.html">
+  <input type="search" name="q" value="" placeholder="Search name, part number, tags, notes…" autocomplete="off" autofocus data-live-search>
+  
+  
+  
+  
+  
+  <button class="btn" type="submit">Search</button>
+</form>
+
+
+
+
+<div class="filters">
+  
+  <div class="filter-row">
+    <span class="filter-label">Type</span>
+    
+      <a class="chip" href="#" data-demo-missing="1">Actuator <span class="n">3</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">Display <span class="n">3</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">IC <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">Microcontroller <span class="n">3</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">Power <span class="n">2</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">SBC <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">Sensor <span class="n">5</span></a>
+    
+  </div>
+  
+  
+  
+  <details class="more-filters" open>
+  <summary>More filters <span class="muted">· where, maker, interface, tags</span></summary>
+  
+  
+  <div class="filter-row">
+    <span class="filter-label">Where</span>
+    
+      <a class="chip" href="#" data-demo-missing="1">A1 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">A2 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">A3 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">A4 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">B1 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">B2 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">B3 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">B4 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">B5 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">C1 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">C2 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">C3 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">D1 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">D2 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">D5 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">E1 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">E2 <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">E3 <span class="n">1</span></a>
+    
+  </div>
+  
+  
+  <div class="filter-row">
+    <span class="filter-label">Made by</span>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 262">AD</span>
+Analog Devices <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 167">AR</span>
+Arduino <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 8">BO</span>
+Bosch <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 295">DF</span>
+DFRobot <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 164">ES</span>
+Espressif <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 313">MI</span>
+Microchip <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 302">RP</span>
+Raspberry Pi <span class="n">2</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 210">SA</span>
+Samsung <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 192">SS</span>
+Solomon Systech <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 323">SO</span>
+Songle <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 278">ST</span>
+STMicroelectronics <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 270">TI</span>
+TDK InvenSense <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 201">TO</span>
+TowerPro <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 54">UU</span>
+UUGear <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 18">WA</span>
+Waveshare <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">
+        
+  
+  <span class="maker-mark tiny" style="--hue: 133">WO</span>
+Worldsemi <span class="n">1</span></a>
+    
+    <a class="chip sm" href="manufacturers.html">all makers ↗</a>
+  </div>
+  
+  
+  <div class="filter-row">
+    <span class="filter-label">IO</span>
+    
+      <a class="chip" href="#" data-demo-missing="1"><span class="ti">🔗</span>I2C <span class="n">7</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1"><span class="ti">🔗</span>SPI <span class="n">6</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1"><span class="ti">〰</span>PWM <span class="n">3</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1"><span class="ti">📶</span>WiFi <span class="n">3</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1"><span class="ti"></span>Analog <span class="n">2</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1"><span class="ti">🔗</span>UART <span class="n">2</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1"><span class="ti"></span>Bluetooth <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1"><span class="ti">🌐</span>Ethernet <span class="n">1</span></a>
+    
+      <a class="chip on" href="items.html"><span class="ti"></span>USB <span class="n">1</span></a>
+    
+  </div>
+  
+  
+  <div class="filter-row">
+    <span class="filter-label">Tags</span>
+    
+      <a class="chip" href="#" data-demo-missing="1">analog <span class="n">2</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">battery <span class="n">2</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">display <span class="n">2</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">environment <span class="n">2</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">wifi <span class="n">2</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">adc <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">ble <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">distance <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">light <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">linux <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">motion <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">relay <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">servo <span class="n">1</span></a>
+    
+      <a class="chip" href="#" data-demo-missing="1">stepper <span class="n">1</span></a>
+    
+  </div>
+  
+  </details>
+</div>
+
+
+
+
+
+
+
+<div class="bar">
+  <span class="muted">
+    1 shown of 18
+     · <a href="items.html">clear filters</a>
+  </span>
+  <span class="sorts">
+    <a class="chip sm on" href="#" data-demo-missing="1">Recent</a>
+    <a class="chip sm" href="#" data-demo-missing="1">A–Z</a>
+    <a class="chip sm" href="#" data-demo-missing="1">Low stock</a>
+    <a class="chip sm" href="#" data-demo-missing="1">Labels</a>
+    <a class="chip sm" href="#" data-demo-missing="1">CSV</a>
+  </span>
+</div>
+
+
+
+<ul class="grid">
+  
+<li class="card" data-id="3">
+  <a class="thumb" href="items-3.html">
+    
+      <img src="media/thumb/2829a9a9f7d05b4f.jpg" alt="Raspberry Pi 5 4GB" loading="lazy" decoding="async">
+    
+    
+    <span class="price-tag">$60.00</span>
+  </a>
+  <div class="body">
+    <a class="name" href="items-3.html">Raspberry Pi 5 4GB</a>
+    
+    
+    <div class="where">
+      <span class="loc">A3</span>
+      <a class="fold" href="folders-1.html">Drawer A · Boards</a>
+    </div>
+    <div class="mk">Raspberry Pi</div>
+    
+    <div class="card-tags">
+      <a class="chip xs" href="items_87c79974.html">linux</a>
+    </div>
+    
+    <div class="qty" data-qty-for="3">
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="-1">
+        <button class="btn tiny" type="submit" aria-label="Remove one Raspberry Pi 5 4GB">−</button>
+      </form>
+      <output class="n">1</output>
+      
+      <form method="post" action="#" class="step">
+        <input type="hidden" name="delta" value="1">
+        <button class="btn tiny" type="submit" aria-label="Add one Raspberry Pi 5 4GB">+</button>
+      </form>
+    </div>
+  </div>
+</li>
+
+</ul>
+
+
+
+</main>
+<script src="static/app.js" defer></script>
+<script>
+document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();demoNote('This is a saved demo, so nothing was changed.')},true);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-demo-missing]');if(a){e.preventDefault();demoNote('That page is not part of the demo.')}},true);
+function demoNote(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2200)}
+document.documentElement.setAttribute('data-theme','dark');
+</script></body>
+</html>
+

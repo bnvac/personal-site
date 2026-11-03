@@ -1,0 +1,215 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Firmware · Backoffice</title>
+
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/icon.svg" type="image/svg+xml">
+</head>
+<body><div class="demo-banner" style="position:sticky;top:0;z-index:99;background:#e5b52a;color:#111;font:600 13px system-ui;padding:7px 14px;text-align:center">Saved demo of the real Backoffice interface with an example workshop. Click around; changes are not saved.</div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="index.html">Backoffice</a>
+  
+  
+  <nav aria-label="Sections">
+    <a href="items.html" class="btn ghost"
+       >Items</a>
+    <a href="projects.html" class="btn ghost"
+       >Projects</a>
+    <a href="ideas.html" class="btn ghost"
+       >Ideas</a>
+    <a href="orders.html" class="btn ghost"
+       >Orders</a>
+    <a href="scan.html" class="btn ghost"
+       >Scan</a>
+
+    <details class="menu">
+      <summary class="btn ghost">More</summary>
+      <div class="menu-panel">
+        <a href="workshop.html">Workshop</a>
+        <a href="printing.html">Printing</a>
+        <a href="prints.html">Prints</a>
+        <a href="firmware.html">Firmware</a>
+        <a href="machines.html">Machines</a>
+        <a href="manufacturers.html">Manufacturers</a>
+        <a href="tags.html">Tags</a>
+        <a href="tools.html">Calculators</a>
+        <a href="#" data-demo-missing="1">Print labels</a>
+        <a href="#" data-demo-missing="1">Export CSV</a>
+        <hr>
+        <a href="#" data-demo-missing="1">Health &amp; backup</a>
+        <a href="#" data-demo-missing="1">Activity</a>
+      </div>
+    </details>
+
+    <a href="items-new.html" class="btn primary">
+      <span aria-hidden="true">+</span> Add<span class="sr-only"> an item</span>
+    </a>
+
+    
+    <details class="menu account">
+      <summary class="btn ghost avatar-btn" aria-label="Account and appearance">
+        <span class="avatar" style="--hue: 144" aria-hidden="true">BE</span>
+        <span class="avatar-name">Ben</span>
+        <span class="caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="menu-panel wide">
+        <div class="menu-head">
+          <span class="avatar big" style="--hue: 144" aria-hidden="true">BE</span>
+          <div>
+            <b>Ben</b>
+            <span class="muted small">no sign-in set up</span>
+          </div>
+        </div>
+
+        <a href="#" data-demo-missing="1">Your profile</a>
+        <a href="workshop.html">Your workshop</a>
+        <a href="#" data-demo-missing="1">Model</a>
+
+        <hr>
+        <fieldset class="theme-picker">
+          <legend>Appearance</legend>
+          <button type="button" data-theme-set="light">Light</button>
+          <button type="button" data-theme-set="dark">Dark</button>
+          <button type="button" data-theme-set="system">System</button>
+        </fieldset>
+
+        
+
+        <a href="#" data-demo-missing="1">Manage accounts</a>
+        
+      </div>
+    </details>
+  </nav>
+  
+</header>
+
+
+<main id="main" tabindex="-1">
+
+
+
+<nav class="crumb"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="here">Firmware</span></nav>
+
+<div class="folder-head">
+  <h1>Firmware</h1>
+  <div class="folder-actions"><a class="chip sm" href="machines.html">Machines</a></div>
+</div>
+
+<p class="lede">What is on each board. The shelf counts six ESP32s; this says which one is in
+the greenhouse running what, and keeps the image so a dead board can be flashed again next
+year without finding the source.</p>
+
+
+<table class="grid-table flashes">
+  <thead>
+    <tr><th>Board</th><th>Which</th><th>Running</th><th>Since</th><th>Image</th></tr>
+  </thead>
+  <tbody>
+    
+    <tr class="">
+      <td><a href="items-2.html">Raspberry Pi Pico 2 W</a></td>
+      <td>desk arm</td>
+      <td>
+        <a href="firmware-3.html"><b>arm-controller</b></a> <span class="muted">0.3.0</span>
+        <br><span class="muted small">for <a href="projects-2.html">Desk robot arm</a></span>
+        
+      </td>
+      <td class="muted">23 Oct 2026</td>
+      <td><span class="muted">not kept</span></td>
+    </tr>
+    
+    <tr class="">
+      <td><a href="items-1.html">ESP32-S3 DevKitC-1</a></td>
+      <td>garage door</td>
+      <td>
+        <a href="firmware-2.html"><b>garage-relay</b></a> <span class="muted">0.9.2</span>
+        
+        
+      </td>
+      <td class="muted">23 Oct 2026</td>
+      <td><span class="muted">not kept</span></td>
+    </tr>
+    
+    <tr class="">
+      <td><a href="items-1.html">ESP32-S3 DevKitC-1</a></td>
+      <td>greenhouse</td>
+      <td>
+        <a href="firmware-1.html"><b>greenhouse-logger</b></a> <span class="muted">1.4.0</span>
+        <br><span class="muted small">for <a href="projects-1.html">Greenhouse logger</a></span>
+        
+      </td>
+      <td class="muted">23 Oct 2026</td>
+      <td><span class="muted">not kept</span></td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+<details class="panel" >
+  <summary class="btn">Record what is on a board</summary>
+  
+<form method="post" action="firmware.html" enctype="multipart/form-data" class="stack">
+  <input type="hidden" name="return" value="/firmware">
+  <div class="field-row">
+    <label>Board
+      <select name="item_id">
+        <option value="">not on the shelf</option>
+        
+        <option value="10" >0.96&#34; OLED, SSD1306</option><option value="14" >18650 Li-ion cell</option><option value="11" >2.9&#34; e-paper, SSD1680</option><option value="17" >28BYJ-48 stepper &#43; ULN2003</option><option value="18" >5 V relay module</option><option value="4" >Arduino Uno R4 Minima</option><option value="5" >BME280 temp / humidity / pressure</option><option value="8" >Capacitive soil moisture sensor</option><option value="9" >DS18B20 waterproof temperature probe</option><option value="1" >ESP32-S3 DevKitC-1</option><option value="13" >MCP3008 8-channel ADC</option><option value="16" >MG90D metal-gear servo</option><option value="7" >MPU-6050 6-axis IMU</option><option value="3" >Raspberry Pi 5 4GB</option><option value="2" >Raspberry Pi Pico 2 W</option><option value="6" >VL53L1X time-of-flight distance</option><option value="15" >Witty Pi 4 L3V7 power manager</option><option value="12" >WS2812B LED strip, 1 m</option>
+      </select>
+    </label>
+    <label>Which one <span class="muted">— a sticker, a MAC, where it is</span>
+      <input name="unit" autocomplete="off" placeholder="greenhouse">
+    </label>
+  </div>
+  <div class="field-row">
+    <label>Firmware
+      <input name="firmware" required autocomplete="off" placeholder="greenhouse-logger, ESPHome, MicroPython">
+    </label>
+    <label>Version <span class="muted">— a tag, a date, a commit</span>
+      <input name="version" autocomplete="off" placeholder="v1.2 / 3f9a2c1">
+    </label>
+    <label>Flashed on
+      <input name="flashed_at" type="date">
+    </label>
+  </div>
+  
+  <label>For a project
+    <select name="project_id">
+      <option value="">none</option>
+      <option value="1">Greenhouse logger</option><option value="2">Desk robot arm</option>
+    </select>
+  </label>
+  
+  <label>The image <span class="muted">— optional, up to 64.0 MiB: .bin, .uf2, .hex or .elf</span>
+    <input type="file" name="image" accept=".bin,.uf2,.hex,.elf">
+  </label>
+  <label>Notes
+    <input name="notes" autocomplete="off" placeholder="Wi-Fi creds baked in; OTA password in the vault">
+  </label>
+  <div class="actions"><button class="btn primary" type="submit">Record it</button></div>
+</form>
+
+</details>
+
+
+</main>
+<script src="static/app.js" defer></script>
+<script>
+document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation();demoNote('This is a saved demo, so nothing was changed.')},true);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-demo-missing]');if(a){e.preventDefault();demoNote('That page is not part of the demo.')}},true);
+function demoNote(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4)';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2200)}
+document.documentElement.setAttribute('data-theme','dark');
+</script></body>
+</html>
+

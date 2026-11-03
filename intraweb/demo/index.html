@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>intraweb</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body><div style="background:#3a5a8c;color:#fff;font:600 13px system-ui;padding:7px 14px;text-align:center">Demo: the real intraweb dashboard running on data captured from four nodes. Nothing you do here is sent.</div>
+
+<header class="masthead">
+  <div class="wordmark">
+    <span class="logo">intraweb</span>
+    <span class="slogan">your neighborhood web</span>
+    <!-- Where you are standing. Stepping out stops reading any channel
+         without leaving one: nothing is announced either way. -->
+    <label class="whereabouts">
+      <span class="visually-hidden">Channel you are in</span>
+      <select id="header-channel" aria-label="Channel you are in"></select>
+    </label>
+  </div>
+  <div class="presence"><span class="dot"></span><span id="presence-text">connecting</span></div>
+</header>
+
+<!-- A net leader's ping. Shown until dismissed, because the point of a ping
+     is that it is not missed. -->
+<div id="ping-banner" class="ping-banner" role="alert" hidden>
+  <span id="ping-text"></span>
+  <button type="button" id="ping-dismiss" class="quiet">Dismiss</button>
+</div>
+
+<div class="layout">
+
+  <!-- Left column: who you are. The profile panel, minus the glitter. -->
+  <aside class="column-side">
+
+    <section class="module" aria-labelledby="you-heading">
+      <h2 class="module-head" id="you-heading">You</h2>
+      <div class="module-body profile">
+        <div class="profile-head">
+          <img class="identicon" id="me-icon" alt="" width="52" height="52">
+          <div>
+            <div class="profile-name" id="me-nickname">&hellip;</div>
+            <div class="profile-role" id="me-role"></div>
+          </div>
+        </div>
+        <p class="profile-tagline" id="me-tagline"></p>
+        <form id="edit-profile" hidden>
+          <label>name <input id="edit-nickname" maxlength="32"></label>
+          <label>about <textarea id="edit-tagline" rows="2" maxlength="140"></textarea></label>
+          <div class="field-row end">
+            <span id="edit-result" class="aside-note"></span>
+            <button type="button" id="cancel-edit" class="quiet">Cancel</button>
+            <button type="submit">Save</button>
+          </div>
+        </form>
+        <dl class="facts">
+          <dt>fingerprint</dt><dd class="mono" id="me-fingerprint">&hellip;</dd>
+          <dt>my page</dt><dd><a id="me-site" href="#">&mdash;</a></dd>
+          <dt>up</dt><dd id="me-uptime">&mdash;</dd>
+        </dl>
+        <button type="button" id="start-edit" class="quiet wide">Edit profile</button>
+        <div class="avatar-controls">
+          <label class="file-pick">
+            <span>Profile picture (PNG, JPEG, GIF or WebP, under 512KB)</span>
+            <input type="file" id="avatar-upload" accept="image/png,image/jpeg,image/gif,image/webp">
+          </label>
+          <div class="field-row end">
+            <span id="avatar-result" class="aside-note"></span>
+            <button type="button" id="avatar-reset" class="quiet">Use key picture</button>
+          </div>
+        </div>
+        <p class="aside-note">Read the fingerprint aloud to a neighbor and they
+           can mark you verified. The picture is drawn from your key: if a
+           neighbor's shape changes, so did their key.</p>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="vault-heading">
+      <h2 class="module-head" id="vault-heading">Vault</h2>
+      <div class="module-body">
+        <dl class="facts">
+          <dt>folder</dt><dd class="mono ellipsis" id="vault-path">&mdash;</dd>
+          <dt>serving</dt><dd class="mono ellipsis" id="site-path">&mdash;</dd>
+          <dt>met</dt><dd id="known-peers">&mdash;</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="libraries-heading">
+      <h2 class="module-head" id="libraries-heading">
+        Media libraries <span class="module-meta" id="libraries-meta"></span>
+      </h2>
+      <div class="module-body">
+        <p class="aside-note">Jellyfin, Navidrome, Immich and the like, already
+           running here, shown as buttons on your card. Neighbors open them
+           straight from this machine; nothing streams through intraweb.</p>
+        <div id="my-libraries"></div>
+        <button id="detect-libraries" type="button" class="wide">Find services on this computer</button>
+        <div id="detected-libraries"></div>
+        <details class="lib-manual">
+          <summary>Add one by port</summary>
+          <form id="library-form" class="lib-form">
+            <input id="lib-name" name="name" placeholder="Name, e.g. Films" maxlength="40" required>
+            <input id="lib-port" name="port" type="number" min="1" max="65535" placeholder="Port" required>
+            <select id="lib-kind" name="kind" aria-label="Kind">
+              <option value="">kind: guess</option><option>video</option><option>music</option>
+              <option>books</option><option>photos</option><option>other</option>
+            </select>
+            <button type="submit">Add</button>
+          </form>
+        </details>
+        <span id="library-result" class="aside-note"></span>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="activity-heading">
+      <h2 class="module-head" id="activity-heading">
+        Activity <span class="module-meta" id="activity-meta"></span>
+      </h2>
+      <div class="module-body">
+        <dl class="facts">
+          <dt>you</dt><dd id="act-uptime">&mdash;</dd>
+          <dt>hub</dt><dd id="act-hub">&mdash;</dd>
+          <dt>round trip</dt><dd id="act-latency">&mdash;</dd>
+          <dt>speed</dt><dd id="act-speed">&mdash;</dd>
+          <dt>sent</dt><dd id="act-out">&mdash;</dd>
+          <dt>received</dt><dd id="act-in">&mdash;</dd>
+          <dt>last</dt><dd id="act-last">&mdash;</dd>
+        </dl>
+        <p class="aside-note">Measured on this node, from what it actually sent
+           and received. Every send updates it. Nobody else's numbers are here:
+           speed belongs to a pair of machines, not the neighborhood.</p>
+        <label class="toggle"><input type="checkbox" id="toggle-hidden">
+          <span>Hidden &mdash; stay off everyone's roster</span></label>
+        <p class="aside-note" id="hidden-note" hidden>You still see the
+           neighborhood. Anything you send is signed, so its recipient knows
+           it was you.</p>
+        <label class="toggle"><input type="checkbox" id="toggle-low-data">
+          <span>Low data &mdash; no pictures, no attachments</span></label>
+        <span id="mode-result" class="aside-note"></span>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="doctor-heading">
+      <h2 class="module-head" id="doctor-heading">Network check</h2>
+      <div class="module-body">
+        <p class="aside-note">Neighbors missing? Usually the router, not the node.</p>
+        <button id="run-doctor" type="button" class="wide">Run check</button>
+        <div id="doctor"></div>
+      </div>
+    </section>
+
+  </aside>
+
+  <!-- Right column: everybody else. -->
+  <main class="column-main">
+    <p class="visitor-banner" id="visitor-banner" hidden></p>
+
+    <section class="module visitor-ok" aria-labelledby="neighborhood-heading">
+      <h2 class="module-head" id="neighborhood-heading">
+        Neighborhood <span class="module-meta" id="peer-count"></span>
+      </h2>
+      <div class="module-body">
+        <div id="hubs" class="stack"></div>
+        <div id="peers" class="stack"></div>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="contacts-heading">
+      <h2 class="module-head" id="contacts-heading">
+        Contacts <span class="module-meta" id="contacts-meta"></span>
+      </h2>
+      <div class="module-body">
+        <div id="contacts" class="stack"></div>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="nets-heading">
+      <h2 class="module-head" id="nets-heading">
+        Nets <span class="module-meta" id="nets-meta"></span>
+      </h2>
+      <div class="module-body">
+        <div id="net-directory" class="stack"></div>
+        <p id="net-result" class="aside-note" aria-live="polite"></p>
+        <details class="new-channel">
+          <summary>Start a net</summary>
+          <form id="new-net-form" autocomplete="off">
+            <div class="field-row">
+              <input id="new-net-name" placeholder="net name" maxlength="40" required>
+              <button type="submit">Start</button>
+            </div>
+            <p class="aside-note">A net is open: anyone in range can find it and join.
+               You lead it until its members decide otherwise.</p>
+          </form>
+        </details>
+
+        <div id="net-detail" class="net-detail" hidden>
+          <h3 class="net-title" id="net-title"></h3>
+          <p class="net-leader" id="net-leader"></p>
+          <div id="net-announcements" class="stack"></div>
+          <div id="net-motions" class="stack"></div>
+          <h4 class="net-sub">Members</h4>
+          <div id="net-members" class="stack"></div>
+
+          <div id="net-leader-tools" class="net-tools" hidden>
+            <h4 class="net-sub">You lead this net</h4>
+            <form id="announce-form" autocomplete="off">
+              <div class="field-row">
+                <input id="announce-text" placeholder="announce to everyone in the net" maxlength="500">
+                <button type="submit">Announce</button>
+              </div>
+              <label class="toggle"><input type="checkbox" id="announce-ping">
+                <span>Ping everyone (at most once every ten minutes)</span></label>
+            </form>
+            <label class="toggle"><input type="checkbox" id="net-low-data">
+              <span>Mandatory low data: nobody attaches files or sees pictures here</span></label>
+          </div>
+
+          <details class="net-history">
+            <summary>What happened</summary>
+            <div id="net-history"></div>
+          </details>
+          <p class="aside-note">A vote counts the members who had joined when it
+             opened, so keys made to swing it count for nothing. A net is open,
+             though: somebody who prepared many keys in advance could still sway one.</p>
+        </div>
+        <p class="aside-note"><button type="button" id="enable-notifications" class="quiet">Show pings as notifications</button></p>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="channels-heading">
+      <h2 class="module-head" id="channels-heading">
+        Channels <span class="module-meta" id="channel-meta"></span>
+      </h2>
+      <div class="module-body">
+        <div class="channel-tabs" id="channel-tabs"></div>
+        <div id="channel-posts" class="posts"></div>
+        <form id="say-form" autocomplete="off">
+          <div class="field-row">
+            <input id="say-body" placeholder="say something" maxlength="800">
+            <button type="submit">Send</button>
+          </div>
+          <details class="attach" id="say-attach">
+            <summary>Attach a file</summary>
+            <div class="field-row">
+              <select id="say-file" aria-label="File from your shared folder"></select>
+              <label class="file-pick inline"><span>or share a new one</span>
+                <input type="file" id="say-upload"></label>
+            </div>
+            <p class="aside-note" id="say-cost"></p>
+          </details>
+          <div class="field-row end">
+            <span id="say-result" class="aside-note"></span>
+          </div>
+        </form>
+        <details class="new-channel">
+          <summary>Start a private channel</summary>
+          <form id="new-channel-form" autocomplete="off">
+            <div class="field-row">
+              <input id="new-channel-name" placeholder="channel name" maxlength="40" required>
+              <select id="new-channel-net" aria-label="Net it belongs to"></select>
+              <button type="submit">Create</button>
+            </div>
+            <p class="aside-note">Only people you invite can read it. Invite a
+               neighbor from their card below &mdash; they must be in range.</p>
+          </form>
+        </details>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="site-heading">
+      <h2 class="module-head" id="site-heading">
+        Your page <span class="module-meta" id="site-meta"></span>
+      </h2>
+      <div class="module-body">
+        <p class="aside-note">Plain HTML, served off your own vault at
+           <a id="site-link" href="#">your address</a>. Nobody hosts it but you.</p>
+        <textarea id="site-html" class="editor" rows="12" spellcheck="false"
+                  aria-label="the HTML of your page"></textarea>
+        <div class="field-row end">
+          <span id="site-result" class="aside-note"></span>
+          <button type="button" id="revert-site" class="quiet">Revert</button>
+          <button type="button" id="preview-site" class="quiet" aria-expanded="false">Preview</button>
+          <button type="button" id="save-site">Save page</button>
+        </div>
+        <!-- Shows the draft, not the saved page, so you can see a change
+             before neighbors do. Sandboxed without scripts: a page you are
+             still writing should not run inside your own dashboard. -->
+        <iframe id="site-preview" class="site-preview" title="Preview of your page"
+                sandbox="allow-same-origin" hidden></iframe>
+        <div id="site-files" class="stack"></div>
+        <label class="file-pick">
+          <span>Add a picture or file</span>
+          <input type="file" id="site-upload" multiple>
+        </label>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="guestbook-heading">
+      <h2 class="module-head" id="guestbook-heading">
+        Guestbook <span class="module-meta" id="guestbook-meta"></span>
+      </h2>
+      <div class="module-body">
+        <p class="aside-note">What neighbors have written on your page. Sign
+           somebody else's from their card above.</p>
+        <div id="guestbook" class="stack"></div>
+      </div>
+    </section>
+
+    <section class="module" aria-labelledby="mail-heading">
+      <h2 class="module-head" id="mail-heading">
+        Mail <span class="module-meta" id="mail-count"></span>
+      </h2>
+      <div class="module-body">
+        <form id="compose" autocomplete="off">
+          <div class="field-row">
+            <input id="compose-to" name="to" placeholder="to: nickname or fingerprint" required
+                   list="contact-suggestions" autocomplete="off">
+            <datalist id="contact-suggestions"></datalist>
+            <input id="compose-subject" name="subject" placeholder="subject">
+          </div>
+          <textarea id="compose-body" name="body" rows="3" placeholder="write something"></textarea>
+          <details class="attach" id="compose-attach">
+            <summary>Attach a file</summary>
+            <div class="field-row">
+              <select id="compose-file" aria-label="File from your shared folder"></select>
+              <label class="file-pick inline"><span>or share a new one</span>
+                <input type="file" id="compose-upload"></label>
+            </div>
+            <p class="aside-note" id="compose-cost"></p>
+          </details>
+          <div class="field-row end">
+            <span id="compose-result" class="aside-note"></span>
+            <button type="submit">Send</button>
+          </div>
+        </form>
+        <div id="mail" class="stack"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="colophon">
+  intraweb &middot; nobody hosts you but you
+  <span id="footer-leader"></span>
+</footer>
+
+<script>
+// Demo shim: answer the dashboard's requests from data captured off a real node.
+window.DEMO_API = {"/api/state": {"mail": [{"attachment": null, "body": "Uploaded the ridge set. The first one is the best sunrise this year.", "created_at": 1793376612, "delivered_at": 1793376612, "id": 3, "peer_id": "ca98e11f17eae29928d80ab1505cc3153036bbfffe4c128aa83e672f009af270", "read_at": null, "subject": "photos"}, {"attachment": null, "body": "Thursday 0600 at the trailhead. I'll bring the spare jerry can.", "created_at": 1793375099, "delivered_at": 1793375099, "id": 1, "peer_id": "4948b36bf281f1f89e83f80c367fa509b97d4af631c741742c684e6a6160656d", "read_at": null, "subject": "fuel drop"}, {"attachment": null, "body": "Can you share the ridge survey? Mine got wet.", "created_at": 1793375099, "delivered_at": 1793375099, "id": 2, "peer_id": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "read_at": null, "subject": "maps"}], "peers": [{"addrs": ["192.0.2.2"], "api_port": 8481, "encryption_key": "dbf0ac1a39c8a3dd2f3b6980002fdfd3fbb62493677e67683202554a046e1376", "fingerprint": "d3ea-5953-67be-95e0", "first_seen": 1793715531, "hub_name": null, "is_hub": false, "last_seen": 1793715644, "nickname": "bob", "peer_id": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "source": "beacon", "trust": "known"}, {"addrs": ["192.0.2.2"], "api_port": 8482, "encryption_key": "3c2a5dd097a4d58e3797b643bcadf3d1198f033834a5b064cd4362b4b004185e", "fingerprint": "5f31-9950-ae47-317c", "first_seen": 1793715531, "hub_name": null, "is_hub": false, "last_seen": 1793715644, "nickname": "carol", "peer_id": "4948b36bf281f1f89e83f80c367fa509b97d4af631c741742c684e6a6160656d", "source": "beacon", "trust": "known"}, {"addrs": ["192.0.2.2"], "api_port": 8483, "encryption_key": "c7cc2d91e10691c8d4746973011624a3b6eab4a68382f7c50dc1a5d550994f2e", "fingerprint": "c73c-d8ef-46cd-c8f7", "first_seen": 1793715530, "hub_name": null, "is_hub": false, "last_seen": 1793715644, "nickname": "dana", "peer_id": "ca98e11f17eae29928d80ab1505cc3153036bbfffe4c128aa83e672f009af270", "source": "beacon", "trust": "known"}], "status": {"api_port": 8480, "fingerprint": "aaca-6288-4b5c-2ceb", "guestbook_channel": "7e94370ee12ce4349076a80cd53b0ed2aee15036e24575fdae09af95c2934ebd", "hidden": false, "hub_name": "neighborhood", "hubs_online": 0, "is_hub": true, "known_peers": 3, "low_data": false, "nickname": "alice", "now": 1793715646, "peer_id": "f44245868b5758777620ef1f256d0807f097509cbfae7109aea4581ec95b751d", "peers_online": 3, "site_path": "~/.intraweb/site", "tagline": "", "unread_mail": 3, "uptime_secs": 116, "vault_path": "~/.intraweb"}}, "/api/status": {"nickname": "alice", "tagline": "", "peer_id": "f44245868b5758777620ef1f256d0807f097509cbfae7109aea4581ec95b751d", "fingerprint": "aaca-6288-4b5c-2ceb", "is_hub": true, "hub_name": "neighborhood", "api_port": 8480, "peers_online": 3, "hubs_online": 0, "known_peers": 3, "unread_mail": 3, "guestbook_channel": "7e94370ee12ce4349076a80cd53b0ed2aee15036e24575fdae09af95c2934ebd", "vault_path": "~/.intraweb", "site_path": "~/.intraweb/site", "uptime_secs": 116, "hidden": false, "low_data": false, "now": 1793715646}, "/api/peers": [{"peer_id": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "encryption_key": "dbf0ac1a39c8a3dd2f3b6980002fdfd3fbb62493677e67683202554a046e1376", "fingerprint": "d3ea-5953-67be-95e0", "nickname": "bob", "addrs": ["192.0.2.2"], "api_port": 8481, "is_hub": false, "hub_name": null, "source": "beacon", "trust": "known", "first_seen": 1793715531, "last_seen": 1793715644}, {"peer_id": "4948b36bf281f1f89e83f80c367fa509b97d4af631c741742c684e6a6160656d", "encryption_key": "3c2a5dd097a4d58e3797b643bcadf3d1198f033834a5b064cd4362b4b004185e", "fingerprint": "5f31-9950-ae47-317c", "nickname": "carol", "addrs": ["192.0.2.2"], "api_port": 8482, "is_hub": false, "hub_name": null, "source": "beacon", "trust": "known", "first_seen": 1793715531, "last_seen": 1793715644}, {"peer_id": "ca98e11f17eae29928d80ab1505cc3153036bbfffe4c128aa83e672f009af270", "encryption_key": "c7cc2d91e10691c8d4746973011624a3b6eab4a68382f7c50dc1a5d550994f2e", "fingerprint": "c73c-d8ef-46cd-c8f7", "nickname": "dana", "addrs": ["192.0.2.2"], "api_port": 8483, "is_hub": false, "hub_name": null, "source": "beacon", "trust": "known", "first_seen": 1793715530, "last_seen": 1793715644}], "/api/hubs": [], "/api/hubs/history": [], "/api/contacts": [{"peer_id": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "fingerprint": "d3ea-5953-67be-95e0", "nickname": "bob", "verified": false, "online": true, "last_seen": 1793715644, "address": "192.0.2.2:8481"}, {"peer_id": "4948b36bf281f1f89e83f80c367fa509b97d4af631c741742c684e6a6160656d", "fingerprint": "5f31-9950-ae47-317c", "nickname": "carol", "verified": false, "online": true, "last_seen": 1793715644, "address": "192.0.2.2:8482"}, {"peer_id": "ca98e11f17eae29928d80ab1505cc3153036bbfffe4c128aa83e672f009af270", "fingerprint": "c73c-d8ef-46cd-c8f7", "nickname": "dana", "verified": false, "online": true, "last_seen": 1793715644, "address": "192.0.2.2:8483"}], "/api/activity": {"bytes_out": 0, "bytes_in": 8925, "exchanges": 60, "failures": 0, "latency_ms": 1, "throughput_bps": null, "last_exchange_at": 1793715595}, "/api/channels": [{"channel_id": "7e94370ee12ce4349076a80cd53b0ed2aee15036e24575fdae09af95c2934ebd", "name": "my guestbook", "is_private": false, "can_read": true, "created_at": 1793375081, "net_id": null, "role": "chat"}, {"channel_id": "720eddd859735f039123d2ee6bd919dbdd740e0f26d63d7d3389e4a89780165b", "name": "neighborhood", "is_private": false, "can_read": true, "created_at": 1793375081, "net_id": null, "role": "chat"}, {"channel_id": "176ed56a8c607a621217a6a0d0df613de18b5515379071b4d687725a33091776", "name": "nets", "is_private": false, "can_read": true, "created_at": 1793375081, "net_id": null, "role": "directory"}], "/api/guestbook": [{"id": 4, "channel_id": "7e94370ee12ce4349076a80cd53b0ed2aee15036e24575fdae09af95c2934ebd", "from": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "fingerprint": "d3ea-5953-67be-95e0", "body": "thanks for the radio relay last weekend", "readable": true, "created_at": 1793375099, "attachment": null}, {"id": 116, "channel_id": "7e94370ee12ce4349076a80cd53b0ed2aee15036e24575fdae09af95c2934ebd", "from": "ca98e11f17eae29928d80ab1505cc3153036bbfffe4c128aa83e672f009af270", "fingerprint": "c73c-d8ef-46cd-c8f7", "body": "the notice board saved me a trip, thank you", "readable": true, "created_at": 1793376612, "attachment": null}], "/api/nets": [], "/api/libraries": [], "/api/files": [{"path": "maps/ridge-survey.pdf", "size": 2400000}, {"path": "radio-schedule.txt", "size": 640000}], "/api/site": {"path": "~/.intraweb/site", "html": "{\"to\":\"bob\",\"subject\":\"probe\",\"body\":\"sent by a neighbor through your API\"}", "files": []}, "/api/profile": {"nickname": "neighbor", "tagline": ""}, "/api/mail/outbox": [{"id": 4, "peer_id": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "subject": "probe", "body": "sent by a neighbor through your API", "created_at": 1793664141, "delivered_at": 1793664719, "read_at": null, "attachment": null}], "/api/channels/7e94370ee12ce4349076a80cd53b0ed2aee15036e24575fdae09af95c2934ebd/posts": [{"id": 4, "channel_id": "7e94370ee12ce4349076a80cd53b0ed2aee15036e24575fdae09af95c2934ebd", "from": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "fingerprint": "d3ea-5953-67be-95e0", "body": "thanks for the radio relay last weekend", "readable": true, "created_at": 1793375099, "attachment": null}, {"id": 116, "channel_id": "7e94370ee12ce4349076a80cd53b0ed2aee15036e24575fdae09af95c2934ebd", "from": "ca98e11f17eae29928d80ab1505cc3153036bbfffe4c128aa83e672f009af270", "fingerprint": "c73c-d8ef-46cd-c8f7", "body": "the notice board saved me a trip, thank you", "readable": true, "created_at": 1793376612, "attachment": null}], "/api/channels/720eddd859735f039123d2ee6bd919dbdd740e0f26d63d7d3389e4a89780165b/posts": [{"id": 1, "channel_id": "720eddd859735f039123d2ee6bd919dbdd740e0f26d63d7d3389e4a89780165b", "from": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "fingerprint": "d3ea-5953-67be-95e0", "body": "road past the ridge is open again", "readable": true, "created_at": 1793375098, "attachment": null}, {"id": 2, "channel_id": "720eddd859735f039123d2ee6bd919dbdd740e0f26d63d7d3389e4a89780165b", "from": "4948b36bf281f1f89e83f80c367fa509b97d4af631c741742c684e6a6160656d", "fingerprint": "5f31-9950-ae47-317c", "body": "lasagna at the hall at 6, bring a fork", "readable": true, "created_at": 1793375099, "attachment": null}, {"id": 3, "channel_id": "720eddd859735f039123d2ee6bd919dbdd740e0f26d63d7d3389e4a89780165b", "from": "f44245868b5758777620ef1f256d0807f097509cbfae7109aea4581ec95b751d", "fingerprint": "aaca-6288-4b5c-2ceb", "body": "radio check moved to 1900", "readable": true, "created_at": 1793375099, "attachment": null}, {"id": 113, "channel_id": "720eddd859735f039123d2ee6bd919dbdd740e0f26d63d7d3389e4a89780165b", "from": "ca98e11f17eae29928d80ab1505cc3153036bbfffe4c128aa83e672f009af270", "fingerprint": "c73c-d8ef-46cd-c8f7", "body": "sunrise from the ridge is up on my page", "readable": true, "created_at": 1793376612, "attachment": null}, {"id": 114, "channel_id": "720eddd859735f039123d2ee6bd919dbdd740e0f26d63d7d3389e4a89780165b", "from": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "fingerprint": "d3ea-5953-67be-95e0", "body": "relay on CH 7 is working, 5 by 5 from basecamp", "readable": true, "created_at": 1793376612, "attachment": null}, {"id": 115, "channel_id": "720eddd859735f039123d2ee6bd919dbdd740e0f26d63d7d3389e4a89780165b", "from": "4948b36bf281f1f89e83f80c367fa509b97d4af631c741742c684e6a6160656d", "fingerprint": "5f31-9950-ae47-317c", "body": "lasagna is in the oven, bring plates if you have them", "readable": true, "created_at": 1793376612, "attachment": null}, {"id": 248, "channel_id": "720eddd859735f039123d2ee6bd919dbdd740e0f26d63d7d3389e4a89780165b", "from": "0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5", "fingerprint": "d3ea-5953-67be-95e0", "body": "put the old films on the server, Films button on my card", "readable": true, "created_at": 1793379530, "attachment": null}], "/api/channels/176ed56a8c607a621217a6a0d0df613de18b5515379071b4d687725a33091776/posts": [], "/api/peers/0bec49d3ae52c6fe917e5e788f96e13f2ee885f59435d6e82ffdcc08053264d5/libraries": [{"name": "Films", "kind": "video", "url": "http://192.0.2.2:8096/"}, {"name": "Field recordings", "kind": "music", "url": "http://192.0.2.2:4533/"}], "/api/peers/4948b36bf281f1f89e83f80c367fa509b97d4af631c741742c684e6a6160656d/libraries": [{"name": "Cookbooks", "kind": "books", "url": "http://192.0.2.2:8083/"}], "/api/peers/ca98e11f17eae29928d80ab1505cc3153036bbfffe4c128aa83e672f009af270/libraries": [{"name": "Jellyfin", "kind": "video", "url": "http://192.0.2.2:8096/"}, {"name": "Navidrome", "kind": "music", "url": "http://192.0.2.2:4533/"}, {"name": "Kiwix", "kind": "other", "url": "http://192.0.2.2:8080/"}], "/api/libraries/detect": [], "/api/doctor": {"checks": [{"name": "network interface", "status": "pass", "detail": "reachable at 192.0.2.2", "remedy": null}, {"name": "beacon port", "status": "pass", "detail": "bound udp/8420", "remedy": null}, {"name": "mdns responder", "status": "pass", "detail": "started and holding udp/5353", "remedy": null}, {"name": "mdns peers", "status": "pass", "detail": "heard 4 over multicast", "remedy": null}, {"name": "beacon peers", "status": "pass", "detail": "heard 4 over broadcast", "remedy": null}], "verdict": "Both discovery paths are working: 4 node(s) over multicast, 4 over broadcast.", "mdns_peers": 4, "beacon_peers": 4}};
+(function(){
+  var realFetch = window.fetch;
+  function note(t){var n=document.getElementById('demo-note');if(!n){n=document.createElement('div');n.id='demo-note';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;font:14px system-ui;padding:9px 16px;border-radius:999px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4);transition:opacity .2s';document.body.appendChild(n)}n.textContent=t;n.style.opacity=1;clearTimeout(n._t);n._t=setTimeout(function(){n.style.opacity=0},2400)}
+  window.fetch = function(input, init){
+    var url = new URL(typeof input === 'string' ? input : input.url, location.href);
+    var method = (init && init.method || 'GET').toUpperCase();
+    var path = url.pathname.replace(/^.*?(\/api\/)/, '/api/');
+    if (path.indexOf('/api/') === 0) {
+      if (method !== 'GET') { note('This is a demo of a real dashboard, so nothing was sent or saved.'); return Promise.resolve(new Response('Demo: nothing was changed.', {status: 400})); }
+      var data = window.DEMO_API[path];
+      if (data === undefined) data = path.indexOf('/posts') > 0 ? [] : {};
+      return Promise.resolve(new Response(JSON.stringify(data), {status: 200, headers: {'Content-Type': 'application/json'}}));
+    }
+    return realFetch.apply(this, arguments);
+  };
+  // Neighbor pages and libraries live on other machines that are not here.
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="http://"]');
+    if (a) { e.preventDefault(); note('In a real neighborhood this opens ' + a.getAttribute('href') + ' on their machine.'); }
+  }, true);
+  // Pictures come from paths on the node itself; point them at the saved copies.
+  function fix(root){ (root.querySelectorAll ? root.querySelectorAll('img') : []).forEach(function(img){
+    var s = img.getAttribute('src') || '';
+    if (s.indexOf('/identicon/') === 0) img.setAttribute('src', s.slice(1));
+    if (/^http:\/\/[^/]+\/avatar$/.test(s) || s === '/avatar') img.setAttribute('src', img.dataset.fallback ? img.dataset.fallback.replace(/^\//, '') : '');
+    var f = img.dataset.fallback; if (f && f.indexOf('/identicon/') === 0) img.dataset.fallback = f.slice(1);
+  }); }
+  new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(n){ if (n.nodeType === 1) fix(n); }); fix(document); }); })
+    .observe(document.documentElement, {childList: true, subtree: true});
+})();
+</script>
+<script src="app.js"></script>
+</body>
+</html>
