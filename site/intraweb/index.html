@@ -143,8 +143,14 @@ fieldset small{color:var(--ink-soft)}
 .demo-body{padding:0;background:#111}
 .demo-body iframe{display:block;width:100%;height:640px;border:0;background:#16151a}
 .win.max .demo-body iframe{height:calc(100vh - 150px)}
-.tasks .task{flex:0 1 170px;min-width:0;display:flex;align-items:center;gap:6px;padding:0 8px;border-radius:3px;color:#fff;font:12px var(--ui);white-space:nowrap;overflow:hidden;background:var(--task-hi);border:1px solid #1b4fc1;cursor:pointer}
+.tasks .task{flex:0 0 auto;max-width:150px;min-width:0;display:flex;align-items:center;gap:6px;padding:0 8px;border-radius:3px;color:#fff;font:12px var(--ui);white-space:nowrap;overflow:hidden;background:var(--task-hi);border:1px solid #1b4fc1;cursor:pointer}
 .tasks .task span{overflow:hidden;text-overflow:ellipsis}
+.tasks .task svg{flex:none}
+/* twelve windows do not fit in one bar: buttons keep a readable width and the
+   strip scrolls sideways, fading at the edge so it is clear there is more */
+.tasks{overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);padding-right:28px}
+.tasks::-webkit-scrollbar{display:none}
+.tasks .task{scroll-snap-align:start}
 .tasks .task[aria-pressed="true"]{background:#1e4ab8;box-shadow:inset 1px 1px 2px rgba(0,0,0,.45)}
 .tasks .task:hover{filter:brightness(1.1)}
 button.start{border:0;cursor:pointer;font-family:var(--ui)}
@@ -156,7 +162,7 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
 .sm-item.closed span::after{content:" (closed)";color:#888;font-size:11px}
 .sm-item.closed:hover span::after{color:#dde}
 .sm-foot{display:flex;align-items:center;gap:8px;padding:9px 12px;border-top:1px solid var(--face-lo);background:var(--face);font-size:12px;text-decoration:none;color:var(--ink)}
-@media (max-width:560px){.tasks .task:nth-child(n+3){display:none}.demo-body iframe{height:520px}}
+@media (max-width:560px){.tasks .task{max-width:120px}.demo-body iframe{height:520px}}
 /* hosting paths */
 .kinds{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 4px}
 .kinds span{background:#fff;border:1px solid var(--face-lo);border-radius:999px;padding:2px 10px;font-size:12px}
@@ -197,7 +203,7 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
   background:linear-gradient(#5ec95a,var(--start) 30%,var(--start) 80%,#2b7a27);text-decoration:none;box-shadow:inset -2px 0 3px rgba(0,0,0,.25)}
 .start:hover{filter:brightness(1.1)}
 .start svg{width:18px;height:18px}
-.tasks{flex:1;display:flex;gap:4px;padding:4px 6px;min-width:0;overflow:hidden}
+.tasks{flex:1;display:flex;gap:4px;padding:4px 6px;min-width:0}
 .tasks a{flex:0 1 160px;min-width:0;display:flex;align-items:center;gap:6px;padding:0 8px;border-radius:3px;color:#fff;text-decoration:none;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--task-hi);border:1px solid #1b4fc1}
 .tasks a:hover{filter:brightness(1.1)}
 .tray{display:flex;align-items:center;gap:10px;padding:0 12px;color:#fff;font-size:12px;background:linear-gradient(#18b4f5,var(--tray) 20%,#0b7cd0);border-left:1px solid #0b5aa8}
@@ -453,6 +459,8 @@ document.querySelectorAll(".strip button").forEach(function(b){b.addEventListene
 /* window manager: drag, focus, minimize, maximize, close, reopen */
 (function(){
   var wide=matchMedia("(min-width: 961px)"), z=10, tasks=document.getElementById("tasks"), list=document.getElementById("sm-list");
+  // a plain mouse wheel scrolls the taskbar sideways, since it overflows
+  tasks.addEventListener("wheel",function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)&&tasks.scrollWidth>tasks.clientWidth){tasks.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});
   var wins=[].slice.call(document.querySelectorAll(".win, .ie"));
   var SVG={min:'<svg viewBox="0 0 10 10"><path d="M2 8h6"/></svg>',max:'<svg viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7"/></svg>',close:'<svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2l-6 6"/></svg>'};
   function title(w){var t=w.querySelector(".bar .t");return t?t.textContent.trim():w.id}
@@ -481,7 +489,7 @@ document.querySelectorAll(".strip button").forEach(function(b){b.addEventListene
     bar.addEventListener("dblclick",function(e){if(e.target.closest("button"))return;w.classList.toggle("max");front(w)});
     // taskbar button
     var t=document.createElement("button");t.type="button";t.className="task";t.innerHTML='<svg width="14" height="14"><use href="'+icon(w)+'"/></svg>';
-    var sp=document.createElement("span");sp.textContent=title(w);t.appendChild(sp);
+    var sp=document.createElement("span");sp.textContent=title(w).split(" — ")[0];t.title=title(w);t.appendChild(sp);
     t.addEventListener("click",function(){if(state(w)!=="open")set(w,"open");else if(w.classList.contains("active"))set(w,"min");else front(w)});
     tasks.appendChild(t);w._task=t;
     // start menu entry
