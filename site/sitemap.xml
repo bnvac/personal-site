@@ -49,4 +49,10 @@
 <url>
 <loc>/alphafold/</loc>
 </url>
+<url>
+<loc>/wallet/</loc>
+</url>
+<url>
+<loc>/baselayer/demo/</loc>
+</url>
 </urlset>

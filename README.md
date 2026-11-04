@@ -15,7 +15,27 @@ site/                  everything that goes on Neocities
   education/ experience/ publications/ software/ awards/ certifications/ contact/
   intraweb/ backoffice/ hearth/ smart-shelf/ alphafold/   project pages
     */demo/            saved, clickable demos of the real apps
+  baselayer/demo/      the baselayer config builder, runs in the browser
+  wallet/              the leather-wallet portfolio (generated, see below)
+wallet/                source for site/wallet/ (not uploaded)
 ```
+
+## Rebuilding the wallet
+
+`site/wallet/` is generated. Edit `wallet/template.html`, then:
+
+```bash
+python3 wallet/build.py
+```
+
+```bash
+python3 wallet/export.py
+```
+
+`build.py` inlines the photo and fonts into `wallet/index.html`. `export.py`
+copies it into `site/wallet/` with only the images it uses, and points its demo
+windows at the site's own demo pages. After changing the résumé, regenerate
+the PDF with `node wallet/pdf.js` (needs Playwright) before exporting.
 
 ## Upload to Neocities
 
