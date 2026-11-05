@@ -715,11 +715,21 @@ var LOGOS = {"stdnt": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAY
     var cs = .9 * Math.min(2.6, (W - 32) / 300, (H - 110) / 440);
     var s = opening ? os : cs;
     var x = opening ? (W - 600 * s) / 2 : (W - 300 * s) / 2 - 300 * s, y = (H - 352 * s) / 2 + 36 * s - 22;
-    wallet.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
-    papers.style.transform = wallet.style.transform;
+    X = x; Y = y; S = s; place();
+  }
+  // Moving, the wallet is scaled with a transform so it can animate. Still, it is
+  // sized with zoom instead: a scaled layer is drawn once and stretched, which
+  // goes soft, while zoom lays it out and draws text and photos at true size.
+  var X = 0, Y = 0, S = 1;
+  function place() {
+    var still = body.classList.contains('flat');
+    [wallet, papers].forEach(function (e) {
+      if (still) { e.style.transform = 'none'; e.style.zoom = S; e.style.left = X / S + 'px'; e.style.top = Y / S + 'px'; }
+      else { e.style.zoom = ''; e.style.left = ''; e.style.top = ''; e.style.transform = 'translate(' + X + 'px,' + Y + 'px) scale(' + S + ')'; }
+    });
   }
   var flatT;
-  function swap(on) { body.classList.add('nt'); body.classList.toggle('flat', on); void body.offsetWidth; body.classList.remove('nt'); }
+  function swap(on) { body.classList.add('nt'); body.classList.toggle('flat', on); place(); void body.offsetWidth; body.classList.remove('nt'); }
   function settle() { clearTimeout(flatT); flatT = setTimeout(function () { swap(true); }, 900); }
   function open() { if (opening) return; swap(false); opening = 1; body.classList.add('is-open'); layout(); settle(); }
   function fold() { if (!opening) return; closeFocus(); swap(false); opening = 0; body.classList.remove('is-open'); layout(); settle(); }
@@ -829,7 +839,7 @@ var LOGOS = {"stdnt": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAY
   var loaded = document.readyState === 'complete' ? Promise.resolve() : new Promise(function (r) { addEventListener('load', r); });
   function reveal() {
     if (shown) return; shown = 1; bar.style.width = '100%'; layout();
-    setTimeout(function () { body.classList.add('ready'); requestAnimationFrame(function () { requestAnimationFrame(function () { body.classList.remove('nt'); body.classList.add('flat'); }); }); }, 200);
+    setTimeout(function () { body.classList.add('ready'); requestAnimationFrame(function () { requestAnimationFrame(function () { swap(true); }); }); }, 200);
   }
   Promise.all([fonts, loaded]).then(reveal); setTimeout(reveal, 5000);
   addEventListener('resize', layout);
