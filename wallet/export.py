@@ -1,6 +1,6 @@
 # Publish the built wallet as the site's front page.
 #
-#   site/index.html   the wallet, with a head for search and link previews and a small menu
+#   site/index.html   the wallet, with a head for search and link previews
 #   site/wallet/      the images and résumé it uses; /wallet/ itself redirects to /
 #
 # Demo windows are pointed at the site's own demo pages, so nothing is stored twice.
@@ -26,17 +26,7 @@ HEAD = '''<!doctype html>
 <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
 <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
 <link rel="manifest" href="/images/manifest.json">
-<style>
-.topnav{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));z-index:3;display:flex;gap:18px;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;transition:opacity .3s}
-.topnav a{color:#c8c2b8;text-decoration:none;text-shadow:0 1px 3px #000}
-.topnav a:hover,.topnav a:focus-visible{color:#fff}
-.focusing .topnav{opacity:0;pointer-events:none}
-@media (max-width:520px){.topnav{left:16px;right:16px;justify-content:center;gap:14px;font-size:10px}}
-</style>
 '''
-NAV = ('<nav class="topnav" aria-label="Site"><a href="/about/">About</a><a href="/experience/">Experience</a>'
-       '<a href="/software/">Software</a><a href="/contact/">Contact</a></nav>\n')
-
 t = open(os.path.join(S, 'index.html')).read()
 t = t.replace('<meta charset="utf-8">\n<title>bnvac Wallet</title>\n', '', 1)
 t = re.sub(r'<meta name="claude:[^>]*>\n?', '', t)
@@ -45,8 +35,6 @@ assert 'demos/' not in t
 used = sorted(set(re.findall(r'img/[A-Za-z0-9._-]+', t)))
 t = re.sub(r'(["\'(])img/', r'\1/wallet/img/', t)
 t = t.replace('href="resume.pdf"', 'href="/wallet/resume.pdf"')
-assert t.count('<p class="hint">') == 1
-t = t.replace('<p class="hint">', NAV + '<p class="hint">')
 t = HEAD + t + '\n</html>\n'
 
 if os.path.isdir(D): shutil.rmtree(D)
