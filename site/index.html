@@ -40,7 +40,7 @@ html,body{min-height:100%}
 .loader i{display:block;height:100%;width:0;background:#c8c2b8;transition:width .2s}
 .ready .loader{opacity:0;pointer-events:none}
 body:not(.ready) .wallet,body:not(.ready) .papers,body:not(.ready) .hint{opacity:0}
-.nt .wallet,.nt .papers,.nt .pk-l,.nt .billwall,.nt .billwall::after{transition:none!important}
+.nt .wallet,.nt .papers,.nt .pk-l,.nt .cover,.nt .pp,.nt .paper,.nt .billwall,.nt .billwall::after{transition:none!important}
 body{margin:0;background:#141210;background-image:radial-gradient(ellipse 70% 60% at 50% 45%,#2a231c 0,#141210 70%);color:var(--text);font-family:var(--display);overflow:hidden;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   -webkit-user-select:none;user-select:none;touch-action:none}
@@ -62,6 +62,19 @@ body{margin:0;background:#141210;background-image:radial-gradient(ellipse 70% 60
 .is-open .cover{transform:translateZ(2px) rotateY(-180deg)}
 .face{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
 .face--back{transform:rotateY(180deg)}
+/* At rest the 3D flips are swapped for the same picture drawn flat. Browsers
+   rasterize a 3D-rotated layer once and stretch it, so the open cover and the
+   papers on it came out soft. A half-turn about a vertical axis and a mirror
+   (scaleX(-1)) look identical, so the swap is invisible. Taken off again just
+   before the next fold so the turn still animates in 3D. */
+.flat .base{transform:none;z-index:1}
+.flat .cover,.flat .pk-l,.flat .pp{transform-style:flat}
+.flat .cover{transform:none}.flat.is-open .cover{transform:scaleX(-1)}
+.flat .face--back{transform:scaleX(-1)}
+.flat:not(.is-open) .face--back,.flat.is-open .cover>.face.outer{visibility:hidden}
+.flat .pk-l{transform:none}.flat.is-open .pk-l{transform:scaleX(-1)}
+.flat .pp>.fr{transform:scaleX(-1)}.flat .pp>.bk{transform:none}
+.flat:not(.is-open) .pp>.fr,.flat.is-open .pp>.bk{visibility:hidden}
 .base>.face{box-shadow:0 14px 30px -10px rgba(0,0,0,.85)}
 .leather{background-color:var(--leather);
   background-image:radial-gradient(rgba(255,255,255,.035) 1px,transparent 1.2px),radial-gradient(rgba(0,0,0,.18) 1px,transparent 1.2px);
@@ -698,15 +711,18 @@ var LOGOS = {"stdnt": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAY
     if (W < 200) W = 800; if (H < 300) H = 700;
     // as big as the screen allows. Papers stand about 72 units above the
     // leather, so the wallet sits that much below centre; the hint needs ~50px.
-    os = Math.min(2.2, (W - 16) / 600, (H - 100) / 430);
-    var cs = Math.min(2.6, (W - 32) / 300, (H - 110) / 440);
+    os = .9 * Math.min(2.2, (W - 16) / 600, (H - 100) / 430);
+    var cs = .9 * Math.min(2.6, (W - 32) / 300, (H - 110) / 440);
     var s = opening ? os : cs;
     var x = opening ? (W - 600 * s) / 2 : (W - 300 * s) / 2 - 300 * s, y = (H - 352 * s) / 2 + 36 * s - 22;
     wallet.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
     papers.style.transform = wallet.style.transform;
   }
-  function open() { if (opening) return; opening = 1; body.classList.add('is-open'); layout(); }
-  function fold() { if (!opening) return; closeFocus(); opening = 0; body.classList.remove('is-open'); layout(); }
+  var flatT;
+  function swap(on) { body.classList.add('nt'); body.classList.toggle('flat', on); void body.offsetWidth; body.classList.remove('nt'); }
+  function settle() { clearTimeout(flatT); flatT = setTimeout(function () { swap(true); }, 900); }
+  function open() { if (opening) return; swap(false); opening = 1; body.classList.add('is-open'); layout(); settle(); }
+  function fold() { if (!opening) return; closeFocus(); swap(false); opening = 0; body.classList.remove('is-open'); layout(); settle(); }
   wallet.addEventListener('click', function (ev) { if (!opening) { ev.stopPropagation(); open(); } }, true);
   papers.addEventListener('click', function (ev) { var p = ev.target.closest('.paper'); if (!p) return; if (!opening) return open(); showPaper(p.dataset.k, p); });
   papers.addEventListener('keydown', function (ev) { var p = ev.target.closest('.paper'); if (p && ev.key === 'Enter') { if (!opening) open(); else showPaper(p.dataset.k, p); } });
@@ -813,7 +829,7 @@ var LOGOS = {"stdnt": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAY
   var loaded = document.readyState === 'complete' ? Promise.resolve() : new Promise(function (r) { addEventListener('load', r); });
   function reveal() {
     if (shown) return; shown = 1; bar.style.width = '100%'; layout();
-    setTimeout(function () { body.classList.add('ready'); requestAnimationFrame(function () { requestAnimationFrame(function () { body.classList.remove('nt'); }); }); }, 200);
+    setTimeout(function () { body.classList.add('ready'); requestAnimationFrame(function () { requestAnimationFrame(function () { body.classList.remove('nt'); body.classList.add('flat'); }); }); }, 200);
   }
   Promise.all([fonts, loaded]).then(reveal); setTimeout(reveal, 5000);
   addEventListener('resize', layout);
