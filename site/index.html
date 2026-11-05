@@ -49,6 +49,12 @@ body{margin:0;background:#141210;background-image:radial-gradient(ellipse 70% 60
 .hint{position:fixed;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom,0px));text-align:center;font:500 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#c8c2b8;text-shadow:0 1px 3px #000;z-index:1;pointer-events:none;transition:opacity .3s}
 .hint .b{display:none}
 .is-open .hint .a{display:none}.is-open .hint .b{display:inline}
+.hint .n{display:none}.narrow.is-open .hint .b{display:none}.narrow.is-open .hint .n{display:inline}
+.sides{position:fixed;left:0;right:0;bottom:calc(46px + env(safe-area-inset-bottom,0px));display:none;justify-content:center;gap:4px;z-index:3}
+.narrow.is-open:not(.focusing) .sides{display:flex}
+.sides button{width:28px;height:28px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.sides button::after{content:"";width:7px;height:7px;border-radius:50%;background:#6f665c;transition:background .2s,transform .2s}
+.sides button[aria-current="true"]::after{background:#e8e2d8;transform:scale(1.15)}
 .is-open.focusing .hint{opacity:0}
 
 /* ---- wallet: two 300x360 halves --------------------------------------- */
@@ -459,7 +465,8 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-o
   <iframe id="d-frame" title="Project demo"></iframe>
 </div>
 <div class="loader" role="progressbar" aria-label="Loading"><i></i></div>
-<p class="hint"><span class="a">Tap to open</span><span class="b">Tap a card or a paper · tap outside to close</span></p>
+<div class="sides" id="sides" aria-label="Side of the wallet"><button type="button" data-side="0" aria-label="ID and projects" aria-current="true"></button><button type="button" data-side="1" aria-label="Experience" aria-current="false"></button></div>
+<p class="hint"><span class="a">Tap to open</span><span class="b">Tap a card or a paper · tap outside to close</span><span class="n">Swipe for the other side · tap a card</span></p>
 
 <template id="cards">
   <div class="card c-id" data-key="id" data-title="bnvac" data-text="Millis High School, class of 2027. Sensing systems and research infrastructure: radar, satellites, neural interfaces and the software around them.">
@@ -704,15 +711,20 @@ var LOGOS = {"stdnt": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAY
   // ---- the wallet: starts closed in the middle, opens flat ----
   var papers = document.getElementById('papers'); document.body.insertBefore(papers, wallet);
   var W, H, os, opening = 0, openT = 1;
+  var narrow = false, side = 0;
   function layout() {
     W = innerWidth || document.documentElement.clientWidth || 800; H = innerHeight || document.documentElement.clientHeight || 700;
     if (W < 200) W = 800; if (H < 300) H = 700;
     // as big as the screen allows. Papers stand about 72 units above the
     // leather, so the wallet sits that much below centre; the hint needs ~50px.
-    os = .9 * Math.min(2.2, (W - 16) / 600, (H - 100) / 430);
+    // On a phone the open wallet would shrink to half size to fit both sides,
+    // so it shows one side at a time instead, as big as the closed one.
+    narrow = (W - 16) / 600 < .8;
+    body.classList.toggle('narrow', narrow);
+    os = narrow ? .94 * Math.min((W - 20) / 300, (H - 130) / 430) : .9 * Math.min(2.2, (W - 16) / 600, (H - 100) / 430);
     var cs = .9 * Math.min(2.6, (W - 32) / 300, (H - 110) / 440);
     var s = opening ? os : cs;
-    var x = opening ? (W - 600 * s) / 2 : (W - 300 * s) / 2 - 300 * s, y = (H - 352 * s) / 2 + 36 * s - 22;
+    var x = opening ? (narrow ? W / 2 - (side ? 450 : 150) * s : (W - 600 * s) / 2) : (W - 300 * s) / 2 - 300 * s, y = (H - 352 * s) / 2 + 36 * s - 22;
     X = x; Y = y; S = s; place();
   }
   // Moving, the wallet is scaled with a transform so it can animate. Still, it is
@@ -726,15 +738,27 @@ var LOGOS = {"stdnt": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAY
       else { e.style.zoom = ''; e.style.left = ''; e.style.top = ''; e.style.transform = 'translate(' + X + 'px,' + Y + 'px) scale(' + S + ')'; }
     });
   }
-  var flatT;
+  var flatT, dots = document.getElementById('sides');
+  function showSide(n, quiet) {
+    side = n; dots.children[0].setAttribute('aria-current', n ? 'false' : 'true'); dots.children[1].setAttribute('aria-current', n ? 'true' : 'false');
+    if (quiet) return; swap(false); layout(); settle();
+  }
+  dots.addEventListener('click', function (ev) { var b = ev.target.closest('button'); if (b && opening) showSide(+b.dataset.side); });
+  // swipe sideways on a phone to turn to the other side
+  var tx = null, ty = 0;
+  addEventListener('touchstart', function (ev) { if (!narrow || !opening || focus.classList.contains('on') || demo.classList.contains('on')) { tx = null; return; } tx = ev.touches[0].clientX; ty = ev.touches[0].clientY; }, { passive: true });
+  addEventListener('touchend', function (ev) {
+    if (tx === null) return; var dx = ev.changedTouches[0].clientX - tx, dy = ev.changedTouches[0].clientY - ty; tx = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) showSide(dx < 0 ? 1 : 0);
+  }, { passive: true });
   function swap(on) { body.classList.add('nt'); body.classList.toggle('flat', on); place(); void body.offsetWidth; body.classList.remove('nt'); }
   function settle() { clearTimeout(flatT); flatT = setTimeout(function () { swap(true); }, 900); }
-  function open() { if (opening) return; swap(false); opening = 1; body.classList.add('is-open'); layout(); settle(); }
+  function open() { if (opening) return; swap(false); opening = 1; showSide(0, 1); body.classList.add('is-open'); layout(); settle(); }
   function fold() { if (!opening) return; closeFocus(); swap(false); opening = 0; body.classList.remove('is-open'); layout(); settle(); }
   wallet.addEventListener('click', function (ev) { if (!opening) { ev.stopPropagation(); open(); } }, true);
   papers.addEventListener('click', function (ev) { var p = ev.target.closest('.paper'); if (!p) return; if (!opening) return open(); showPaper(p.dataset.k, p); });
   papers.addEventListener('keydown', function (ev) { var p = ev.target.closest('.paper'); if (p && ev.key === 'Enter') { if (!opening) open(); else showPaper(p.dataset.k, p); } });
-  document.addEventListener('click', function (ev) { if (opening && !wallet.contains(ev.target) && !papers.contains(ev.target) && !focus.contains(ev.target) && !demo.contains(ev.target)) fold(); });
+  document.addEventListener('click', function (ev) { if (opening && !wallet.contains(ev.target) && !papers.contains(ev.target) && !focus.contains(ev.target) && !demo.contains(ev.target) && !dots.contains(ev.target)) fold(); });
   wallet.tabIndex = 0;
   wallet.addEventListener('keydown', function (ev) { if (ev.target === wallet && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); opening ? fold() : open(); } });
 
