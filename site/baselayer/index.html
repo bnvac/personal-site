@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>baselayer</title>
+<meta name="description" content="Build a NixOS configuration in your browser and download working flake.nix and configuration.nix files.">
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+<style>
+/* Same palette as the app itself, so the page and the demo read as one thing. */
+:root{--bg:#f7f8fa;--panel:#fff;--line:#dfe3ea;--ink:#12161d;--dim:#545d6b;--faint:#858e9c;--accent:#4b62d4;--soft:#eaedfb;--code:#12161d;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--panel:#151a21;--line:#262d38;--ink:#e6eaf1;--dim:#9aa5b5;--faint:#6d788a;--accent:#8193f0;--soft:#1b2140;--code:#0a0d12;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans)}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;font-size:14px}
+.top a{color:var(--dim);text-decoration:none}.top a:hover{color:var(--ink)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink)!important;font-size:16px}
+.brand svg{width:26px;height:26px}
+.hero{padding:56px 0 40px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:center}
+h1{margin:0 0 14px;font-size:clamp(34px,5vw,54px);line-height:1.05;letter-spacing:-.02em}
+.lede{margin:0 0 26px;color:var(--dim);font-size:18px;max-width:34em}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+.btn.p{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn:hover{filter:brightness(1.05)}
+.code{background:var(--code);color:#dfe4ec;border-radius:12px;padding:18px 20px;font:13.5px/1.7 var(--mono);overflow:auto;box-shadow:0 20px 50px -24px rgba(18,22,29,.45)}
+.code .c{color:#7d8798}.code .k{color:#9db1ff}.code .s{color:#9fe0b8}
+.sec{padding:44px 0;border-top:1px solid var(--line)}
+h2{margin:0 0 8px;font-size:26px;letter-spacing:-.01em}
+.sec>p{margin:0 0 22px;color:var(--dim);max-width:44em}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+.card b{display:block;margin-bottom:6px}
+.card p{margin:0;color:var(--dim);font-size:15px}
+.demo{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);box-shadow:0 24px 60px -30px rgba(18,22,29,.35)}
+.chrome{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line);font-size:13px}
+.chrome i{width:11px;height:11px;border-radius:50%;background:var(--line);flex:none}
+.chrome .url{flex:1;min-width:0;font-family:var(--mono);color:var(--faint);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chrome a{font-weight:600;text-decoration:none;white-space:nowrap}
+.demo iframe{display:block;width:100%;height:min(780px,82vh);border:0;background:var(--bg)}
+footer{padding:28px 0 40px;color:var(--faint);font-size:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line)}
+footer a{color:var(--dim)}
+@media (max-width:860px){.hero{grid-template-columns:1fr;padding-top:28px}.three{grid-template-columns:1fr}}
+@media (max-width:520px){.chrome .url{display:none}.demo iframe{height:76vh}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="/baselayer/"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="nx" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7EBAE4"/><stop offset="1" stop-color="#5277C3"/></linearGradient></defs><path fill="url(#nx)" d="M7.352 1.592l-1.364.002L5.32 2.75l1.557 2.713-3.137-.008-1.32 2.34H14.11l-1.353-2.332-3.192-.006-2.214-3.865zm6.175 0l-2.687.025 5.846 10.127 1.341-2.34-1.59-2.765 2.24-3.85-.683-1.182h-1.336l-1.57 2.705-1.56-2.72zm6.887 4.195l-5.846 10.125 2.696-.008 1.601-2.76 4.453.016.682-1.183-.666-1.157-3.13-.008L21.778 8.1l-1.365-2.313zM9.432 8.086l-2.696.008-1.601 2.76-4.453-.016L0 12.02l.666 1.157 3.13.008-1.575 2.71 1.365 2.315L9.432 8.086zM7.33 12.25l-.006.01-.002-.004-1.342 2.34 1.59 2.765-2.24 3.85.684 1.182H7.35l.004-.006h.001l1.567-2.698 1.558 2.72 2.688-.026-.004-.006h.01L7.33 12.25zm2.55 3.93l1.354 2.332 3.192.006 2.215 3.865 1.363-.002.668-1.156-1.557-2.713 3.137.008 1.32-2.34H9.881Z"/></svg>baselayer</a>
+    <nav><a href="/">bnvac.com</a> &nbsp;·&nbsp; <a href="https://github.com/bnvac/baselayer">GitHub</a></nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Build a NixOS config in your browser.</h1>
+      <p class="lede">Pick what the machine is for: a desktop, the packages you use, the services you want to host and how locked down it should be. baselayer writes the <code>flake.nix</code> and <code>configuration.nix</code> for you, ready to install.</p>
+      <div class="btns">
+        <a class="btn p" href="#try">Try it below</a>
+        <a class="btn" href="/baselayer/demo/">Open full screen</a>
+        <a class="btn" href="https://github.com/bnvac/baselayer">Source</a>
+      </div>
+    </div>
+    <pre class="code" aria-label="Part of a generated configuration"><span class="c"># generated by baselayer</span>
+<span class="k">services</span>.jellyfin.enable = <span class="k">true</span>;
+<span class="k">services</span>.vaultwarden.enable = <span class="k">true</span>;
+<span class="k">services</span>.caddy.virtualHosts.<span class="s">"home.lan"</span> = { … };
+
+<span class="k">networking</span>.firewall.allowedTCPPorts = [ 80 443 8096 ];
+<span class="k">security</span>.sudo.wheelNeedsPassword = <span class="k">true</span>;</pre>
+  </section>
+
+  <section class="sec">
+    <h2>How it works</h2>
+    <p>Everything happens on the page. Nothing is uploaded, and there is no account.</p>
+    <div class="three">
+      <div class="card"><b>Choose, don't type</b><p>Start from a bundle like a home media server or a locked-down laptop, then change anything step by step. Package search uses the same index as search.nixos.org.</p></div>
+      <div class="card"><b>Real files out</b><p>Services come from their actual NixOS modules. Ports go into the firewall and dependencies come along. A checker flags conflicts, like two services on port 80.</p></div>
+      <div class="card"><b>The link is the config</b><p>Your choices are packed into the URL. Send someone the link and they see the same machine. A one-line installer writes the files onto a fresh system.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="try">
+    <h2>Try it</h2>
+    <p>The real app, running right here. Build something and copy the output.</p>
+    <div class="demo">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">bnvac.com/baselayer/demo/</span><a href="/baselayer/demo/">Open full screen ↗</a></div>
+      <iframe src="/baselayer/demo/" title="baselayer live demo" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <footer><span>baselayer · by <a href="/">Ben Vaccaro</a></span><a href="https://github.com/bnvac/baselayer">github.com/bnvac/baselayer</a></footer>
+</div>
+</body>
+</html>

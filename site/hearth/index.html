@@ -334,6 +334,8 @@ function open(id,btn){
   veil.hidden=false;panel.scrollTop=0;panel.focus();
   if(id==="demo")demo();
 }
+// bnvac.com/hearth/demo/ lands here with the demo already open
+if(location.hash==="#demo")setTimeout(function(){open("demo")},0);
 
 function demo(){
   var out=document.getElementById("sh"),inp=document.getElementById("shi"),busy=false;

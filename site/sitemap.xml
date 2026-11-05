@@ -55,4 +55,13 @@
 <url>
 <loc>/baselayer/demo/</loc>
 </url>
+<url>
+<loc>/baselayer/</loc>
+</url>
+<url>
+<loc>/intraweb/demo/</loc>
+</url>
+<url>
+<loc>/backoffice/demo/</loc>
+</url>
 </urlset>
