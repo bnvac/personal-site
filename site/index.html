@@ -139,7 +139,10 @@ body{margin:0;background:#141210;background-image:radial-gradient(ellipse 70% 60
 .paper.cv{width:136px;background:var(--paper);padding:9px 12px;box-sizing:border-box;font:500 7px/1.25 var(--tex);color:#333}
 .paper.cv b{display:block;text-align:center;font:700 11px/1 var(--tex);letter-spacing:.04em;white-space:nowrap;margin-bottom:3px}
 .paper.cv hr{border:0;border-top:.5px solid #555;margin:3px 0}
-.paper.ce{width:190px;background:#f4f3ef}
+.paper.ce{width:190px;background:#f4f3ef;overflow:hidden}
+/* the tops of two certificates, so the sheet is not blank above the pocket */
+.paper.ce .cth{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.paper.ce .cth img{display:block;width:100%;aspect-ratio:900/696;object-fit:cover;object-position:top;border:.5px solid #d8d5cd;box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .paper.ce .cin{position:absolute;inset:0;box-sizing:border-box;padding:11px 12px;text-align:left;color:#3a3a38}
 .paper.ce .cin::before{content:"";position:absolute;inset:5px;border:.5px solid #c9c7c0;pointer-events:none}
 .paper.ce b{display:block;font:500 12px/1 var(--tex);letter-spacing:.04em}
@@ -442,7 +445,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-o
   <div class="papers" id="papers">
     <div class="pk pk-r">
       <div class="billwall" aria-hidden="true"></div>
-      <div class="paper ce p-ce" data-k="ce" tabindex="0" role="button" aria-label="Unfold the certificates"><div class="cin"><b>Certificates</b></div></div>
+      <div class="paper ce p-ce" data-k="ce" tabindex="0" role="button" aria-label="Unfold the certificates"><div class="cin"><b>Certificates</b><span class="cth"><img src="/wallet/img/cert-cubesat.jpg" alt=""><img src="/wallet/img/cert-mentorshpe.jpg" alt=""></span></div></div>
     </div>
     <div class="pk pk-l">
       <div class="billwall" aria-hidden="true"></div>
