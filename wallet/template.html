@@ -41,7 +41,7 @@ body{margin:0;background:#141210;background-image:radial-gradient(ellipse 70% 60
 .is-open.focusing .hint{opacity:0}
 
 /* ---- wallet: two 300x360 halves --------------------------------------- */
-.wallet{position:fixed;left:0;top:0;width:600px;height:352px;transition:transform .8s cubic-bezier(.65,0,.35,1),opacity .5s;cursor:pointer;z-index:2;perspective:2000px;will-change:transform;cursor:grab;transform-origin:0 0}
+.wallet{position:fixed;left:0;top:0;width:600px;height:352px;transition:transform .8s cubic-bezier(.65,0,.35,1),opacity .5s;cursor:pointer;z-index:2;perspective:2000px;cursor:grab;transform-origin:0 0}
 .wallet:active{cursor:grabbing}
 .is-open .wallet{cursor:default}
 .base{transform:translateZ(0)}
@@ -95,7 +95,7 @@ body{margin:0;background:#141210;background-image:radial-gradient(ellipse 70% 60
 /* papers in the money pocket. The pocket runs the full width and folds with the
    wallet: the left half rides the cover's hinge, the right half the base, so
    nothing slides relative to the leather and the spread is centered both ways. */
-.papers{position:fixed;left:0;top:0;width:600px;height:352px;z-index:1;transform-origin:0 0;transition:transform .8s cubic-bezier(.65,0,.35,1),opacity .5s;perspective:2000px;pointer-events:none;will-change:transform}
+.papers{position:fixed;left:0;top:0;width:600px;height:352px;z-index:1;transform-origin:0 0;transition:transform .8s cubic-bezier(.65,0,.35,1),opacity .5s;perspective:2000px;pointer-events:none}
 .pk{position:absolute;left:300px;top:-50px;width:300px;height:100px}
 .pk-l{transform-origin:0 50%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.65,0,.35,1)}
 .is-open .pk-l{transform:rotateY(-180deg)}
