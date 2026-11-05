@@ -157,7 +157,7 @@ body{margin:0;background:#141210;background-image:radial-gradient(ellipse 70% 60
 .c-id .ch{left:0;right:0;top:0;height:24px;padding:0 22px;background:linear-gradient(180deg,#e9ebee 0,#c4c8ce 55%,#aeb3ba 100%);box-shadow:inset 0 -1px 0 rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.7);color:#3d4249;font:600 9px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase}
 .c-id .cb{display:grid;grid-template-columns:74px 1fr;gap:12px;top:34px}
 .c-id img{width:74px;height:74px;border-radius:5px;object-fit:cover}
-.c-id .nm{font:700 27px/.95 Arial,"Helvetica Neue",Helvetica,sans-serif;letter-spacing:-.01em;text-transform:uppercase;margin:2px 0 4px}
+.c-id .nm{white-space:nowrap;font:700 19px/.95 Arial,"Helvetica Neue",Helvetica,sans-serif;letter-spacing:-.01em;text-transform:uppercase;margin:2px 0 4px}
 .c-id .role{font:500 9.5px/1.3 var(--display);color:#6f7680}
 .c-id .meta{margin-top:7px;font:400 8.5px/1.45 var(--mono);color:var(--ink-2)}
 .c-id .meta b{color:var(--ink);font-weight:600}
@@ -425,7 +425,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-o
   <div class="papers" id="papers">
     <div class="pk pk-r">
       <div class="billwall" aria-hidden="true"></div>
-      <div class="paper ce p-ce" data-k="ce" tabindex="0" role="button" aria-label="Unfold the certificates"><div class="cin"><b>Certificates</b><span>7 on file</span></div></div>
+      <div class="paper ce p-ce" data-k="ce" tabindex="0" role="button" aria-label="Unfold the certificates"><div class="cin"><b>Certificates</b></div></div>
     </div>
     <div class="pk pk-l">
       <div class="billwall" aria-hidden="true"></div>
@@ -438,7 +438,6 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-o
     <div class="face outer"><i class="crease" aria-hidden="true"></i></div>
     <div class="face face--back inside stitch" id="left">
       <div class="window" id="window"></div>
-      <div class="plabel" style="top:194px">Projects</div>
     </div>
   </div>
 </div>
@@ -453,9 +452,9 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-o
 
 <template id="cards">
   <div class="card c-id" data-key="id" data-title="bnvac" data-text="Millis High School, class of 2027. Sensing systems and research infrastructure: radar, satellites, neural interfaces and the software around them.">
-    <div class="ch"><span>Builder ID</span><span>Nº 2027</span></div>
+    <div class="ch"><span>Future Engineer</span><span>Co 2027</span></div>
     <div class="cb"><img src="PHOTO" alt="">
-      <div><div class="nm">bnvac</div><div class="role">Embedded systems, RF and software</div>
+      <div><div class="nm">Ben Vaccaro</div><div class="role">Embedded systems, RF and software</div>
       <div class="meta">School <b>Millis High, 2027</b><br>Based <b>Millis, MA</b></div></div></div>
     <canvas class="barcode" width="160" height="28"></canvas><span class="url">github.com/bnvac</span>
   </div>
@@ -687,10 +686,9 @@ var LOGOS = LOGO_MAP;
     });
   }
   document.getElementById('window').appendChild(makeCard('id'));
-  fill(document.getElementById('left'), ['stdnt', 'intraweb', 'backoffice', 'hearth', 'baselayer'], 208, 27);
+  fill(document.getElementById('left'), ['stdnt', 'intraweb', 'backoffice', 'hearth', 'baselayer'], 200, 28);
   var right = document.getElementById('right');
-  var lab = document.createElement('div'); lab.className = 'plabel'; lab.style.top = '12px'; lab.textContent = 'Experience'; right.appendChild(lab);
-  fill(right, ['lincoln', 'beaver', 'solder', 'synthica', 'mbl', 'blueprint', 'hackclub', 'seaperch'], 32, 38);
+  fill(right, ['lincoln', 'beaver', 'solder', 'synthica', 'mbl', 'blueprint', 'hackclub', 'seaperch'], 20, 39.5);
 
   // ---- the wallet: starts closed in the middle, opens flat ----
   var papers = document.getElementById('papers'); document.body.insertBefore(papers, wallet);
