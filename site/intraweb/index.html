@@ -212,6 +212,8 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
 .balloon.off{opacity:0;transform:translateY(8px);pointer-events:none}
 .balloon button{position:absolute;top:4px;right:6px;border:0;background:none;cursor:pointer;font-size:13px;color:var(--ink-soft)}
 
+.p2p{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.p2p span{padding:3px 10px;border-radius:11px;background:linear-gradient(#e3f4ff,#b9e0ff);border:1px solid #6aa9e6;color:#0b3f8f;font-weight:700;font-size:12px}
 /* network map */
 .map{grid-column:1/-1}
 .map-body{padding:0}
@@ -219,7 +221,7 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
 .netmap .tags rect{fill:#fff;stroke:#0b4fd1;stroke-width:1.2;filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))}
 .netmap .tags text{fill:#0b2f6b;font-weight:700}
 .netmap .tags .you rect{fill:#0b4fd1}.netmap .tags .you text{fill:#fff}
-.netmap .flow use{stroke-dasharray:3 12;animation:flow 1.1s linear infinite}
+.netmap .flow use{stroke-dasharray:3 12;animation:flow 1.1s linear infinite}.netmap .flow.slow use{animation-duration:2s}
 @keyframes flow{to{stroke-dashoffset:-30}}
 .maplegend{margin:0;padding:12px 16px 14px 34px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 22px}
 .maplegend li{padding-left:2px}
@@ -266,7 +268,8 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
         <div class="body">
           <h1 id="h-main">intraweb</h1>
           <p class="slogan">your neighborhood web</p>
-          <p>A local intranet that needs no internet, no servers and no setup. Put one binary on a laptop or a Raspberry Pi, join the same Wi-Fi as everyone else, and you can see each other, visit each other's pages, swap files and send signed mail. Nodes find each other in about a second.</p>
+          <p class="p2p"><span>Peer to peer</span><span>No internet</span><span>No router</span><span>No server</span></p>
+          <p>A local intranet that needs no internet, no router, no servers and no setup. Put one binary on a laptop or a Raspberry Pi, get near each other (a phone hotspot or a single cable is enough), and you can see each other, visit each other's pages, swap files and send signed mail. Nodes find each other in about a second.</p>
           <div class="cmd"><span>C:\&gt; intraweb up</span><span style="color:var(--ink-soft)">that's the whole setup</span></div>
           <div class="btns">
             <a class="xpbtn def" href="https://github.com/bnvac/intraweb" target="_blank" rel="noopener">Get it…</a>
@@ -309,13 +312,13 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
       <div class="body map-body">
         <svg class="netmap" viewBox="0 0 900 430" role="img" aria-labelledby="map-t map-d">
           <title id="map-t">How intraweb devices connect</title>
-          <desc id="map-d">You, on a laptop, in the middle of a Wi-Fi neighborhood. A hub on a Raspberry Pi keeps the list of who is here. Pages, mail and files go straight from your laptop to each neighbor's device, never through the hub.</desc>
+          <desc id="map-d">You, on a laptop, with neighbors on a laptop, a phone, a desktop and a tablet. There is no internet and no router. An optional hub on a Raspberry Pi keeps the list of who is here. Pages, mail and files go straight from your laptop to each neighbor's device, never through the hub.</desc>
           <defs>
             <linearGradient id="m-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a86f0"/><stop offset=".65" stop-color="#bfe3ff"/><stop offset="1" stop-color="#e9f7ff"/></linearGradient>
             <radialGradient id="m-hill" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#9be15d"/><stop offset=".55" stop-color="#4cb63a"/><stop offset="1" stop-color="#2f8a26"/></radialGradient>
             <radialGradient id="m-bub" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".35" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#9fd8ff" stop-opacity=".35"/></radialGradient>
             <radialGradient id="m-head" cx=".38" cy=".3" r=".75"><stop offset="0" stop-color="#e4fbff"/><stop offset=".45" stop-color="#5fd3f0"/><stop offset="1" stop-color="#1683c7"/></radialGradient>
-            <linearGradient id="m-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ff07a"/><stop offset="1" stop-color="#2a9c3a"/></linearGradient>
+            <linearGradient id="m-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fdcff"/><stop offset="1" stop-color="#1673c9"/></linearGradient>
             <linearGradient id="m-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
             <linearGradient id="m-dev" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdfdfd"/><stop offset="1" stop-color="#c9d3e2"/></linearGradient>
             <linearGradient id="m-scr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fc3ff"/><stop offset="1" stop-color="#1257c9"/></linearGradient>
@@ -330,11 +333,6 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
           <ellipse cx="450" cy="520" rx="640" ry="190" fill="url(#m-hill)"/>
           <path d="M-10 360c150-40 300-48 460-48s320 10 460 48" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3"/>
 
-          <!-- Wi-Fi: everyone is in range of everyone -->
-          <g fill="none" stroke="#fff" stroke-linecap="round" class="wifi">
-            <path d="M420 84a42 42 0 0 1 60 0" stroke-opacity=".9" stroke-width="3"/><path d="M402 66a68 68 0 0 1 96 0" stroke-opacity=".6" stroke-width="3"/><path d="M384 48a94 94 0 0 1 132 0" stroke-opacity=".35" stroke-width="3"/>
-          </g>
-
           <!-- the hub only hands out addresses: thin dashed lines -->
           <g fill="none" stroke="#2d5fb3" stroke-width="1.6" stroke-dasharray="3 6" stroke-opacity=".75">
             <path d="M450 128 C 360 140 230 120 160 150"/><path d="M450 128 C 380 200 250 260 175 300"/>
@@ -348,6 +346,10 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
               <path id="m-a" d="M420 300 C 340 280 250 220 190 190"/><path id="m-b" d="M420 312 C 340 330 270 330 215 330"/>
               <path id="m-c" d="M480 300 C 560 280 650 220 710 190"/><path id="m-d" d="M480 312 C 560 330 630 330 690 330"/>
             </g>
+            <g stroke="#fff" stroke-width="5" stroke-opacity=".55">
+              <path id="m-e" d="M160 205 C 150 250 170 285 195 300"/><path id="m-f" d="M745 205 C 755 250 735 285 712 296"/><path id="m-g" d="M230 345 C 380 400 540 400 680 350"/>
+            </g>
+            <g stroke="#0f8be0" stroke-width="2" stroke-opacity=".8" class="flow slow"><use href="#m-e"/><use href="#m-f"/><use href="#m-g"/></g>
             <g stroke="#0f8be0" stroke-width="3" class="flow">
               <use href="#m-a"/><use href="#m-b"/><use href="#m-c"/><use href="#m-d"/>
             </g>
@@ -371,21 +373,17 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
           <!-- you: a little glossy guy with a laptop -->
           <g transform="translate(450 250)" filter="url(#m-sh)">
             <ellipse cy="98" rx="54" ry="9" fill="#1d6b1d" opacity=".35"/>
-            <rect x="-34" y="2" width="68" height="86" rx="30" fill="url(#m-body)" stroke="#1f7a2e"/>
+            <rect x="-34" y="2" width="68" height="86" rx="30" fill="url(#m-body)" stroke="#0f5ea8"/>
             <path d="M-26 22c14-10 38-10 52 0v10c-16-6-36-6-52 0z" fill="url(#m-gloss)" opacity=".7"/>
             <circle cy="-32" r="38" fill="url(#m-head)" stroke="#0f6aa8"/>
             <ellipse cx="-12" cy="-52" rx="18" ry="10" fill="#fff" opacity=".75"/>
-            <ellipse cx="-12" cy="-30" rx="4.5" ry="6" fill="#0b2f52"/><ellipse cx="12" cy="-30" rx="4.5" ry="6" fill="#0b2f52"/>
-            <circle cx="-10.5" cy="-32" r="1.6" fill="#fff"/><circle cx="13.5" cy="-32" r="1.6" fill="#fff"/>
-            <path d="M-12-14q12 10 24 0" fill="none" stroke="#0b2f52" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="-24" cy="-18" r="5" fill="#ff8fb1" opacity=".45"/><circle cx="24" cy="-18" r="5" fill="#ff8fb1" opacity=".45"/>
             <use href="#m-laptop" transform="translate(0 52) scale(.9)"/>
             <circle cx="-40" cy="66" r="9" fill="url(#m-head)" stroke="#0f6aa8"/><circle cx="40" cy="66" r="9" fill="url(#m-head)" stroke="#0f6aa8"/>
           </g>
 
           <!-- labels -->
           <g class="tags" font-family="Tahoma, Noto Sans, sans-serif" font-size="13" text-anchor="middle">
-            <g transform="translate(450 152)"><rect x="-128" y="-11" width="256" height="22" rx="11"/><text y="4.5">oak · hub on a Pi · keeps the roster</text></g>
+            <g transform="translate(450 152)"><rect x="-128" y="-11" width="256" height="22" rx="11"/><text y="4.5">optional hub · keeps the roster</text></g>
             <g transform="translate(150 218)"><rect x="-40" y="-11" width="80" height="22" rx="11"/><text y="4.5">alice</text></g>
             <g transform="translate(200 380)"><rect x="-30" y="-11" width="60" height="22" rx="11"/><text y="4.5">bob</text></g>
             <g transform="translate(750 218)"><rect x="-38" y="-11" width="76" height="22" rx="11"/><text y="4.5">carol</text></g>
@@ -393,13 +391,13 @@ button.start{border:0;cursor:pointer;font-family:var(--ui)}
             <g transform="translate(450 384)" class="you"><rect x="-26" y="-11" width="52" height="22" rx="11"/><text y="4.5">you</text></g>
           </g>
           <g font-family="Tahoma, Noto Sans, sans-serif" font-size="12.5" fill="#0b2f6b">
-            <text x="450" y="22" text-anchor="middle">same Wi-Fi · no internet needed</text>
+            <text x="450" y="26" text-anchor="middle" font-size="15" font-weight="700">No internet. No router. Every device talks straight to the others.</text>
           </g>
         </svg>
         <ol class="maplegend">
-          <li><b>Find</b> Join the same Wi-Fi. Everyone announces a signed hello over mDNS and a broadcast beacon, so nodes see each other in about a second.</li>
+          <li><b>Find</b> Be near each other on any local link: a phone hotspot, one Ethernet cable, a $5 ESP32, or a router with no internet. Nodes announce a signed hello and see each other in about a second.</li>
           <li><b>Meet</b> A hub, if there is one, keeps the roster: who's here and at what address. That's all it does. <span class="dash" aria-hidden="true"></span></li>
-          <li><b>Connect</b> Pages, mail and files go straight from your machine to theirs over HTTP. The hub never stores or relays anyone's content. <span class="solid" aria-hidden="true"></span></li>
+          <li><b>Connect</b> Peer to peer. Pages, mail and files go straight from your machine to theirs. No server in the middle, and the hub never stores or relays anything. <span class="solid" aria-hidden="true"></span></li>
         </ol>
       </div>
       <div class="status"><span>No hub? Nodes still find each other on their own. The hub just gives everyone one address to open.</span><span>Protocol v2</span></div>
@@ -607,7 +605,8 @@ document.querySelectorAll(".strip button").forEach(function(b){b.addEventListene
     var t=document.createElement("button");t.type="button";t.className="task";t.innerHTML='<svg width="14" height="14"><use href="'+icon(w)+'"/></svg>';
     var sp=document.createElement("span");sp.textContent=title(w).split(" — ")[0];t.title=title(w);t.appendChild(sp);
     t.addEventListener("click",function(){if(state(w)!=="open")set(w,"open");else if(w.classList.contains("active"))set(w,"min");else front(w)});
-    tasks.appendChild(t);w._task=t;
+    // only the main windows get a taskbar button; everything else is in Start
+    if(["main","map","demo","cmdwin"].indexOf(w.id)>-1)tasks.appendChild(t);w._task=t;
     // start menu entry
     var m=document.createElement("button");m.type="button";m.className="sm-item";m.innerHTML='<svg width="20" height="20"><use href="'+icon(w)+'"/></svg>';
     var ms=document.createElement("span");ms.textContent=title(w);m.appendChild(ms);

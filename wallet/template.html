@@ -376,6 +376,7 @@ body{margin:0;background:#141210;background-image:radial-gradient(ellipse 70% 60
 .cap .links{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px}
 .cap .links a{font:600 11px/1 "Inter",system-ui,sans-serif;color:#ece6dd;text-decoration:none;border:1px solid #4a4038;border-radius:999px;padding:7px 11px}
 .cap .links a:hover{border-color:#d9a24a;color:#fff}
+.cap .links a.pri{background:#d9a24a;border-color:#d9a24a;color:#1a140e}.cap .links a.pri:hover{background:#e8b45c;color:#1a140e}
 .cap .hint2{margin-top:6px;font:500 9.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#6f665c}
 a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-offset:3px}
 
@@ -480,7 +481,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-o
     </div>
   </div>
 
-  <div class="card c-intraweb" data-key="intraweb" data-demo="demos/intraweb/index.html" data-go="Try the demo"
+  <div class="card c-intraweb" data-key="intraweb" data-home="/intraweb/" data-demo="demos/intraweb/index.html" data-go="Try the demo"
        data-title="intraweb" data-text="A local network in one binary, with no internet and no server. Signed mail, encrypted channels, file sharing, and ESP32 firmware that runs it without a router." data-sub="Rust">
     <div class="ch"><span>intraweb</span><small>Rust</small></div>
     <div class="cb">
@@ -490,7 +491,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-o
     </div>
   </div>
 
-  <div class="card c-backoffice" data-key="backoffice" data-demo="demos/backoffice/index.html" data-go="Try the demo"
+  <div class="card c-backoffice" data-key="backoffice" data-home="/backoffice/" data-demo="demos/backoffice/index.html" data-go="Try the demo"
        data-title="Backoffice" data-text="Inventory for a whole workshop: parts and drawers, KiCad BOM import, wiring diagrams, and G-code sent to Klipper or OctoPrint. Runs on a Raspberry Pi." data-sub="Go · SQLite">
     <div class="ch"><span>Backoffice</span><small>Developer</small></div>
     <div class="cb"><h4>Workshop inventory</h4>
@@ -498,7 +499,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-o
       <div class="fine">Parts, projects, printers and firmware. Runs on a Pi.</div></div>
   </div>
 
-  <div class="card c-hearth" data-key="hearth" data-demo="demos/hearth/index.html" data-go="Try the demo"
+  <div class="card c-hearth" data-key="hearth" data-home="/hearth/" data-demo="demos/hearth/index.html" data-go="Try the demo"
        data-title="Hearth" data-text="My NixOS setup: local AI on my own GPU, private by default, with the KiCad and 3D-printing tools built in. Each feature is a module I switch on or off." data-sub="NixOS">
     <div class="ch"><span>Hearth</span><small>Development</small></div>
     <div class="cb"><h4>Hearth</h4>
@@ -511,7 +512,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--glow);outline-o
       </svg></div>
   </div>
 
-  <div class="card c-baselayer" data-key="baselayer" data-demo="demos/baselayer/index.html" data-go="Try the demo"
+  <div class="card c-baselayer" data-key="baselayer" data-home="/baselayer/" data-demo="demos/baselayer/index.html" data-go="Try the demo"
        data-title="baselayer" data-text="Pick what a machine is for in the browser and download a working flake.nix." data-sub="NixOS">
     <div class="ch"><span>baselayer</span><small>NixOS</small></div>
     <div class="cb">NIXOS_LOGO
@@ -803,6 +804,10 @@ var LOGOS = LOGO_MAP;
       if (key === 'hackclub') links.push(['https://dreamventure.cloud', 'dreamventure.cloud']);
       var lr = el('div', 'links');
       links.forEach(function (l) { if (!l[0]) return; var a = el('a', '', l[1] + ' ↗'); a.href = l[0]; a.target = '_blank'; a.rel = 'noopener'; lr.appendChild(a); });
+      // projects: try the demo right here, or go to the project's own page
+      if (c.dataset.demo) { var d = el('a', 'pri', '▶ Try the demo'); d.href = c.dataset.demo; d.addEventListener('click', function (ev) { ev.preventDefault(); openDemo(c); }); lr.appendChild(d); }
+      if (c.dataset.home) { var h = el('a', '', 'Project page →'); h.href = c.dataset.home; lr.appendChild(h); }
+      else if (c.dataset.site && !c.dataset.org) { var s = el('a', '', c.dataset.go + ' ↗'); s.href = c.dataset.site; s.target = '_blank'; s.rel = 'noopener'; lr.appendChild(s); }
       if (lr.children.length) cap.appendChild(lr);
     }
     cap.appendChild(el('small', 'hint2', c.dataset.demo ? 'Tap to flip · tap the back to try it' : c.dataset.site ? 'Tap to flip · tap the back to open it' : 'Tap to flip'));
